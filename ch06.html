@@ -1,0 +1,1035 @@
+﻿<!DOCTYPE html>
+<html lang="en-gb">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<link href="stylesheet.css" rel="stylesheet" type="text/css" />
+<title>Chapter 6. PHP Arrays</title>
+</head>
+
+<body>
+
+<div id="sbo-rt-content">
+	<section>
+		<div id="php_arrays">
+			<h1>Chapter 6. PHP Arrays</h1>
+			<p>In <a href="ch03.html#introduction_to_php">Chapter 3</a>, I gave 
+			a very brief introduction to PHP’s arrays—just enough for a little taste 
+			of their power. In this chapter, I’ll show you many more things that 
+			you can do with arrays, some of which—if you have ever used a strongly 
+			typed language such as C—may surprise you with their elegance and simplicity.</p>
+			<p>Not only do arrays remove the tedium of writing code to deal with 
+			complicated data structures, but they also provide numerous ways to 
+			access data while remaining amazingly fast.</p>
+			<section>
+				<div id="basic_access">
+					<h1>Basic Access</h1>
+					<p>We’ve already looked at arrays as if they were clusters of 
+					matchboxes glued together. Another way to think of an array 
+					is like a string of beads, with the beads representing variables 
+					that can be numbers, strings, or even other arrays. They are 
+					like bead strings because each element has its own location 
+					and (with the exception of the first and last ones) each has 
+					other elements on either side.</p>
+					<p>Some arrays are referenced by numeric indexes; others allow 
+					alphanumeric identifiers. Built-in functions let you sort them, 
+					add or remove sections, and walk through them to handle each 
+					item through a special kind of loop. And by placing one or more 
+					arrays inside another, you can create arrays of two, three, 
+					or any number of dimensions.</p>
+					<section>
+						<div id="numerically_indexed_arrays">
+							<h2>Numerically Indexed Arrays</h2>
+							<p>Let’s assume that you’ve been tasked with creating 
+							a simple website for a local office supply company and 
+							you’re currently working on the section devoted to paper. 
+							One way to manage the various items of stock in this 
+							category would be to place them in a numeric array. 
+							You can see the simplest way of doing so in
+							<a href="#adding_items_to_an_array">Example 6-1</a>.</p>
+							<div id="adding_items_to_an_array">
+								<h5>Example 6-1. Adding items to an array</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$paper[]</code> <code>=</code> <code>"Copier";</code>
+  <code>$paper[]</code> <code>=</code> <code>"Inkjet";</code>
+  <code>$paper[]</code> <code>=</code> <code>"Laser";</code>
+  <code>$paper[]</code> <code>=</code> <code>"Photo";</code>
+
+  <code>print_r($paper);</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>In this example, each time you assign a value to 
+							the array <code>$paper</code>, the first empty location 
+							within that array is used to store the value, and a 
+							pointer internal to PHP is incremented to point to the 
+							next free location, ready for future insertions. The 
+							familiar <code>print_r</code> function (which prints 
+							out the contents of a variable, array, or object) is 
+							used to verify that the array has been correctly populated. 
+							It prints out the following:</p>
+							<div>
+								<pre>
+<strong>Array
+(
+&nbsp; [0] =&gt; Copier
+&nbsp; [1] =&gt; Inkjet
+&nbsp; [2] =&gt; Laser
+&nbsp; [3] =&gt; Photo
+)</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>The previous code could also have been written as 
+							shown in
+							<a href="#adding_items_to_an_array_using_explicit">Example 
+							6-2</a>, where the exact location of each item within 
+							the array is specified. But, as you can see, that approach 
+							requires extra typing and makes your code harder to 
+							maintain if you want to insert supplies into or remove 
+							them from the array. So, unless you wish to specify 
+							a different order, it’s usually better to simply let 
+							PHP handle the actual location numbers.</p>
+							<div id="adding_items_to_an_array_using_explicit">
+								<h5>Example 6-2. Adding items to an array using 
+								explicit locations</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$paper[0]</code> <code>=</code> <code>"Copier";</code>
+  <code>$paper[1]</code> <code>=</code> <code>"Inkjet";</code>
+  <code>$paper[2]</code> <code>=</code> <code>"Laser";</code>
+  <code>$paper[3]</code> <code>=</code> <code>"Photo";</code>
+
+  <code>print_r($paper);</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>The output from these examples is identical, but 
+							you are not likely to use <code>print_r</code> in a 
+							developed website, so
+							<a href="#adding_items_to_an_array_and_retrieving">Example 
+							6-3</a> shows how you might print out the various types 
+							of paper the website offers using a <code>for</code> 
+							loop.</p>
+							<div id="adding_items_to_an_array_and_retrieving">
+								<h5>Example 6-3. Adding items to an array and retrieving 
+								them</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$paper[]</code> <code>=</code> <code>"Copier";</code>
+  <code>$paper[]</code> <code>=</code> <code>"Inkjet";</code>
+  <code>$paper[]</code> <code>=</code> <code>"Laser";</code>
+  <code>$paper[]</code> <code>=</code> <code>"Photo";</code>
+
+  <code>for</code> <code>($j</code> <code>=</code> <code>0</code> <code>;</code> <code>$j</code> <code>&lt;</code> <code>4</code> <code>;</code> <code>++$j)</code>
+    <code>echo</code> <code>"$j: {$paper[$j]}&lt;br&gt;";</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>This example prints out the following:</p>
+							<div>
+								<pre>
+<strong>  0: Copier
+  1: Inkjet
+  2: Laser
+  3: Photo</strong>
+</pre>
+								<div>
+								</div>
+							</div>
+							<p>So far, you’ve seen a couple of ways in which you 
+							can add items to an array and one way of referencing 
+							them. PHP offers many more, which I’ll get to shortly. 
+							But first, we’ll look at another type of array.</p>
+						</div>
+					</section>
+					<section>
+						<div id="associative_arrays">
+							<h2>Associative Arrays</h2>
+							<p>Keeping track of array elements by numeric index 
+							works just fine but can require extra work in terms 
+							of remembering which number refers to which product. 
+							It can also make code hard for other programmers to 
+							follow.</p>
+							<p>This is where associative arrays come into their 
+							own. Using them, you can reference the items in an array 
+							by name rather than by number.
+							<a href="#adding_items_to_an_associative_array_and">
+							Example 6-4</a> expands on the previous code by giving 
+							each element in the array an identifying name and a 
+							longer, more explanatory string value.</p>
+							<div id="adding_items_to_an_associative_array_and">
+								<h5>Example 6-4. Adding items to an associative 
+								array and retrieving them</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$paper['copier']</code> <code>=</code> <code>"Copier &amp; Multipurpose";</code>
+  <code>$paper['inkjet']</code> <code>=</code> <code>"Inkjet Printer";</code>
+  <code>$paper['laser']</code>  <code>=</code> <code>"Laser Printer";</code>
+  <code>$paper['photo']</code>  <code>=</code> <code>"Photographic Paper";</code>
+
+  <code>echo</code> <code>$paper['laser'];</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>In place of a number (which doesn’t convey any useful 
+							information, aside from the position of the item in 
+							the array), each item now has a unique name that you 
+							can use to reference it elsewhere, as with the <code>
+							echo</code> statement—which simply prints out <code>
+							Laser Printer</code>. The names (<code>copier</code>,
+							<code>inkjet</code>, and so on) are called <em>indexes</em> 
+							or <em>keys</em>, and the items assigned to them (such 
+							as <code>Laser Printer</code>) are called <em>values</em>.</p>
+							<p>This very powerful feature of PHP is often used when 
+							you are extracting information from XML and HTML. For 
+							example, an HTML parser such as those used by a search 
+							engine could place all the elements of a web page into 
+							an associative array whose names reflect the page’s 
+							structure:</p>
+							<div>
+								<pre>
+<code>$html['title']</code> <code>=</code> <code>"My web page";</code>
+<code>$html['body']</code>  <code>=</code> <code>"... body of web page ...";</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>The program would also probably break down all the 
+							links found within a page into another array, and all 
+							the headings and subheadings into another. When you 
+							use associative rather than numeric arrays, the code 
+							to refer to all of these items is easy to write and 
+							debug.</p>
+							<div class="note">
+								<h4>Note</h4>
+								<p>PHP’s associative arrays are similar to maps, 
+								dictionaries, or objects in other languages.</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="assignment_using_the_array_keyword">
+							<h2>Assignment Using the array Keyword</h2>
+							<p>So far, you’ve seen how to assign values to arrays 
+							by just adding new items one at a time. Whether you 
+							specify keys, specify numeric identifiers, or let PHP 
+							assign numeric identifiers implicitly, this is a long-winded 
+							approach. A more compact and faster assignment method 
+							uses the <code>array</code> keyword.
+							<a href="#adding_items_to_an_array_using_the_array">
+							Example 6-5</a> shows both a numeric and an associative 
+							array assigned using this method.</p>
+							<div id="adding_items_to_an_array_using_the_array">
+								<h5>Example 6-5. Adding items to an array using 
+								the <code>array</code> keyword</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$p1</code> <code>=</code> <code>array("Copier",</code> <code>"Inkjet",</code> <code>"Laser",</code> <code>"Photo");</code>
+
+  <code>echo</code> <code>"p1 element: "</code> <code>.</code> <code>$p1[2]</code> <code>.</code> <code>"&lt;br&gt;";</code>
+
+  <code>$p2</code> <code>=</code> <code>array('copier'</code> <code>=&gt;</code> <code>"Copier &amp; Multipurpose",</code>
+              <code>'inkjet'</code> <code>=&gt;</code> <code>"Inkjet Printer",</code>
+              <code>'laser'</code>  <code>=&gt;</code> <code>"Laser Printer",</code>
+              <code>'photo'</code>  <code>=&gt;</code> <code>"Photographic Paper");</code>
+
+  <code>echo</code> <code>"p2 element: "</code> <code>.</code> <code>$p2['inkjet']</code> <code>.</code> <code>"&lt;br&gt;";</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>The first half of this snippet assigns the old, shortened 
+							product descriptions to the array <code>$p1</code>. 
+							There are four items, so they will occupy slots 0 through 
+							3. Therefore, the <code>echo</code> statement prints 
+							out the following:</p>
+							<div>
+								<pre>
+<strong><code>p1 element: Laser</code></strong><code>
+</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>The second half assigns associative identifiers and 
+							accompanying longer product descriptions to the array
+							<code>$p2</code> using the format <em><code>key</code></em>
+							<code>=&gt;</code> <em><code>value</code></em>. The 
+							use of <code>=&gt;</code> is similar to the regular
+							<code>=</code> assignment operator, except that you 
+							are assigning a value to an <em>index</em> and not to 
+							a <em>variable</em>. The index is then linked with that 
+							value, unless it is assigned a new value. The <code>
+							echo</code> command therefore prints out this:</p>
+							<div>
+								<pre>
+<strong><code>p2 element: Inkjet Printer</code></strong><code>
+</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>You can verify that <code>$p1</code> and <code>$p2</code> 
+							are different types of array, because both of the following 
+							commands, when appended to the code, will cause an
+							<code>Undefined index</code> or <code>Undefined offset</code> 
+							error, as the array identifier for each is incorrect:</p>
+							<div>
+								<pre>
+<code>echo</code> <code>$p1['inkjet'];</code> <code>// Undefined index</code>
+<code>echo</code> <code>$p2[3];</code>        <code>// Undefined offset</code></pre>
+								<div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="foreach_dotdotdot_as_loop">
+					<h1>The foreach...as Loop</h1>
+					<p>The creators of PHP have gone to great lengths to make the 
+					language easy to use. So, not content with the loop structures 
+					already provided, they added another one especially for arrays: 
+					the <code>foreach...as</code> loop. Using it, you can step through 
+					all the items in an array, one at a time, and do something with 
+					them.</p>
+					<p>The process starts with the first item and ends with the 
+					last one, so you don’t even have to know how many items there 
+					are in an array.
+					<a href="#walking_through_a_numeric_array_using_fo">Example 
+					6-6</a> shows how <code>foreach...as</code> can be used to rewrite
+					<a href="#adding_items_to_an_array_and_retrieving">Example 6-3</a>.</p>
+					<div id="walking_through_a_numeric_array_using_fo">
+						<h5>Example 6-6. Walking through a numeric array using
+						<code>foreach...as</code></h5>
+						<div>
+							<pre>
+<code>&lt;?php</code>
+  <code>$paper</code> <code>=</code> <code>array("Copier",</code> <code>"Inkjet",</code> <code>"Laser",</code> <code>"Photo");</code>
+  <code>$j</code> <code>=</code> <code>0;</code>
+
+  <code>foreach($paper</code> <code>as</code> <code>$item)</code>
+  <code>{</code>
+    <code>echo</code> <code>"$j: $item&lt;br&gt;";</code>
+    <code>++$j;</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+							<div>
+							</div>
+						</div>
+					</div>
+					<p>When PHP encounters a <code>foreach</code> statement, it 
+					takes the first item of the array and places it in the variable 
+					following the <code>as</code> keyword; and each time control 
+					flow returns to the <code>foreach</code>, the next array element 
+					is placed in the <code>as</code> keyword. In this case, the 
+					variable <code>$item</code> is set to each of the four values 
+					in turn in the array <code>$paper</code>. Once all values have 
+					been used, execution of the loop ends. The output from this 
+					code is exactly the same as in
+					<a href="#adding_items_to_an_array_and_retrieving">Example 6-3</a>.</p>
+					<p>Now let’s see how <code>foreach</code> works with an associative 
+					array by taking a look at
+					<a href="#walking_through_an_associative_array_usi">Example 
+					6-7</a>, which is a rewrite of the second half of
+					<a href="#adding_items_to_an_array_using_the_array">Example 
+					6-5</a>.</p>
+					<div id="walking_through_an_associative_array_usi">
+						<h5>Example 6-7. Walking through an associative array using
+						<code>foreach...as</code></h5>
+						<div>
+							<pre>
+<code>&lt;?php</code>
+  <code>$paper</code> <code>=</code> <code>array('copier'</code> <code>=&gt;</code> <code>"Copier &amp; Multipurpose",</code>
+                 <code>'inkjet'</code> <code>=&gt;</code> <code>"Inkjet Printer",</code>
+                 <code>'laser'</code>  <code>=&gt;</code> <code>"Laser Printer",</code>
+                 <code>'photo'</code>  <code>=&gt;</code> <code>"Photographic Paper");</code>
+
+  <code>foreach($paper</code> <code>as</code> <code>$item</code> <code>=&gt;</code> <code>$description)</code>
+    <code>echo</code> <code>"$item: $description&lt;br&gt;";</code>
+<code>?&gt;</code></pre>
+							<div>
+							</div>
+						</div>
+					</div>
+					<p>Remember that associative arrays do not require numeric indexes, 
+					so the variable <code>$j</code> is not used in this example. 
+					Instead, each item of the array <code>$paper</code> is fed into 
+					the key/value pair of variables <code>$item</code> and <code>
+					$description</code>, from which they are printed out. The displayed 
+					result of this code is as follows:</p>
+					<div>
+						<pre>
+<strong><code>copier: Copier &amp; Multipurpose
+inkjet: Inkjet Printer
+laser: Laser Printer
+photo: Photographic Paper</code></strong><code>
+</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>There are some alternative ways to walk through an associative 
+					array. I liked using the <code>list</code> and <code>each</code> 
+					functions, but <code>each</code> has since been removed from 
+					PHP. Luckily, it is possible to write a replacement function, 
+					which I have named <code>myEach</code>, to be used with the
+					<code>list</code> function in conjunction with a <code>while</code> 
+					loop, as in
+					<a href="#walking_through_an_associative_a-id00016">Example 
+					6-8</a>.</p>
+					<div id="walking_through_an_associative_a-id00016">
+						<h5>Example 6-8. Walking through an associative array using
+						<code>myEach</code> and <code>list</code></h5>
+						<div>
+							<pre>
+<code>&lt;?php</code>
+  <code>$paper</code> <code>=</code> <code>array('copier'</code> <code>=&gt;</code> <code>"Copier &amp; Multipurpose",</code>
+                 <code>'inkjet'</code> <code>=&gt;</code> <code>"Inkjet Printer",</code>
+                 <code>'laser'</code>  <code>=&gt;</code> <code>"Laser Printer",</code>
+                 <code>'photo'</code>  <code>=&gt;</code> <code>"Photographic Paper");</code>
+
+  <code>while</code> <code>(list($item,</code> <code>$description)</code> <code>=</code> <code>myEach($paper))</code>
+    <code>echo</code> <code>"$item: $description&lt;br&gt;";</code>
+
+  <code>function</code> <code>myEach(&amp;$array)</code> <code>// Replacement for deprecated 'each' function</code>
+  <code>{</code>
+    <code>$key</code>    <code>=</code> <code>key($array);</code>
+    <code>$result</code> <code>=</code> <code>($key</code> <code>===</code> <code>null)</code> <code>?</code> <code>false</code> <code>:</code>
+              <code>[$key,</code> <code>current($array),</code> <code>'key',</code> <code>'value'</code> <code>=&gt;</code>
+&nbsp;               <code>current($array)];</code>
+    <code>next($array);</code>
+    <code>return</code> <code>$result;</code>
+  <code>}</code>
+<code>?&gt;</code>
+</pre>
+							<div>
+							</div>
+						</div>
+					</div>
+					<p>In this example, a <code>while</code> loop is set up and 
+					will continue looping until the <code>myEach</code> function 
+					returns a value of <code>FALSE</code>. The <code>myEach</code> 
+					function acts like <code>foreach</code> in that it returns an 
+					array containing a key/value pair from the array <code>$paper</code> 
+					and then moves its built-in pointer to the next pair in that 
+					array. When there are no more pairs to return, <code>myEach</code> 
+					returns <code>FALSE</code>.</p>
+					<p>Unlike with <code>foreach</code>, calling <code>myEach</code> 
+					modifies the internal array pointer because it uses <code>next</code>, 
+					which is something you should be aware of. You can spot the 
+					difference when you add <code>print_r(current($paper));</code> 
+					after both the <code>foreach</code> and <code>while</code> loops. 
+					Using <code>foreach</code> to walk through arrays is more common 
+					as it doesn’t have this side effect and is usually also marginally 
+					faster.</p>
+					<p>The <code>list</code> function takes an array as its argument 
+					(in this case, the key/value pair returned by the function
+					<code>myEach</code>) and then assigns the values of the array 
+					to the variables listed within parentheses.</p>
+					<p>You can see how <code>list</code> works a little more clearly 
+					in <a href="#using_the_list_function">Example 6-9</a>, where 
+					an array is created out of the two strings <code>Alice</code> 
+					and <code>Bob</code> and then passed to the <code>list</code> 
+					function, which assigns those strings as values to the variables
+					<code>$a</code> and <code>$b</code>.</p>
+					<div id="using_the_list_function">
+						<h5>Example 6-9. Using the <code>list</code> function</h5>
+						<div>
+							<pre>
+<code>&lt;?php</code>
+  <code>list($a,</code> <code>$b)</code> <code>=</code> <code>array('Alice',</code> <code>'Bob');</code>
+  <code>echo</code> <code>"a=$a b=$b";</code>
+<code>?&gt;</code></pre>
+							<div>
+							</div>
+						</div>
+					</div>
+					<p>The output from this code is as follows:</p>
+					<div>
+						<pre>
+<strong><code>a=Alice b=Bob</code></strong><code>
+</code></pre>
+						<div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section>
+				<div id="multidimensional_arrays">
+					<h1>Multidimensional Arrays</h1>
+					<p>A simple design feature in PHP’s array syntax makes it possible 
+					to create arrays of more than one dimension. In fact, they can 
+					be as many dimensions as you like (although it’s a rare application 
+					that goes further than three).</p>
+					<p>That feature is the ability to include an entire array as 
+					a part of another one, and to be able to keep doing so, just 
+					like the old rhyme by Augustus De Morgan, the British mathematician 
+					and logician: “Big fleas have little fleas upon their backs 
+					to bite ’em. Little fleas have lesser fleas and so ad infinitum.”</p>
+					<p>Let’s look at how this works by taking the associative array 
+					in the previous example and extending it; see
+					<a href="#creating_a_multidimensional_associative">Example 6-10</a>.</p>
+					<div id="creating_a_multidimensional_associative">
+						<h5>Example 6-10. Creating a multidimensional associative 
+						array</h5>
+						<div>
+							<pre>
+<code>&lt;?php</code>
+  <code>$products</code> <code>=</code> <code>array(</code>
+
+    <code>'paper'</code> <code>=&gt;</code> <code>array(</code>
+
+      <code>'copier'</code> <code>=&gt;</code> <code>"Copier &amp; Multipurpose",</code>
+      <code>'inkjet'</code> <code>=&gt;</code> <code>"Inkjet Printer",</code>
+      <code>'laser'</code>  <code>=&gt;</code> <code>"Laser Printer",</code>
+      <code>'photo'</code>  <code>=&gt;</code> <code>"Photographic Paper"),</code>
+
+    <code>'pens'</code> <code>=&gt;</code> <code>array(</code>
+
+      <code>'ball'</code>   <code>=&gt;</code> <code>"Ball Point",</code>
+      <code>'hilite'</code> <code>=&gt;</code> <code>"Highlighters",</code>
+      <code>'marker'</code> <code>=&gt;</code> <code>"Markers"),</code>
+
+    <code>'misc'</code> <code>=&gt;</code> <code>array(</code>
+
+      <code>'tape'</code>   <code>=&gt;</code> <code>"Sticky Tape",</code>
+      <code>'glue'</code>   <code>=&gt;</code> <code>"Adhesives",</code>
+      <code>'clips'</code>  <code>=&gt;</code> <code>"Paperclips"</code>
+    <code>)</code>
+  <code>);</code>
+
+  <code>echo</code> <code>"&lt;pre&gt;";</code>
+
+  <code>foreach($products</code> <code>as</code> <code>$section</code> <code>=&gt;</code> <code>$items)</code>
+    <code>foreach($items</code> <code>as</code> <code>$key</code> <code>=&gt;</code> <code>$value)</code>
+      <code>echo</code> <code>"$section:\t$key\t($value)&lt;br&gt;";</code>
+
+  <code>echo</code> <code>"&lt;/pre&gt;";</code>
+<code>?&gt;</code></pre>
+							<div>
+							</div>
+						</div>
+					</div>
+					<p>To make things clearer now that the code is starting to grow, 
+					I’ve renamed some of the elements. For example, because the 
+					previous array <code>$paper</code> is now just a subsection 
+					of a larger array, the main array is now called <code>$products</code>. 
+					Within this array, there are three items—<code>paper</code>,
+					<code>pens</code>, and <code>misc</code>—each of which contains 
+					another array with key/value pairs.</p>
+					<p>If necessary, these subarrays could have contained even further 
+					arrays. For example, under <code>ball</code> there might be 
+					many different types and colors of ballpoint pens available 
+					in the online store. But for now, I’ve restricted the code to 
+					a depth of just two.</p>
+					<p>Once the array data has been assigned, I use a pair of nested
+					<code>foreach...as</code> loops to print out the various values. 
+					The outer loop extracts the main sections from the top level 
+					of the array, and the inner loop extracts the key/value pairs 
+					for the categories within each section.</p>
+					<p>As long as you remember that each level of the array works 
+					the same way (it’s a key/value pair), you can easily write code 
+					to access any element at any level.</p>
+					<p>The <code>echo</code> statement makes use of the PHP escape 
+					character <code>\t</code>, which outputs a tab. Although tabs 
+					are not normally significant to the web browser, I let them 
+					be used for layout by using the <code>&lt;pre&gt;...&lt;/pre&gt;</code> 
+					tags, which tell the web browser to format the text as preformatted 
+					and monospaced, and <em>not</em> to ignore whitespace characters 
+					such as tabs and line feeds. The output from this code looks 
+					like the following:</p>
+					<div>
+						<pre>
+<strong>paper:  copier  (Copier &amp; Multipurpose)</strong>
+<strong>paper:  inkjet  (Inkjet Printer)</strong>
+<strong>paper:  laser   (Laser Printer)</strong>
+<strong>paper:  photo   (Photographic Paper)</strong>
+<strong>pens:   ball    (Ball Point)</strong>
+<strong>pens:   hilite  (Highlighters)</strong>
+<strong>pens:   marker  (Markers)</strong>
+<strong>misc:   tape    (Sticky Tape)</strong>
+<strong>misc:   glue    (Adhesives)</strong>
+<strong>misc:   clips   (Paperclips)</strong></pre>
+						<div>
+						</div>
+					</div>
+					<p>You can directly access a particular element of the array 
+					by using square brackets:</p>
+					<div>
+						<pre>
+<code>echo</code> <code>$products['misc']['glue'];</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>This outputs the value <code>Adhesives</code>.</p>
+					<p>You can also create numeric multidimensional arrays that 
+					are accessed directly by indexes rather than by alphanumeric 
+					identifiers.
+					<a href="#creating_a_multidimensional_numeric_arra">Example 
+					6-11</a> creates the board for a chess game with the pieces 
+					in their starting positions.</p>
+					<div id="creating_a_multidimensional_numeric_arra">
+						<h5>Example 6-11. Creating a multidimensional numeric array</h5>
+						<div>
+							<pre>
+<code>&lt;?php</code>
+  <code>$chessboard</code> <code>=</code> <code>array(</code>
+    <code>array('r',</code> <code>'n',</code> <code>'b',</code> <code>'q',</code> <code>'k',</code> <code>'b',</code> <code>'n',</code> <code>'r'),</code>
+    <code>array('p',</code> <code>'p',</code> <code>'p',</code> <code>'p',</code> <code>'p',</code> <code>'p',</code> <code>'p',</code> <code>'p'),</code>
+    <code>array(' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' '),</code>
+    <code>array(' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' '),</code>
+    <code>array(' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' '),</code>
+    <code>array(' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' ',</code> <code>' '),</code>
+    <code>array('P',</code> <code>'P',</code> <code>'P',</code> <code>'P',</code> <code>'P',</code> <code>'P',</code> <code>'P',</code> <code>'P'),</code>
+    <code>array('R',</code> <code>'N',</code> <code>'B',</code> <code>'Q',</code> <code>'K',</code> <code>'B',</code> <code>'N',</code> <code>'R')</code>
+  <code>);</code>
+
+  <code>echo</code> <code>"&lt;pre&gt;";</code>
+
+  <code>foreach($chessboard</code> <code>as</code> <code>$row)</code>
+  <code>{</code>
+    <code>foreach</code> <code>($row</code> <code>as</code> <code>$piece)</code>
+      <code>echo</code> <code>"$piece ";</code>
+
+    <code>echo</code> <code>"&lt;br&gt;";</code>
+  <code>}</code>
+
+  <code>echo</code> <code>"&lt;/pre&gt;";</code>
+<code>?&gt;</code></pre>
+							<div>
+							</div>
+						</div>
+					</div>
+					<p>In this example, the lowercase letters represent black pieces, 
+					and the uppercase white. The key is <code>r</code> = rook,
+					<code>n</code> = knight, <code>b</code> = bishop, <code>k</code> 
+					= king, <code>q</code> = queen, and <code>p</code> = pawn. Again, 
+					a pair of nested <code>foreach...as</code> loops walks through 
+					the array and displays its contents. The outer loop processes 
+					each row into the variable <code>$row</code>, which itself is 
+					an array, because the <code>$chessboard</code> array uses a 
+					subarray for each row. This loop has two statements within it, 
+					so curly braces enclose them.</p>
+					<p>The inner loop then processes each square in a row, outputting 
+					the character (<code>$piece</code>) stored in it, followed by 
+					a space (to square up the printout). This loop has a single 
+					statement, so curly braces are not required to enclose it. The
+					<code>&lt;pre&gt;</code> and <code>&lt;/pre&gt;</code> tags 
+					ensure that the output displays correctly, like this:</p>
+					<div>
+						<pre>
+<strong>r n b q k b n r</strong>
+<strong>p p p p p p p p</strong>
+
+
+
+
+<strong>P P P P P P P P</strong>
+<strong>R N B Q K B N R</strong></pre>
+						<div>
+						</div>
+					</div>
+					<p>You can also directly access any element within this array 
+					by using square brackets:</p>
+					<div>
+						<pre>
+<code>echo</code> <code>$chessboard[7][3];</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>This statement outputs the uppercase letter <code>Q</code>, 
+					the eighth element down and the fourth along (remember that 
+					array indexes start at 0, not 1).</p>
+				</div>
+			</section>
+			<section>
+				<div id="using_array_functions">
+					<h1>Using Array Functions</h1>
+					<p>You’ve already seen the <code>list</code> and <code>each</code> 
+					functions, but PHP comes with numerous other functions for handling 
+					arrays. You can find the full list in the
+					<a href="https://tinyurl.com/arraysinphp" rel="noopener noreferrer" target="_blank">
+					documentation</a>. However, some of these functions are so fundamental 
+					that it’s worth taking the time to look at them here.</p>
+					<section>
+						<div id="is_array">
+							<h2>is_array</h2>
+							<p>Arrays and variables share the same namespace (as 
+							arrays are types of variable anyway). This means that 
+							you cannot have a string variable called <code>$fred</code> 
+							and an array also called <code>$fred</code>. If you’re 
+							in doubt and your code needs to check whether a variable 
+							is an array, you can use the <code>is_array</code> function, 
+							like this:</p>
+							<div>
+								<pre>
+<code>echo</code> <code>is_array($fred)</code> <code>?</code> <code>"Is an array"</code> <code>:</code> <code>"Is not an array";</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>Note that if <code>$fred</code> has not yet been 
+							assigned a value, an <code>Undefined variable</code> 
+							message will be generated.</p>
+						</div>
+					</section>
+					<section>
+						<div id="count">
+							<h2>count</h2>
+							<p>Although the <code>each</code> function and <code>
+							foreach...as</code> loop structure are excellent ways 
+							to walk through an array’s contents, sometimes you need 
+							to know exactly how many elements there are in your 
+							array, particularly if you will be referencing them 
+							directly. To count all the elements in the top level 
+							of an array, use a command such as this:</p>
+							<div>
+								<pre>
+<code>echo</code> <code>count($fred);</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>Should you wish to know how many elements there are 
+							altogether in a multidimensional array, you can use 
+							a statement such as the following:</p>
+							<div>
+								<pre>
+<code>echo</code> <code>count($fred,</code> <code>1);</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>The second parameter is optional and sets the mode 
+							to use. It should be either <code>0</code> to limit 
+							counting to only the top level or <code>1</code> to 
+							force recursive counting of all subarray elements too.</p>
+						</div>
+					</section>
+					<section>
+						<div id="sort">
+							<h2>sort</h2>
+							<p>Sorting is so common that PHP provides a built-in 
+							function for it. In its simplest form, you would use 
+							it like this (to sort items normally - the default):</p>
+							<div>
+								<pre>
+<code>sort($fred);</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>It is important to remember that, unlike some other 
+							functions, <code>sort</code> will act directly on the 
+							supplied array rather than returning a new array of 
+							sorted elements. It returns <code>TRUE</code> on success 
+							and <code>FALSE</code> on error and also supports a 
+							few flags—the main two flags that you might wish to 
+							use force items to be sorted either numerically or as 
+							strings, like this:</p>
+							<div>
+								<pre>
+<code>sort($fred,</code> <code>SORT_NUMERIC);</code>
+<code>sort($fred,</code> <code>SORT_STRING);</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>You can also sort an array in reverse order using 
+							the <code>rsort</code> function, like this:</p>
+							<div>
+								<pre>
+<code>rsort($fred,</code> <code>SORT_NUMERIC);</code>
+<code>rsort($fred,</code> <code>SORT_STRING);</code></pre>
+								<div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="shuffle">
+							<h2>shuffle</h2>
+							<p>There may be times when you need the elements of 
+							an array to be put in random order, such as when you’re 
+							creating a game of playing cards:</p>
+							<div>
+								<pre>
+<code>shuffle($cards);</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>Like <code>sort</code>, <code>shuffle</code> acts 
+							directly on the supplied array and returns <code>TRUE</code> 
+							on success or <code>FALSE</code> on error.</p>
+						</div>
+					</section>
+					<section>
+						<div id="explode">
+							<h2>explode</h2>
+							<p><code>explode</code> is a very useful function with 
+							which you can take a string containing several items 
+							separated by a single character (or string of characters) 
+							and then place each of these items into an array. One 
+							handy example is to split up a sentence into an array 
+							containing all its words, as in
+							<a href="#exploding_a_string_into_an_array_using_s">
+							Example 6-12</a>.</p>
+							<div id="exploding_a_string_into_an_array_using_s">
+								<h5>Example 6-12. Exploding a string into an array 
+								using spaces</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$temp</code> <code>=</code> <code>explode(' ',</code> <code>"This is a sentence with seven words");</code>
+  <code>print_r($temp);</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>This example prints out the following (on a single 
+							line when viewed in a browser):</p>
+							<div>
+								<pre>
+<strong>Array</strong>
+<strong>(</strong>
+  <strong>[0] =&gt; This</strong>
+  <strong>[1] =&gt; is</strong>
+  <strong>[2] =&gt; a</strong>
+  <strong>[3] =&gt; sentence</strong>
+  <strong>[4] =&gt; with</strong>
+  <strong>[5] =&gt; seven</strong>
+  <strong>[6] =&gt; words</strong>
+<strong>)</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>The first parameter, the delimiter, need not be a 
+							space or even a single character.
+							<a href="#exploding_a_string_delimited_with_asteri">
+							Example 6-13</a> shows a slight variation.</p>
+							<div id="exploding_a_string_delimited_with_asteri">
+								<h5>Example 6-13. Exploding a string delimited with
+								<code>***</code> into an array</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$temp</code> <code>=</code> <code>explode('***',</code> <code>"A***sentence***with***asterisks");</code>
+  <code>print_r($temp);</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>The code in
+							<a href="#exploding_a_string_delimited_with_asteri">
+							Example 6-13</a> prints out the following:</p>
+							<div>
+								<pre>
+<strong>Array</strong>
+<strong>(</strong>
+  <strong>[0] =&gt; A</strong>
+  <strong>[1] =&gt; sentence</strong>
+  <strong>[2] =&gt; with</strong>
+  <strong>[3] =&gt; asterisks</strong>
+<strong>)</strong>
+</pre>
+								<div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="compact">
+							<h2>compact</h2>
+							<p>At times you may want to use <code>compact</code>, 
+							the inverse of <code>extract</code>, to create an array 
+							from variables and their values.
+							<a href="#using_the_compact_function">Example 6-14</a> 
+							shows how you might use this function by passing variable 
+							names without the preceding <code>$</code> characters</p>
+							<div id="using_the_compact_function">
+								<h5>Example 6-14. Using the <code>compact</code> 
+								function</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$fname</code>         <code>=</code> <code>"Doctor";</code>
+  <code>$sname</code>         <code>=</code> <code>"Who";</code>
+  <code>$planet</code>        <code>=</code> <code>"Gallifrey";</code>
+  <code>$system</code>        <code>=</code> <code>"Gridlock";</code>
+  <code>$constellation</code> <code>=</code> <code>"Kasterborous";</code>
+
+  <code>$contact</code> <code>=</code> <code>compact('fname',</code> <code>'sname',</code> <code>'planet',</code>
+&nbsp;                    <code>'system',</code> <code>'constellation');</code>
+
+  <code>print_r($contact);</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>The result of running
+							<a href="#using_the_compact_function">Example 6-14</a> 
+							is as follows:</p>
+							<div>
+								<pre>
+<strong>Array</strong>
+<strong>(</strong>
+  <strong>[fname] =&gt; Doctor</strong>
+  <strong>[sname] =&gt; Who</strong>
+  <strong>[planet] =&gt; Gallifrey</strong>
+  <strong>[system] =&gt; Gridlock</strong>
+  <strong>[constellation] =&gt; Kasterborous</strong>
+<strong>)</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>Note how <code>compact</code> requires the variable 
+							names to be supplied in quotes, not preceded by a
+							<code>$</code> symbol. This is because <code>compact</code> 
+							is looking for a list of variable names, not their values.</p>
+							<p>Another use of this function is for debugging, when 
+							you wish to quickly view several variables and their 
+							values, as in
+							<a href="#using_compact_to_help_with_debugging">Example 
+							6-15</a>.</p>
+							<div id="using_compact_to_help_with_debugging">
+								<h5>Example 6-15. Using <code>compact</code> to 
+								help with debugging</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$j</code>       <code>=</code> <code>23;</code>
+  <code>$temp</code>    <code>=</code> <code>"Hello";</code>
+  <code>$address</code> <code>=</code> <code>"1 Old Street";</code>
+  <code>$age</code>     <code>=</code> <code>61;</code>
+
+  <code>print_r(compact(explode(' ',</code> <code>'j temp address age')));</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>This works by using the <code>explode</code> function 
+							to extract all the words from the string into an array, 
+							which is then passed to the <code>compact</code> function, 
+							which in turn returns an array to <code>print_r</code>, 
+							which finally shows its contents.</p>
+							<p>If you copy and paste the <code>print_r</code> line 
+							of code, you only need to alter the variables named 
+							there for a quick printout of a group of variables’ 
+							values. In this example, the output is shown here:</p>
+							<div>
+								<pre>
+<strong>Array</strong>
+<strong>(</strong>
+  <strong>[j] =&gt; 23</strong>
+  <strong>[temp] =&gt; Hello</strong>
+  <strong>[address] =&gt; 1 Old Street</strong>
+  <strong>[age] =&gt; 61</strong>
+<strong>)</strong></pre>
+								<div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="reset">
+							<h2>reset</h2>
+							<p>When calling the <code>next</code> function (as seen 
+							in the <code>myEach</code> function earlier in the chapter), 
+							PHP’s internal array pointer, which makes a note of 
+							which element of the array it should return next, advances 
+							one place forward. If your code ever needs to return 
+							to the start of an array, you can issue <code>reset</code>, 
+							which also returns the value of that element. Examples 
+							of how to use this function are as follows:</p>
+							<div>
+								<pre>
+<code>reset($fred);</code>         <code>// Throw away return value</code>
+<code>$item</code> <code>=</code> <code>reset($fred);</code> <code>// Keep first element of the array in $item</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>It’s important to note that the <code>foreach...as</code> 
+							construct does not modify the internal array pointer, 
+							so if you’re using it to walk through an array, you 
+							don’t need to care about the pointer, or resetting it.</p>
+						</div>
+					</section>
+					<section>
+						<div id="end">
+							<h2>end</h2>
+							<p>As with <code>reset</code>, you can move PHP’s internal 
+							array pointer to the final element in an array using 
+							the <code>end</code> function, which also returns the 
+							value of the element and can be used as in these examples:</p>
+							<div>
+								<pre>
+<code>end($fred);</code>
+<code>$item</code> <code>=</code> <code>end($fred);</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>This chapter concludes your basic introduction to 
+							PHP, and you should now be able to write quite complex 
+							programs using the skills you have learned. In the next 
+							chapter, we’ll look at using PHP for common, practical 
+							tasks, but before you go test your understanding of 
+							PHP arrays by answering the questions following.</p>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="questions-id00017">
+					<h1>Questions</h1>
+					<ol>
+						<li>
+						<p>What is the difference between a numeric and an associative 
+						array?</p>
+						</li>
+						<li>
+						<p>What is the main benefit of the <code>array</code> keyword?</p>
+						</li>
+						<li>
+						<p>What are some alternative ways of walking through an 
+						associative array as compared to <code>foreach</code>?</p>
+						</li>
+						<li>
+						<p>How can you create a multidimensional array?</p>
+						</li>
+						<li>
+						<p>How can you determine the number of elements in an array?</p>
+						</li>
+						<li>
+						<p>What is the purpose of the <code>explode</code> function?</p>
+						</li>
+						<li>
+						<p>How can you set PHP’s internal pointer into an array 
+						back to the first element of the array?</p>
+						</li>
+					</ol>
+					<p>See <a href="app01.html#chapter_6_answers">“Chapter 6 Answers”</a> 
+					in the
+					<a href="app01.html#solutions_to_the_chapter_questions">Appendix 
+					A</a> for the answers to these questions.</p>
+				</div>
+			</section>
+		</div>
+	</section>
+</div>
+
+</body>
+
+</html>

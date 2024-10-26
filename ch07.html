@@ -1,0 +1,1967 @@
+﻿<!DOCTYPE html>
+<html lang="en-gb">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<link href="stylesheet.css" rel="stylesheet" type="text/css" />
+<title>Chapter 7. Practical PHP</title>
+</head>
+
+<body>
+
+<div id="sbo-rt-content">
+	<section>
+		<div id="practical_php">
+			<h1>Chapter 7. Practical PHP</h1>
+			<p>The previous chapters went over the elements of the PHP language. 
+			This chapter builds on your new programming skills to teach you how 
+			to perform some common but important practical tasks. You will learn 
+			the best ways to handle strings in order to achieve clear and concise 
+			code that displays in web browsers exactly how you want it to, including 
+			advanced date and time management. You’ll also find out how to create 
+			and otherwise modify files, including those uploaded by users.</p>
+			<section>
+				<div id="using_printf">
+					<h1>Using printf</h1>
+					<p>You’ve already seen the <code>print</code> and <code>echo</code> 
+					functions, which simply output text to the browser. But a much 
+					more powerful function, <code>printf</code>, controls the format 
+					of the output by letting you put special formatting characters 
+					in a string. For each formatting character, <code>printf</code> 
+					expects you to pass an argument that it will display using that 
+					format. For instance, the following example uses the <code>%d</code> 
+					conversion specifier to display the value <code>3</code> in 
+					decimal:</p>
+					<div>
+						<pre>
+<code>printf("There are %d items in your basket",</code> <code>3);</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>If you replace the <code>%d</code> with <code>%b</code>, 
+					the value <code>3</code> will be displayed in binary (<code>11</code>).
+					<a href="#printf_conversion_specifiers">Table 7-1</a> shows 
+					the conversion specifiers supported.</p>
+					<table id="printf_conversion_specifiers">
+						<caption>Table 7-1. The <code>printf</code> conversion specifiers</caption>
+						<thead>
+							<tr>
+								<th>Specifier</th>
+								<th>Conversion action on argument arg</th>
+								<th>Example (for an arg of 123)</th>
+							</tr>
+						</thead>
+						<tr>
+							<td><code>%</code></td>
+							<td>Display a % character (no <code>arg</code> required)</td>
+							<td><code>%</code></td>
+						</tr>
+						<tr>
+							<td><code>b</code></td>
+							<td>Display <code>arg</code> as a binary integer</td>
+							<td><code>1111011</code></td>
+						</tr>
+						<tr>
+							<td><code>c</code></td>
+							<td>Display ASCII character for <code>arg</code></td>
+							<td><code>{</code></td>
+						</tr>
+						<tr>
+							<td><code>d</code></td>
+							<td>Display <code>arg</code> as a signed decimal integer</td>
+							<td><code>123</code></td>
+						</tr>
+						<tr>
+							<td><code>e</code></td>
+							<td>Display <code>arg</code> using scientific notation</td>
+							<td><code>1.23000e+2</code></td>
+						</tr>
+						<tr>
+							<td><code>f</code></td>
+							<td>Display <code>arg</code> as floating point</td>
+							<td><code>123.000000</code></td>
+						</tr>
+						<tr>
+							<td><code>o</code></td>
+							<td>Display <code>arg</code> as an octal integer</td>
+							<td><code>173</code></td>
+						</tr>
+						<tr>
+							<td><code>s</code></td>
+							<td>Display <code>arg</code> as a string</td>
+							<td><code>123</code></td>
+						</tr>
+						<tr>
+							<td><code>u</code></td>
+							<td>Display <code>arg</code> as an unsigned decimal</td>
+							<td><code>123</code></td>
+						</tr>
+						<tr>
+							<td><code>x</code></td>
+							<td>Display <code>arg</code> in lowercase hexadecimal</td>
+							<td><code>7b</code></td>
+						</tr>
+						<tr>
+							<td><code>X</code></td>
+							<td>Display <code>arg</code> in uppercase hexadecimal</td>
+							<td><code>7B</code></td>
+						</tr>
+					</table>
+					<p>If you need a percent sign in the output, just use a double 
+					precent sign (<code>%%</code>). The following code will print
+					<code>"The rate is 5 %"</code>:</p>
+					<div>
+						<pre>
+<code>printf("The rate is %d %%",</code> <code>5);</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>You can have as many specifiers as you like in a <code>printf</code> 
+					function, as long as you pass a matching number of arguments 
+					and as long as each specifier is prefaced by a <code>%</code> 
+					symbol. Therefore, the following code is valid and will output
+					<code>"My name is Simon. I'm 33 years old, which is 21 in hexadecimal"</code>:</p>
+					<div>
+						<pre>
+<code>printf("My name is %s. I'm %d years old, which is %X in hexadecimal",</code>
+  <code>'Simon',</code> <code>33,</code> <code>33);</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>If you leave out any arguments, you will receive a parse 
+					error informing you that a right bracket, <code>)</code>, was 
+					unexpectedly encountered or that there are too few arguments.</p>
+					<p>A more practical example of <code>printf</code> sets colors 
+					in HTML using decimal values. For example, suppose you know 
+					you want a color that has a triplet value of 65 red, 127 green, 
+					and 245 blue but don’t want to convert this to hexadecimal yourself. 
+					Here’s a simple solution:</p>
+					<div>
+						<pre>
+<code>printf("&lt;span style='color:#%X%X%X'&gt;Hello&lt;/span&gt;",</code> <code>65,</code> <code>127,</code> <code>245);</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>Check the format of the color specification between the apostrophes 
+					(<code>''</code>) carefully. First comes the pound, or hash, 
+					sign (<code>#</code>) expected by the color specification. Then 
+					come three <code>%X</code> format specifiers, one for each of 
+					your numbers. The resulting output from this command is as follows:</p>
+					<div>
+						<pre>
+<strong>&lt;span style='color:#417FF5'&gt;Hello&lt;/span&gt;</strong></pre>
+						<div>
+						</div>
+					</div>
+					<p>Usually, you’ll find it convenient to use variables or expressions 
+					as arguments to <code>printf</code>. For instance, if you stored 
+					values for your colors in the three variables <code>$r</code>,
+					<code>$g</code>, and <code>$b</code>, you could create a darker 
+					color with these simple mathematical expressions (as long as
+					<code>$r</code>, <code>$g</code>, and <code>$b</code> are greater 
+					than 19):</p>
+					<div>
+						<pre>
+<code>printf("&lt;span style='color:#%X%X%X'&gt;Hello&lt;/span&gt;",</code> <code>$r-20,</code> <code>$g-20,</code> <code>$b-20);</code></pre>
+						<div>
+						</div>
+					</div>
+					<section>
+						<div id="precision_setting">
+							<h2>Precision Setting</h2>
+							<p>Not only can you specify a conversion type, but you 
+							can also set the precision of the displayed result. 
+							For example, amounts of currency are usually displayed 
+							with only two digits of precision. However, after a 
+							calculation, a value may have a greater precision than 
+							this, such as 123.42 / 12, which results in 10.285. 
+							To ensure that such values are displayed with only two 
+							digits of precision, you can insert the string <code>
+							".2"</code> between the <code>%</code> symbol and the 
+							conversion specifier:</p>
+							<div>
+								<pre>
+<code>printf("The result is: $%.2f",</code> <code>123.42</code> <code>/</code> <code>12);</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>The output from this command is as follows:</p>
+							<div>
+								<pre>
+<strong>The result is $10.29</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>But you actually have even more control than that, 
+							because you can also specify whether to pad output with 
+							either zeros or spaces by prefacing the specifier with 
+							certain values. <a href="#precision_setting-id00018">
+							Example 7-1</a> shows four possible combinations.</p>
+							<div id="precision_setting-id00018">
+								<h5>Example 7-1. Precision setting</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>echo</code> <code>"&lt;pre&gt;";</code> <code>// Enables viewing of the spaces</code>
+
+  <code>// Pad to 15 spaces</code>
+  <code>printf("The result is $%15f\n",</code> <code>123.42</code> <code>/</code> <code>12);</code>
+
+  <code>// Pad to 15 spaces, fill with zeros</code>
+  <code>printf("The result is $%015f\n",</code> <code>123.42</code> <code>/</code> <code>12);</code>
+
+  <code>// Pad to 15 spaces, 2 decimal places precision</code>
+  <code>printf("The result is $%15.2f\n",</code> <code>123.42</code> <code>/</code> <code>12);</code>
+
+  <code>// Pad to 15 spaces, 2 decimal places precision, fill with zeros</code>
+  <code>printf("The result is $%015.2f\n",</code> <code>123.42</code> <code>/</code> <code>12);</code>
+
+  <code>// Pad to 15 spaces, 2 decimal places precision, fill with # symbol</code>
+  <code>printf("The result is $%'#15.2f\n",</code> <code>123.42</code> <code>/</code> <code>12);</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>The output from this example looks like this:</p>
+							<div>
+								<pre>
+<strong>The result is $      10.285000
+The result is $00000010.285000
+The result is $          10.29
+The result is $000000000010.29
+The result is $##########10.29</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>The way it works is simple if you go from right to 
+							left (see <a href="#conversion_specifier_components">
+							Table 7-2</a>). Notice that:</p>
+							<ul>
+								<li>
+								<p>The rightmost character is the conversion specifier: 
+								in this case, <code>f</code> for floating point.</p>
+								</li>
+								<li>
+								<p>Just before the conversion specifier, if there 
+								is a period and a number together, then the precision 
+								of the output is specified as the value of the number.</p>
+								</li>
+								<li>
+								<p>Regardless of whether there’s a precision specifier, 
+								if there is a number, then that represents the number 
+								of characters to which the output should be padded. 
+								In the previous example, this is 15 characters. 
+								It represents the total minimum width of the output, 
+								not the number of pad characters to add. If the 
+								output is already equal to or greater than the padding 
+								length, then this argument is ignored.</p>
+								</li>
+								<li>
+								<p>The leftmost parameter allowed after the
+								<code>%</code> symbol is a <code>0</code>, which 
+								is ignored unless a padding value has been set, 
+								in which case the output is padded with zeros instead 
+								of spaces. If a pad character other than zero or 
+								a space is required, you can use any one of your 
+								choice as long as you preface it with a single quotation 
+								mark, like this: <code>'#</code>.</p>
+								</li>
+								<li>
+								<p>On the left is the <code>%</code> symbol, which 
+								starts the conversion.</p>
+								</li>
+							</ul>
+							<table id="conversion_specifier_components">
+								<caption>Table 7-2. Conversion specifier components</caption>
+								<thead>
+									<tr>
+										<th>Start conversion</th>
+										<th>Pad character</th>
+										<th>Number of pad characters</th>
+										<th>Display precision</th>
+										<th>Conversion specifier</th>
+										<th>Example</th>
+									</tr>
+								</thead>
+								<tr>
+									<td><code>%</code></td>
+									<td>&nbsp;</td>
+									<td><code>15</code></td>
+									<td>&nbsp;</td>
+									<td><code>f</code></td>
+									<td><code>10.285000</code></td>
+								</tr>
+								<tr>
+									<td><code>%</code></td>
+									<td><code>0</code></td>
+									<td><code>15</code></td>
+									<td><code>.2</code></td>
+									<td><code>f</code></td>
+									<td><code>000000000010.29</code></td>
+								</tr>
+								<tr>
+									<td><code>%</code></td>
+									<td><code>'#</code></td>
+									<td><code>15</code></td>
+									<td><code>.4</code></td>
+									<td><code>f</code></td>
+									<td><code>########10.2850</code></td>
+								</tr>
+							</table>
+						</div>
+					</section>
+					<section>
+						<div id="string_padding">
+							<h2>String Padding</h2>
+							<p>You can also pad strings to required lengths (as 
+							you can with numbers), select different padding characters, 
+							and even choose between left and right justification.
+							<a href="#string_padding-id00019">Example 7-2</a> shows 
+							various examples.</p>
+							<div id="string_padding-id00019">
+								<h5>Example 7-2. String padding</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>echo</code> <code>"&lt;pre&gt;";</code> <code>// Enables viewing of the spaces</code>
+
+  <code>$h</code> <code>=</code> <code>'Rasmus';</code>
+
+  <code>printf("[%s]\n",</code>         <code>$h);</code> <code>// Standard string output</code>
+  <code>printf("[%12s]\n",</code>       <code>$h);</code> <code>// Right justify with spaces to width 12</code>
+  <code>printf("[%-12s]\n",</code>      <code>$h);</code> <code>// Left justify with spaces</code>
+  <code>printf("[%012s]\n",</code>      <code>$h);</code> <code>// Pad with zeros</code>
+  <code>printf("[%'#12s]\n\n",</code>   <code>$h);</code> <code>// Use the custom padding character '#'</code>
+
+  <code>$d</code> <code>=</code> <code>'Rasmus Lerdorf';</code>        <code>// The original creator of PHP</code>
+
+  <code>printf("[%12.8s]\n",</code>     <code>$d);</code> <code>// Right justify, cutoff of 8 characters</code>
+  <code>printf("[%-12.12s]\n",</code>   <code>$d);</code> <code>// Left justify, cutoff of 12 characters</code>
+  <code>printf("[%-'@12.10s]\n",</code> <code>$d);</code> <code>// Left justify, pad '@', cutoff of 10 chars</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Note how for purposes of layout in a web page, I’ve 
+							used the <code>&lt;pre&gt;</code> HTML tag to preserve 
+							all the spaces and the <code>\n</code> newline character 
+							after each of the lines to be displayed. The output 
+							from this example is as follows:</p>
+							<div>
+								<pre>
+<strong>[Rasmus]
+[      Rasmus]
+[Rasmus      ]
+[000000Rasmus]
+[######Rasmus]
+
+[    Rasmus L]
+[Rasmus Lerdo]
+[Rasmus Ler@@]</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>When you specify a padding value, strings of a length 
+							equal to or greater than that value will be ignored 
+							and preserved entirely, <em>unless</em> a cutoff value 
+							is given that shortens the strings back to less than 
+							the padding value.</p>
+							<p>
+							<a href="#string_conversion_specifier_components">Table 
+							7-3</a> shows the components available to string conversion 
+							specifiers.</p>
+							<table id="string_conversion_specifier_components">
+								<caption>Table 7-3. String conversion specifier 
+								components</caption>
+								<thead>
+									<tr>
+										<th>Start conversion</th>
+										<th>Left/right justify</th>
+										<th>Padding character</th>
+										<th>Number of pad characters</th>
+										<th>Cutoff</th>
+										<th>Conversion specifier</th>
+										<th>Example<br />
+										(using “Rasmus”)</th>
+									</tr>
+								</thead>
+								<tr>
+									<td><code>%</code></td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td><code>s</code></td>
+									<td><code>[Rasmus]</code></td>
+								</tr>
+								<tr>
+									<td><code>%</code></td>
+									<td><code>-</code></td>
+									<td>&nbsp;</td>
+									<td><code>10</code></td>
+									<td>&nbsp;</td>
+									<td><code>s</code></td>
+									<td><code>[Rasmus ]</code></td>
+								</tr>
+								<tr>
+									<td><code>%</code></td>
+									<td>&nbsp;</td>
+									<td><code>'#</code></td>
+									<td><code>8</code></td>
+									<td><code>.4</code></td>
+									<td><code>s</code></td>
+									<td><code>[####Rasm]</code></td>
+								</tr>
+							</table>
+						</div>
+					</section>
+					<section>
+						<div id="using_sprintf">
+							<h2>Using sprintf</h2>
+							<p>Often, you don’t want to output the result of a conversion 
+							but need it to use elsewhere in your code. This is where 
+							the <code>sprintf</code> function (which stands for 
+							string print) comes in. With it, you can send the output 
+							to another variable rather than to the browser.</p>
+							<p>You might use it to make a conversion, as in the 
+							following example, which returns the hexadecimal string 
+							value for the RGB color group 65, 127, 245 in <code>
+							$hexstring</code>:</p>
+							<div>
+								<pre>
+<code>$hexstring</code> <code>=</code> <code>sprintf("%X%X%X",</code> <code>65,</code> <code>127,</code> <code>245);</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>Or you may wish to store output in a variable for 
+							other use or display:</p>
+							<div>
+								<pre>
+<code>$out</code> <code>=</code> <code>sprintf("The result is: $%.2f",</code> <code>123.42</code> <code>/</code> <code>12);</code>
+<code>echo</code> <code>$out;</code></pre>
+								<div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="date_and_time_functions">
+					<h1>Date and Time Functions</h1>
+					<p>To keep track of the date and time, PHP uses standard Unix 
+					timestamps, which are simply the number of seconds since the 
+					start of January 1, 1970 (sometimes referred to as the <i>Unix 
+					epoch</i>). To determine the current timestamp, you can use 
+					the <code>time</code> function:</p>
+					<div>
+						<pre>
+<code>echo</code> <code>time();</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>Because the value is stored as seconds, to obtain the timestamp 
+					for this time next week, you would use the following, which 
+					adds the result of 7 days × 24 hours × 60 minutes × 60 seconds 
+					to the returned value:</p>
+					<div>
+						<pre>
+<code>echo</code> <code>time()</code> <code>+</code> <code>7</code> <code>*</code> <code>24</code> <code>*</code> <code>60</code> <code>*</code> <code>60;</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>If you wish to create a timestamp for a given date, you can 
+					use the <code>mktime</code> function. Its output is the timestamp
+					<code>1827619200</code> for the first second of the first minute 
+					of the first hour of the first day of December in the year 2027:</p>
+					<div>
+						<pre>
+<code>echo</code> <code>mktime(0,</code> <code>0,</code> <code>0,</code> <code>12,</code> <code>1,</code> <code>2027);</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>The parameters to pass are, in order from left to right:</p>
+					<ul>
+						<li>
+						<p>The number of the hour (0–23)</p>
+						</li>
+						<li>
+						<p>The number of the minute (0–59)</p>
+						</li>
+						<li>
+						<p>The number of seconds (0–59)</p>
+						</li>
+						<li>
+						<p>The number of the month (1–12)</p>
+						</li>
+						<li>
+						<p>The number of the day (1–31)</p>
+						</li>
+						<li>
+						<p>The year (1970–2038, or 1901–2038 with PHP 5.1.0+ on 
+						32-bit signed systems)</p>
+						</li>
+					</ul>
+					<div class="note">
+						<h4>Note</h4>
+						<p>You may ask why you are limited to the years 1970 through 
+						2038. Well, it’s because the original developers of Unix 
+						chose the start of the year 1970 as the earliest date that 
+						any programmer would ever need to reference!</p>
+						<p>Luckily, as of version 5.1.0, PHP supports systems using 
+						a signed 32-bit integer for the timestamp, and dates from 
+						1901 to 2038 are allowed on them. However, that introduces 
+						a problem even worse than the original one, because the 
+						Unix designers also decided that nobody would still be using 
+						Unix after about 70 years or so and therefore believed they 
+						could get away with storing the timestamp as a 32-bit value—which 
+						will run out on January 19, 2038!</p>
+						<p>This will create what has come to be known as the Y2K38 
+						bug (much like the millennium bug, which was caused by storing 
+						years as two-digit values, and which also had to be fixed). 
+						PHP introduced the <code>DateTime</code> class in version 
+						5.2 to overcome this issue, but it will work only on 64-bit 
+						architecture, which most computers will be these days (but 
+						do check before you use it).</p>
+					</div>
+					<p>To display the date, use the <code>date</code> function, 
+					which supports a plethora of formatting options enabling you 
+					to display the date any way you wish. The format is as follows:</p>
+					<div>
+						<pre>
+<code>date($format,</code> <code>$timestamp);</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>The parameter <code>$format</code> should be a string containing 
+					formatting specifiers as detailed in
+					<a href="#major_date_function_format_specifier">Table 7-4</a>, 
+					and <code>$timestamp</code> should be a Unix timestamp. For 
+					the complete list of specifiers, please see the
+					<a href="https://tinyurl.com/phpdate" rel="noopener noreferrer" target="_blank">
+					documentation</a>. The following command will output the current 
+					date and time in the format <code>"Monday February 17th, 2027 
+					- 1:38pm"</code>:</p>
+					<div>
+						<pre>
+<code>echo</code> <code>date("l F jS, Y - g:ia",</code> <code>time());</code></pre>
+						<div>
+						</div>
+					</div>
+					<table id="major_date_function_format_specifier">
+						<caption>Table 7-4. The major date function format specifiers</caption>
+						<thead>
+							<tr>
+								<th>Format</th>
+								<th>Description</th>
+								<th>Returned value</th>
+							</tr>
+						</thead>
+						<tr>
+							<td colspan="3"><strong>Day specifiers</strong></td>
+						</tr>
+						<tr>
+							<td><code>d</code></td>
+							<td>Day of month, two digits, with leading zeros</td>
+							<td><code>01</code> to <code>31</code></td>
+						</tr>
+						<tr>
+							<td><code>D</code></td>
+							<td>Day of the week, three letters</td>
+							<td><code>Mon</code> to <code>Sun</code></td>
+						</tr>
+						<tr>
+							<td><code>j</code></td>
+							<td>Day of month, no leading zeros</td>
+							<td><code>1</code> to <code>31</code></td>
+						</tr>
+						<tr>
+							<td><code>l</code></td>
+							<td>Day of week, full names</td>
+							<td><code>Sunday</code> to <code>Saturday</code></td>
+						</tr>
+						<tr>
+							<td><code>N</code></td>
+							<td>Day of week, numeric, Monday to Sunday</td>
+							<td><code>1</code> to <code>7</code></td>
+						</tr>
+						<tr>
+							<td><code>S</code></td>
+							<td>Suffix for day of month (useful with specifier
+							<code>j</code>)</td>
+							<td><code>st</code>, <code>nd</code>, <code>rd</code>, 
+							or <code>th</code></td>
+						</tr>
+						<tr>
+							<td><code>w</code></td>
+							<td>Day of week, numeric, Sunday to Saturday</td>
+							<td><code>0</code> to <code>6</code></td>
+						</tr>
+						<tr>
+							<td><code>z</code></td>
+							<td>Day of year</td>
+							<td><code>0</code> to <code>365</code></td>
+						</tr>
+						<tr>
+							<td colspan="3"><strong>Week specifier</strong></td>
+						</tr>
+						<tr>
+							<td><code>W</code></td>
+							<td>Week number of year</td>
+							<td><code>01</code> to <code>52</code></td>
+						</tr>
+						<tr>
+							<td colspan="3"><strong>Month specifiers</strong></td>
+						</tr>
+						<tr>
+							<td><code>F</code></td>
+							<td>Month name</td>
+							<td><code>January</code> to <code>December</code></td>
+						</tr>
+						<tr>
+							<td><code>m</code></td>
+							<td>Month number with leading zeros</td>
+							<td><code>01</code> to <code>12</code></td>
+						</tr>
+						<tr>
+							<td><code>M</code></td>
+							<td>Month name, three letters</td>
+							<td><code>Jan</code> to <code>Dec</code></td>
+						</tr>
+						<tr>
+							<td><code>n</code></td>
+							<td>Month number, no leading zeros</td>
+							<td><code>1</code> to <code>12</code></td>
+						</tr>
+						<tr>
+							<td><code>t</code></td>
+							<td>Number of days in given month</td>
+							<td><code>28</code> to <code>31</code></td>
+						</tr>
+						<tr>
+							<td colspan="3"><strong>Year specifiers</strong></td>
+						</tr>
+						<tr>
+							<td><code>L</code></td>
+							<td>Leap year</td>
+							<td><code>1</code> = Yes, <code>0</code> = No</td>
+						</tr>
+						<tr>
+							<td><code>y</code></td>
+							<td>Year, 2 digits</td>
+							<td><code>00</code> to <code>99</code></td>
+						</tr>
+						<tr>
+							<td><code>Y</code></td>
+							<td>Year, 4 digits</td>
+							<td><code>0000</code> to <code>9999</code></td>
+						</tr>
+						<tr>
+							<td colspan="3"><strong>Time specifiers</strong></td>
+						</tr>
+						<tr>
+							<td><code>a</code></td>
+							<td>Before or after midday, lowercase</td>
+							<td><code>am</code> or <code>pm</code></td>
+						</tr>
+						<tr>
+							<td><code>A</code></td>
+							<td>Before or after midday, uppercase</td>
+							<td><code>AM</code> or <code>PM</code></td>
+						</tr>
+						<tr>
+							<td><code>g</code></td>
+							<td>Hour of day, 12-hour format, no leading zeros</td>
+							<td><code>1</code> to <code>12</code></td>
+						</tr>
+						<tr>
+							<td><code>G</code></td>
+							<td>Hour of day, 24-hour format, no leading zeros</td>
+							<td><code>0</code> to <code>23</code></td>
+						</tr>
+						<tr>
+							<td><code>h</code></td>
+							<td>Hour of day, 12-hour format, with leading zeros</td>
+							<td><code>01</code> to <code>12</code></td>
+						</tr>
+						<tr>
+							<td><code>H</code></td>
+							<td>Hour of day, 24-hour format, with leading zeros</td>
+							<td><code>00</code> to <code>23</code></td>
+						</tr>
+						<tr>
+							<td><code>i</code></td>
+							<td>Minutes, with leading zeros</td>
+							<td><code>00</code> to <code>59</code></td>
+						</tr>
+						<tr>
+							<td><code>s</code></td>
+							<td>Seconds, with leading zeros</td>
+							<td><code>00</code> to <code>59</code></td>
+						</tr>
+						<tr>
+							<td colspan="3"><strong>Timezone specifiers</strong></td>
+						</tr>
+						<tr>
+							<td><code>e</code></td>
+							<td>Timezone identifier</td>
+							<td>For example <code>UTC</code> or <code>Europe/Prague</code></td>
+						</tr>
+						<tr>
+							<td><code>O</code></td>
+							<td>Difference to GMT, no colon between hours and minutes</td>
+							<td>For example <code>+0200</code></td>
+						</tr>
+						<tr>
+							<td><code>P</code></td>
+							<td>Difference to GMT, with colon</td>
+							<td>For example <code>+02:00</code></td>
+						</tr>
+						<tr>
+							<td><code>T</code></td>
+							<td>Timezone abbreviation, if known, or the GMT offset</td>
+							<td>For example <code>CEST</code> or <code>GMT-0500</code></td>
+						</tr>
+					</table>
+					<section>
+						<div id="date_constants">
+							<h2>Date Constants</h2>
+							<p>There are a number of useful constants that you can 
+							use with the <code>date</code> command to return the 
+							date in specific formats. For example, <code>date(DATE_RSS)</code> 
+							returns the current date and time in the valid format 
+							for an RSS feed. Some of the more commonly used constants 
+							are as follows:</p>
+							<dl>
+								<dt><dfn><code>DATE_ATOM</code></dfn></dt>
+								<dd>This is the format for Atom feeds. The PHP format 
+								is <code>"Y-m-d\TH:i:sP"</code>, and example output 
+								is <code>"2025-05-15T12:00:00+00:00"</code>. <em>
+								<code>DATE_RFC3339</code></em> uses the same format.</dd>
+								<dt><dfn><code>DATE_COOKIE</code></dfn></dt>
+								<dd>This is the format for cookies set from a web 
+								server or JavaScript. The PHP format is <code>"l, 
+								d-M-y H:i:s T"</code>, and example output is
+								<code>"Thursday, 15-May-25 12:00:00 UTC"</code>.</dd>
+								<dt><dfn><code>DATE_RSS</code></dfn></dt>
+								<dd>This is the format for RSS feeds. The PHP format 
+								is <code>"D, d M Y H:i:s O"</code>, and example 
+								output is <code>"Thu, 15 May 2025 12:00:00 +0000"</code>.</dd>
+								<dt><dfn><code>DATE_W3C</code></dfn></dt>
+								<dd>This is the format defined by the World Wide 
+								Web Consortium for use in World Wide Web-related 
+								standards. The PHP format is <code>"Y-m-d\TH:i:sP"</code>, 
+								and example output is <code>"2025-05-15T12:00:00+00:00"</code>. 
+								It is the same format as <em><code>DATE_ATOM</code></em> 
+								and <em><code>DATE_RFC3339</code></em>.</dd>
+							</dl>
+							<p>The complete list can be found in the
+							<a href="https://tinyurl.com/phpdatetime" rel="noopener noreferrer" target="_blank">
+							documentation</a>.</p>
+						</div>
+					</section>
+					<section>
+						<div id="using_checkdate">
+							<h2>Using checkdate</h2>
+							<p>You’ve seen how to display a valid date in a variety 
+							of formats. But how can you check whether a user has 
+							submitted a valid date to your program? The answer is 
+							to pass the month, day, and year to the <code>checkdate</code> 
+							function, which returns a value of <code>TRUE</code> 
+							if the date is valid or <code>FALSE</code> if it is 
+							not.</p>
+							<p>For example, if September 31 of any year is input, 
+							it will always be an invalid date.
+							<a href="#checking_for_the_validity_of_a_date">Example 
+							7-3</a> shows code that you could use for this. As it 
+							stands, it will find the given date invalid.</p>
+							<div id="checking_for_the_validity_of_a_date">
+								<h5>Example 7-3. Checking for the validity of a 
+								date</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$month</code> <code>=</code> <code>9;</code>    <code>// September (only has 30 days)</code>
+  <code>$day</code>   <code>=</code> <code>31;</code>   <code>// 31st</code>
+  <code>$year</code>  <code>=</code> <code>2025;</code>
+
+  <code>if</code> <code>(checkdate($month,</code> <code>$day,</code> <code>$year))</code> <code>echo</code> <code>"Date is valid";</code>
+  <code>else</code> <code>echo</code> <code>"Date is invalid";</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="file_handling">
+					<h1>File Handling</h1>
+					<p>Powerful as it is, MySQL, discussed later in the book, is 
+					not the only (or necessarily the best) way to store all data 
+					on a web server. Sometimes it can be quicker and more convenient 
+					to directly access files on the hard disk. Cases in which you 
+					might need to do this are when modifying images such as uploaded 
+					user avatars or with a logfile that you wish to process.</p>
+					<p>First, though, a note about file naming: if you are writing 
+					code that may be used on various PHP installations, there is 
+					no way of knowing whether these systems are case-sensitive. 
+					For example, Windows and macOS filenames are not case-sensitive 
+					(unless the file format has been specifically changed to be 
+					case-sensitive), but Linux and Unix filenames are. Therefore, 
+					you should always assume that the system is case-sensitive and 
+					stick to a convention such as all-lowercase filenames.</p>
+					<section>
+						<div id="checking_whether_a_file_exists">
+							<h2>Checking Whether a File Exists</h2>
+							<p>To determine whether a file already exists, you can 
+							use the <code>file_exists</code> function, which returns 
+							either <code>TRUE</code> or <code>FALSE</code> and is 
+							used like this:</p>
+							<div>
+								<pre>
+<code>if</code> <code>(file_exists("testfile.txt"))</code> <code>echo</code> <code>"File exists";</code></pre>
+								<div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="creating_a_file">
+							<h2>Creating a File</h2>
+							<p>At this point, <em>testfile.txt</em> doesn’t exist, 
+							so let’s create it and write a few lines to it. Type
+							<a href="#creating_a_simple_text_file">Example 7-4</a> 
+							and save it as <em>testfile.php</em>.</p>
+							<div id="creating_a_simple_text_file">
+								<h5>Example 7-4. Creating a simple text file</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code> <code>// testfile.php</code>
+  <code>$fh</code> <code>=</code> <code>fopen("testfile.txt",</code> <code>'w')</code> <code>or</code> <code>die("Failed to create file");</code>
+
+  <code>$text</code> <code>=</code> <code>&lt;&lt;&lt;_END</code>
+<code>Line 1</code>
+<code>Line 2</code>
+<code>Line 3</code>
+<code>_END;</code>
+
+  <code>fwrite($fh,</code> <code>$text)</code> <code>or</code> <code>die("Could not write to file");</code>
+  <code>fclose($fh);</code>
+  <code>echo</code> <code>"File 'testfile.txt' written successfully";</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Should a program call the <code>die</code> function​, 
+							the open file will be automatically closed as part of 
+							terminating the program.</p>
+							<p>When you run this in a browser, all being well, you 
+							will receive the message <code>File 'testfile.txt' written 
+							successfully</code>. If you receive an error message, 
+							your hard disk may be full or, more likely, you may 
+							not have permission to create or write to the file, 
+							in which case you should modify the attributes of the 
+							destination folder according to your operating system. 
+							Otherwise, the file <em>testfile.txt</em> should now 
+							be residing in the same folder in which you saved the
+							<em>testfile.php</em> program. Try opening the file 
+							in a text or program editor—the contents will look like 
+							this:</p>
+							<div>
+								<pre>
+<strong>Line 1
+Line 2
+Line 3</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>This simple example shows the sequence that all file 
+							handling takes:</p>
+							<ol>
+								<li>
+								<p>Always start by opening the file. You do this 
+								through a call to <code>fopen</code>.</p>
+								</li>
+								<li>
+								<p>Then you can call other functions; here we write 
+								to the file (<code>fwrite</code>), but you can also 
+								read from an existing file (<code>fread</code> or
+								<code>fgets</code>) and do other things.</p>
+								</li>
+								<li>
+								<p>Finish by closing the file (<code>fclose</code>). 
+								Although the program does this for you when it ends, 
+								you should clean up by closing the file when you’re 
+								finished.</p>
+								</li>
+							</ol>
+							<p>Every open file requires a file resource so that 
+							PHP can access and manage it. The preceding example 
+							sets the variable <code>$fh</code> (which I chose to 
+							stand for <em>file handle</em>) to the value returned 
+							by the <code>fopen</code> function. Thereafter, each 
+							file-handling function that accesses the opened file, 
+							such as <code>fwrite</code> or <code>fclose</code>, 
+							must be passed <code>$fh</code> as a parameter to identify 
+							the file being accessed. Don’t worry about the content 
+							of the <code>$fh</code> variable; it’s a number PHP 
+							uses to refer to internal information about the file—you 
+							just pass the variable to other functions.</p>
+							<p>Upon failure, <code>FALSE</code> will be returned 
+							by <code>fopen</code>. The previous example shows a 
+							simple way to capture and respond to the failure: it 
+							calls the <code>die</code> function to end the program 
+							and give the user an error message. A web application 
+							would never abort in this crude way (you would create 
+							a web page with an error message instead), but this 
+							is fine for our testing purposes.</p>
+							<p>Notice the second parameter to the <code>fopen</code> 
+							call. It is simply the character <code>w</code>, which 
+							tells the function to open the file for writing. The 
+							function creates the file if it doesn’t already exist. 
+							Be careful when playing around with these functions: 
+							if the file already exists, the <code>w</code> mode 
+							parameter causes the <code>fopen</code> call to delete 
+							the old contents (even if you don’t write anything new!).</p>
+							<p>There are several different mode parameters that 
+							can be used here, as detailed in
+							<a href="#supported_fopen_modes">Table 7-5</a>. The 
+							modes that include a <code>+</code> symbol are further 
+							explained in the section <a href="#updating_files">“Updating 
+							Files”</a>.</p>
+							<table id="supported_fopen_modes">
+								<caption>Table 7-5. The supported <code>fopen</code> 
+								modes</caption>
+								<thead>
+									<tr>
+										<th>Mode</th>
+										<th>Action</th>
+										<th>Description</th>
+									</tr>
+									<tr>
+										<td><code>'r'</code></td>
+										<td>Read from file’s beginning</td>
+										<td>Open for reading only; place the file 
+										pointer at the beginning of the file. Return
+										<code>FALSE</code> if the file doesn’t already 
+										exist.</td>
+									</tr>
+									<tr>
+										<td><code>'r+'</code></td>
+										<td>Read from file’s beginning and allow 
+										writing</td>
+										<td>Open for reading and writing; place 
+										the file pointer at the beginning of the 
+										file. Return <code>FALSE</code> if the file 
+										doesn’t already exist.</td>
+									</tr>
+									<tr>
+										<td><code>'w'</code></td>
+										<td>Write from file’s beginning and truncate 
+										file</td>
+										<td>Open for writing only; place the file 
+										pointer at the beginning of the file and 
+										truncate the file to zero length. If the 
+										file doesn’t exist, attempt to create it.</td>
+									</tr>
+									<tr>
+										<td><code>'w+'</code></td>
+										<td>Write from file’s beginning, truncate 
+										file, and allow reading</td>
+										<td>Open for reading and writing; place 
+										the file pointer at the beginning of the 
+										file and truncate the file to zero length. 
+										If the file doesn’t exist, attempt to create 
+										it.</td>
+									</tr>
+									<tr>
+										<td><code>'a'</code></td>
+										<td>Append to file’s end</td>
+										<td>Open for writing only; place the file 
+										pointer at the end of the file. If the file 
+										doesn’t exist, attempt to create it.</td>
+									</tr>
+									<tr>
+										<td><code>'a+'</code></td>
+										<td>Append to file’s end and allow reading</td>
+										<td>Open for reading and writing; place 
+										the file pointer at the end of the file. 
+										If the file doesn’t exist, attempt to create 
+										it.</td>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</section>
+					<section>
+						<div id="reading_from_files">
+							<h2>Reading from Files</h2>
+							<p>The easiest way to read from a text file is to grab 
+							a whole line through <code>fgets</code> (think of the 
+							final <code>s</code> as standing for <em>string</em>), 
+							as in <a href="#reading_a_file_with_fgets">Example 7-5</a>.</p>
+							<div id="reading_a_file_with_fgets">
+								<h5>Example 7-5. Reading a file with <code>fgets</code></h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$fh</code> <code>=</code> <code>fopen("testfile.txt",</code> <code>'r')</code> <code>or</code>
+    <code>die("File does not exist or you lack permission to open it");</code>
+
+  <code>$line</code> <code>=</code> <code>fgets($fh);</code>
+  <code>fclose($fh);</code>
+  <code>echo</code> <code>$line;</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>If you created the file as shown in
+							<a href="#creating_a_simple_text_file">Example 7-4</a>, 
+							you’ll get the first line:</p>
+							<div>
+								<pre>
+<strong>Line 1</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>You can retrieve multiple lines or portions of lines 
+							through the <code>fread</code> function, as in
+							<a href="#reading_a_file_with_fread">Example 7-6</a>.</p>
+							<div id="reading_a_file_with_fread">
+								<h5>Example 7-6. Reading a file with <code>fread</code></h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$fh</code> <code>=</code> <code>fopen("testfile.txt",</code> <code>'r')</code> <code>or</code>
+    <code>die("File does not exist or you lack permission to open it");</code>
+
+  <code>$text</code> <code>=</code> <code>fread($fh,</code> <code>3);</code>
+  <code>fclose($fh);</code>
+  <code>echo</code> <code>$text;</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>I’ve requested three bytes in the <code>fread</code> 
+							call, so the program displays this:</p>
+							<div>
+								<pre>
+<strong>Lin</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>The <code>fread</code> function is commonly used 
+							with binary data. If you use it on text data that spans 
+							more than one line, remember to count newline characters.</p>
+						</div>
+					</section>
+					<section>
+						<div id="copying_files">
+							<h2>Copying Files</h2>
+							<p>Let’s try out the PHP <code>copy</code> function 
+							to create a clone of <em>testfile.txt</em>. Type
+							<a href="#copying_a_file">Example 7-7</a>, save it as
+							<em>copyfile.php</em>, and then call up the program 
+							in your browser.</p>
+							<div id="copying_a_file">
+								<h5>Example 7-7. Copying a file</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code> <code>// copyfile.php</code>
+  <code>copy('testfile.txt',</code> <code>'testfile2.txt')</code> <code>or</code> <code>die("Could not copy file");</code>
+  <code>echo</code> <code>"File successfully copied to 'testfile2.txt'";</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>If you check your folder again, you’ll see that you 
+							now have the new file <em>testfile2.txt</em> in it. 
+							By the way, if you don’t want your programs to exit 
+							on a failed copy attempt, you could try the alternate 
+							syntax in
+							<a href="#alternate_syntax_for_copying_a_file">Example 
+							7-8</a>. This uses the <code>!</code> (<code>NOT</code>) 
+							operator as a quick-and-easy shorthand. Placed in front 
+							of an expression, it applies the <code>NOT</code> operator 
+							to it, so the equivalent statement here in English would 
+							begin “If not able to copy...”.</p>
+							<div id="alternate_syntax_for_copying_a_file">
+								<h5>Example 7-8. Alternate syntax for copying a 
+								file</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code> <code>// copyfile2.php</code>
+  <code>if</code> <code>(!copy('testfile.txt',</code> <code>'testfile2.txt'))</code> <code>echo</code> <code>"Could not copy file";</code>
+  <code>else</code> <code>echo</code> <code>"File successfully copied to 'testfile2.txt'";</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="moving_a_file">
+							<h2>Moving a File</h2>
+							<p>To move a file, rename it with the <code>rename</code> 
+							function, as in <a href="#moving_a_file-id00020">Example 
+							7-9</a>.</p>
+							<div id="moving_a_file-id00020">
+								<h5>Example 7-9. Moving a file</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code> <code>// movefile.php</code>
+  <code>if</code> <code>(!rename('testfile2.txt',</code> <code>'testfile2.new'))</code>
+    <code>echo</code> <code>"Could not rename file";</code>
+  <code>else</code> <code>echo</code> <code>"File successfully renamed to 'testfile2.new'";</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>You can use the <code>rename</code> function on directories, 
+							too. To avoid any warning messages if the original file 
+							doesn’t exist, you can call the <code>file_exists</code> 
+							function first to check.</p>
+						</div>
+					</section>
+					<section>
+						<div id="deleting_a_file">
+							<h2>Deleting a File</h2>
+							<p>Deleting a file is just a matter of using the
+							<code>unlink</code> function to remove it from the filesystem, 
+							as in <a href="#deleting_a_file-id00021">Example 7-10</a>.</p>
+							<div id="deleting_a_file-id00021">
+								<h5>Example 7-10. Deleting a file</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code> <code>// deletefile.php</code>
+  <code>if</code> <code>(!unlink('testfile2.new'))</code> <code>echo</code> <code>"Could not delete file";</code>
+  <code>else</code> <code>echo</code> <code>"File 'testfile2.new' successfully deleted";</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<div class="warning">
+								<h4>Warning</h4>
+								<p>Whenever you access files on your hard disk directly, 
+								you must also always ensure that it is impossible 
+								for your filesystem to be compromised. For example, 
+								if you are deleting a file based on user input, 
+								you must make absolutely certain it is a file that 
+								can be safely deleted and that the user is allowed 
+								to delete it.</p>
+							</div>
+							<p>As with moving a file, a warning message will be 
+							displayed if the file doesn’t exist, which you can avoid 
+							by using <code>file_exists</code> to first check for 
+							its existence before calling <code>unlink</code>.</p>
+						</div>
+					</section>
+					<section>
+						<div id="updating_files">
+							<h2>Updating Files</h2>
+							<p>Often, you will want to add more data to a saved 
+							file, which you can do in many ways. You can use one 
+							of the append write modes (see
+							<a href="#supported_fopen_modes">Table 7-5</a>), or 
+							you can simply open a file for reading and writing with 
+							one of the other modes that supports writing, and move 
+							the file pointer to the correct place within the file 
+							that you wish to write to or read from.</p>
+							<p>The <em>file pointer</em> is the position within 
+							a file at which the next file access will take place, 
+							whether it’s a read or a write. It is not the same as 
+							the <em>file handle</em> (as stored in the variable
+							<code>$fh</code> in
+							<a href="#creating_a_simple_text_file">Example 7-4</a>), 
+							which contains details about the file being accessed.</p>
+							<p>You can see this in action by typing
+							<a href="#updating_a_file">Example 7-11</a> and saving 
+							it as <em>update.php</em>. Then call it up in your browser.</p>
+							<div id="updating_a_file">
+								<h5>Example 7-11. Updating a file</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code> <code>// update.php</code>
+  <code>$fh</code>   <code>=</code> <code>fopen("testfile.txt",</code> <code>'r+')</code> <code>or</code> <code>die("Failed to open file");</code>
+  <code>$text</code> <code>=</code> <code>fgets($fh);</code>
+
+  <code>fseek($fh,</code> <code>0,</code> <code>SEEK_END);</code>
+  <code>fwrite($fh,</code> <code>"\n$text")</code> <code>or</code> <code>die("Could not write to file");</code>
+  <code>fclose($fh);</code>
+
+  <code>echo</code> <code>"File 'testfile.txt' successfully updated";</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>This program opens <em>testfile.txt,</em> as created 
+							in <a href="#creating_a_simple_text_file">Example 7-4</a>, 
+							for both reading and writing by setting the mode with
+							<code>'r+'</code>, which puts the file pointer right 
+							at the start. It then uses the <code>fgets</code> function 
+							to read in a single line from the file (up to the first 
+							line feed). After that, the <code>fseek</code> function 
+							is called to move the file pointer right to the file 
+							end, at which point the line of text that was extracted 
+							from the start of the file (stored in <code>$text</code>) 
+							is then appended to the file’s end (preceded by a
+							<code>\n</code> line feed) and the file is closed. The 
+							resulting file now looks like this:</p>
+							<div>
+								<pre>
+<strong>Line 1
+Line 2
+Line 3
+Line 1</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>The first line has successfully been copied and then 
+							appended to the file’s end.</p>
+							<p>As used here, in addition to the <code>$fh</code> 
+							file handle, the <code>fseek</code> function was passed 
+							two other parameters, <code>0</code> and <code>SEEK_END</code>.
+							<code>SEEK_END</code> tells the function to move the 
+							file pointer to the end of the file, and <code>0</code> 
+							tells it how many positions it should then be moved 
+							backward from that point. In the case of
+							<a href="#updating_a_file">Example 7-11</a>, a value 
+							of <code>0</code> is used because the pointer is required 
+							to remain at the file’s end.</p>
+							<p>There are two other seek options available to the
+							<code>fseek</code> function: <code>SEEK_SET</code> and
+							<code>SEEK_CUR</code>. The <code>SEEK_SET</code> option 
+							tells the function to set the file pointer to the exact 
+							position given by the preceding parameter. Thus, the 
+							following example moves the file pointer to position 
+							18:</p>
+							<div>
+								<pre>
+<code>fseek($fh,</code> <code>18,</code> <code>SEEK_SET);</code></pre>
+								<div>
+								</div>
+							</div>
+							<p><code>SEEK_CUR</code> sets the file pointer to the 
+							current position <em>plus</em> the value of the given 
+							offset. Therefore, if the file pointer is currently 
+							at position 18, the following call will move it to position 
+							23:</p>
+							<div>
+								<pre>
+<code>fseek($fh,</code> <code>5,</code> <code>SEEK_CUR);</code>
+</pre>
+								<div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="locking_files_for_multiple_accesses">
+							<h2>Locking Files for Multiple Accesses</h2>
+							<p>Web programs are often called by many users at the 
+							same time. If more than one person tries to write to 
+							a file simultaneously, it can become corrupted. And 
+							if one person writes to it while another is reading 
+							from it, the file is all right, but the person reading 
+							it can get odd results. To handle simultaneous users, 
+							you must use the file-locking <code>flock</code> function. 
+							This function queues up all other requests to access 
+							a file until your program releases the lock. So, whenever 
+							your programs use write access on files that may be 
+							accessed concurrently by multiple users, you should 
+							also add file locking to them, as in
+							<a href="#updating_a_file_with_file_locking">Example 
+							7-12</a>, which is an updated version of
+							<a href="#updating_a_file">Example 7-11</a>.</p>
+							<div id="updating_a_file_with_file_locking">
+								<h5>Example 7-12. Updating a file with file locking</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$fh</code>   <code>=</code> <code>fopen("testfile.txt",</code> <code>'r+')</code> <code>or</code> <code>die("Failed to open file");</code>
+  <code>$text</code> <code>=</code> <code>fgets($fh);</code>
+
+  <code>if</code> <code>(flock($fh,</code> <code>LOCK_EX))</code>
+  <code>{</code>
+    <code>fseek($fh,</code> <code>0,</code> <code>SEEK_END);</code>
+    <code>fwrite($fh,</code> <code>"$text")</code> <code>or</code> <code>die("Could not write to file");</code>
+    <code>flock($fh,</code> <code>LOCK_UN);</code>
+  <code>}</code>
+
+  <code>fclose($fh);</code>
+  <code>echo</code> <code>"File 'testfile.txt' successfully updated";</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>There is a trick to file locking to preserve the 
+							best possible response time for your website visitors: 
+							perform it directly before a change you make to a file, 
+							and then unlock it immediately afterward. Having a file 
+							locked for any longer than this will slow down your 
+							application unnecessarily. This is why the calls to
+							<code>flock</code> in
+							<a href="#updating_a_file_with_file_locking">Example 
+							7-12</a> are directly before and after the <code>fwrite</code> 
+							call.</p>
+							<p>The first call to <code>flock</code> sets an exclusive 
+							file lock on the file referred to by <code>$fh</code> 
+							using the <code>LOCK_EX</code> parameter:</p>
+							<div>
+								<pre>
+<code>flock($fh,</code> <code>LOCK_EX);</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>From this point onward, no other processes can write 
+							to (or even read from) the file until you release the 
+							lock by using the <code>LOCK_UN</code> parameter, like 
+							this:</p>
+							<div>
+								<pre>
+<code>flock($fh,</code> <code>LOCK_UN);</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>As soon as the lock is released, other processes 
+							are again allowed access to the file. This is one reason 
+							why you should reseek to the point you wish to access 
+							in a file each time you need to read or write data—another 
+							process could have changed the file since the last access.</p>
+							<p>However, did you notice that the call to request 
+							an exclusive lock is nested as part of an <code>if</code> 
+							statement? This is because <code>flock</code> is not 
+							supported on all systems; thus, it is wise to check 
+							whether you successfully secured a lock, just in case 
+							one could not be obtained.</p>
+							<p>Something else you must consider is that <code>flock</code> 
+							is what is known as an <em>advisory</em> lock. This 
+							means that it locks out only other processes that call 
+							the function. If you have any code that goes right in 
+							and modifies files without implementing <code>flock</code> 
+							file locking, it will always override the locking and 
+							could wreak havoc on your files.</p>
+							<p>By the way, implementing file locking and then accidentally 
+							leaving it out in one section of code can lead to an 
+							extremely hard-to-locate bug.</p>
+							<div class="warning">
+								<h4>Warning</h4>
+								<p><code>flock</code> will not work on NFS and many 
+								other networked filesystems. Also, when using a 
+								multithreaded server like ISAPI, you may not be 
+								able to rely on <code>flock</code> to protect files 
+								against other PHP scripts running in parallel threads 
+								of the same server instance. Additionally, <code>
+								flock</code> is not supported on any system using 
+								the old FAT filesystem, such as older versions of 
+								Windows, although you are unlikely to come across 
+								such systems (hopefully).</p>
+								<p>If in doubt, you can try making a quick lock 
+								on a test file at the start of a program to see 
+								whether you can obtain a lock on the file. Don’t 
+								forget to unlock it (and maybe delete it if not 
+								needed) after checking.</p>
+								<p>Also remember that any call to the <code>die</code> 
+								function automatically unlocks a lock and closes 
+								the file as part of ending the program.</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="reading_an_entire_file">
+							<h2>Reading an Entire File</h2>
+							<p>A handy function for reading in an entire file without 
+							having to use file handles is <code>file_get_contents</code>, 
+							as shown in <a href="#using_file_get_contents">Example 
+							7-13</a>.</p>
+							<div id="using_file_get_contents">
+								<h5>Example 7-13. Using <code>file_get_contents</code></h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>echo</code> <code>"&lt;pre&gt;";</code>  <code>// Enables display of line feeds</code>
+  <code>echo</code> <code>file_get_contents("testfile.txt");</code>
+  <code>echo</code> <code>"&lt;/pre&gt;";</code> <code>// Terminates &lt;pre&gt; tag</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>But the function is actually a lot more useful than 
+							that, because you can also use it to fetch a file from 
+							a server across the internet, as in
+							<a href="#grabbing_the_oapostrophereilly_home_page">
+							Example 7-14</a>, which requests the HTML from the O’Reilly 
+							home page and then displays it as if the user had surfed 
+							to the page itself. The result will be similar to
+							<a href="#oreillyhome">Figure 7-1</a> (at the time of 
+							writing).</p>
+							<div id="grabbing_the_oapostrophereilly_home_page">
+								<h5>Example 7-14. Grabbing the O’Reilly home page</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>echo</code> <code>file_get_contents("http://oreilly.com");</code>
+<code>?&gt;</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<figure>
+								<div id="oreillyhome">
+									<img alt="" height="476" src="images/lpm7_0701.png" width="600" />
+									<h4>Figure 7-1. An O’Reilly home page grabbed 
+									with <code>file_get_contents</code></h4>
+								</div>
+							</figure>
+						</div>
+					</section>
+					<section>
+						<div id="uploading_files">
+							<h2>Uploading Files</h2>
+							<p>Uploading files to a web server is a subject that 
+							seems daunting to many people, but it actually is very 
+							straightforward. All you need to do to upload a file 
+							from a form is choose a special type of encoding called
+							<code>multipart/form-data</code>, and your browser will 
+							handle the rest. To see how this works, type the program 
+							in <a href="#image_uploader_uploaddotphp">Example 7-15</a> 
+							and save it as <em>upload.php</em>. When you run it, 
+							you’ll see a form in your browser that lets you upload 
+							a file of your choice.</p>
+							<div id="image_uploader_uploaddotphp">
+								<h5>Example 7-15. Image uploader upload.php</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code> <code>// upload.php</code>
+  <code>echo</code> <code>&lt;&lt;&lt;_END</code>
+<code>    &lt;html&gt;&lt;head&gt;&lt;title&gt;PHP Form Upload&lt;/title&gt;&lt;/head&gt;&lt;body&gt;</code>
+<code>    &lt;form method='post' action='upload.php' enctype='multipart/form-data'&gt;</code>
+<code>    Select File: &lt;input type='file' name='filename' size='10'&gt;</code>
+<code>    &lt;input type='submit' value='Upload'&gt;</code>
+<code>    &lt;/form&gt;</code>
+<code>_END;</code>
+
+  <code>if</code> <code>($_FILES)</code>
+  <code>{</code>
+    <code>$name</code> <code>=</code> <code>$_FILES['filename']['name'];</code>
+    <code>move_uploaded_file($_FILES['filename']['tmp_name'],</code> <code>$name);</code>
+    <code>echo</code> <code>"Uploaded image '$name'&lt;br&gt;&lt;img src='$name'&gt;";</code>
+  <code>}</code>
+
+  <code>echo</code> <code>"&lt;/body&gt;&lt;/html&gt;";</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Let’s examine this program a section at a time. The 
+							first line of the multiline <code>echo</code> statement 
+							starts an HTML document, displays the title, and then 
+							starts the document’s body.</p>
+							<p>Next we come to the form, which selects the POST 
+							method of form submission, sets the target for posted 
+							data to the program <em>upload.php</em> (the program 
+							itself), and tells the web browser that the data posted 
+							should be encoded via the content type of <code>multipart/form-data</code>, 
+							the mime type used for file uploads.</p>
+							<p>With the form set up, the next lines display the 
+							prompt <code>Select File:</code> and then request two 
+							inputs. The first request is for a file; it uses an 
+							input type of <code>file</code>, a name of <code>filename</code>, 
+							and an input field with a width of 10 characters. The 
+							second requested input is just a submit button that 
+							is given the label <code>Upload</code> (which replaces 
+							the default button text of Submit Query). And then the 
+							form is closed.</p>
+							<p>This short program shows a common technique in web 
+							programming in which a single program is called twice: 
+							once when the user first visits a page (which is an 
+							HTTP GET method request) and again when the user clicks 
+							the submit button (an HTTP POST method request which 
+							offers some extras over a GET request, like for example 
+							the file uploads).</p>
+							<p>The PHP code to receive the uploaded data is fairly 
+							simple, because information about all uploaded files 
+							is placed into the associative system array <code>$_FILES</code>. 
+							Therefore, a quick check to see whether <code>$_FILES</code> 
+							contains anything is sufficient to determine whether 
+							the user has uploaded a file. This is done with the 
+							statement <code>if ($_FILES)</code>.</p>
+							<p>The first time the user visits the page (using a 
+							GET method request), before uploading a file, <code>
+							$_FILES</code> is empty, so the program skips this block 
+							of code. When the user uploads a file (a POST method 
+							request), the program runs again and discovers an element 
+							in the <code>$_FILES</code> array.</p>
+							<p>Once the program realizes that a file was uploaded, 
+							the actual name, as read from the uploading computer, 
+							is retrieved and placed into the variable <code>$name</code>. 
+							Now all that’s necessary is to move the uploaded file 
+							from the temporary location in which PHP stored it to 
+							a more permanent one. We do this using the built-in
+							<code>move_uploaded_file</code> function, passing it 
+							the original name of the file, with which it is saved 
+							to the current directory.</p>
+							<p>Finally, the uploaded image is displayed within an
+							<code>IMG</code> tag, and the result should look like
+							<a href="#uploading_an_image_as_form_data">Figure 7-2</a>.</p>
+							<div class="warning">
+								<h4>Warning</h4>
+								<p>If you run this program and receive a warning 
+								message such as <code>Permission denied</code> for 
+								the <code>move_uploaded_file</code> function call, 
+								then you may not have the correct permissions set 
+								for the folder in which the program is running.</p>
+							</div>
+							<figure>
+								<div id="uploading_an_image_as_form_data">
+									<img alt="" height="407" src="images/lpm7_0702.png" width="600" />
+									<h4>Figure 7-2. Uploading an image as form data</h4>
+								</div>
+							</figure>
+							<section>
+								<div id="using_dollar_files">
+									<h3>Using $_FILES</h3>
+									<p>Five things are stored in the <code>$_FILES</code> 
+									array when a file is uploaded, as shown in
+									<a href="#contents_of_the_dollar_files_array">
+									Table 7-6</a> (where <em><code>file</code></em> 
+									is the file upload field name supplied by the 
+									submitting form).</p>
+									<table id="contents_of_the_dollar_files_array">
+										<caption>Table 7-6. The contents of the
+										<code>$_FILES</code> array</caption>
+										<thead>
+											<tr>
+												<th>Array element</th>
+												<th>Contents</th>
+											</tr>
+										</thead>
+										<tr>
+											<td><code>$_FILES['<em>file</em>']['<em>name</em>']</code></td>
+											<td>The name of the uploaded file (e.g.,
+											<em>smiley.jpg</em>)</td>
+										</tr>
+										<tr>
+											<td><code>$_FILES['<em>file</em>']['<em>type</em>']</code></td>
+											<td>The content type of the file (e.g.,
+											<em>image/jpeg</em>)</td>
+										</tr>
+										<tr>
+											<td><code>$_FILES['<em>file</em>']['<em>size</em>']</code></td>
+											<td>The file’s size in bytes</td>
+										</tr>
+										<tr>
+											<td><code>$_FILES['<em>file</em>']['<em>tmp_name</em>']</code></td>
+											<td>The name of the temporary file stored 
+											on the server</td>
+										</tr>
+										<tr>
+											<td><code>$_FILES['<em>file</em>']['<em>error</em>']</code></td>
+											<td>The error code resulting from the 
+											file upload</td>
+										</tr>
+									</table>
+									<p>Content types used to be known as <em>MIME</em> 
+									(Multipurpose Internet Mail Extension) types, 
+									but because their use later expanded to the 
+									whole internet, now they are often called
+									<em>internet media types</em>.
+									<a href="#some_common_internet_media_content_types">
+									Table 7-7</a> shows some of the more frequently 
+									used types that turn up in <code>$_FILES['</code><em><code>file</code></em><code>']['</code><em><code>type</code></em><code>']</code>.</p>
+									<table id="some_common_internet_media_content_types">
+										<caption>Table 7-7. Some common internet 
+										media content types</caption>
+										<tr>
+											<td><code>application/pdf</code></td>
+											<td><code>image/gif</code></td>
+											<td><code>multipart/form-data</code></td>
+											<td><code>text/xml</code></td>
+										</tr>
+										<tr>
+											<td><code>application/zip</code></td>
+											<td><code>image/jpeg</code></td>
+											<td><code>text/css</code></td>
+											<td><code>video/mpeg</code></td>
+										</tr>
+										<tr>
+											<td><code>audio/mpeg</code></td>
+											<td><code>image/png</code></td>
+											<td><code>text/html</code></td>
+											<td><code>video/mp4</code></td>
+										</tr>
+										<tr>
+											<td><code>audio/x-wav</code></td>
+											<td><code>application/json</code></td>
+											<td><code>text/plain</code></td>
+											<td><code>audio/webm</code></td>
+										</tr>
+									</table>
+								</div>
+							</section>
+							<section>
+								<div id="validation">
+									<h3>Validation</h3>
+									<p>I hope it now goes without saying (although 
+									I’ll do so anyway) that form data validation 
+									is of the utmost importance, due to the possibility 
+									of users attempting to hack into your server.</p>
+									<p>In addition to maliciously formed input data, 
+									some of the things you also have to check are 
+									whether a file was actually received and, if 
+									so, whether the right type of data was sent.</p>
+									<p>Taking all these things into account,
+									<a href="#more_secure_version_of_uploaddotphp">
+									Example 7-16</a>, <em>upload2.php</em>, is a 
+									more secure rewrite of <em>upload.php</em>.</p>
+									<div id="more_secure_version_of_uploaddotphp">
+										<h5>Example 7-16. A more secure version 
+										of upload.php</h5>
+										<div>
+											<pre>
+<code>&lt;?php</code> <code>// upload2.php</code>
+  <code>echo</code> <code>&lt;&lt;&lt;_END</code>
+<code>    &lt;html&gt;&lt;head&gt;&lt;title&gt;PHP Form Upload&lt;/title&gt;&lt;/head&gt;&lt;body&gt;</code>
+<code>    &lt;form method='post' action='upload2.php' enctype='multipart/form-data'&gt;</code>
+<code>    Select a JPG, GIF or PNG File:</code>
+<code>    &lt;input type='file' name='filename' size='10'&gt;</code>
+<code>    &lt;input type='submit' value='Upload'&gt;&lt;/form&gt;</code>
+<code> _END;</code>
+
+  <code>if</code> <code>($_FILES)</code>
+  <code>{</code>
+    <code>$name</code> <code>=</code> <code>$_FILES['filename']['name'];</code>
+
+    <code>switch($_FILES['filename']['type'])</code>
+    <code>{</code>
+      <code>case</code> <code>'image/jpeg':</code> <code>$ext</code> <code>=</code> <code>'jpg';</code> <code>break;</code>
+      <code>case</code> <code>'image/gif':</code>  <code>$ext</code> <code>=</code> <code>'gif';</code> <code>break;</code>
+      <code>case</code> <code>'image/png':</code>  <code>$ext</code> <code>=</code> <code>'png';</code> <code>break;</code>
+      <code>default:</code>           <code>$ext</code> <code>=</code> <code>'';</code>    <code>break;</code>
+    <code>}</code>
+    <code>if</code> <code>($ext)</code>
+    <code>{</code>
+      <code>$n</code> <code>=</code> <code>"image.$ext";</code>
+      <code>move_uploaded_file($_FILES['filename']['tmp_name'],</code> <code>$n);</code>
+      <code>echo</code> <code>"Uploaded image '$name' as '$n':&lt;br&gt;";</code>
+      <code>echo</code> <code>"&lt;img src='$n'&gt;";</code>
+    <code>}</code>
+    <code>else</code> <code>echo</code> <code>"'$name' is not an accepted image file";</code>
+  <code>}</code>
+  <code>else</code> <code>echo</code> <code>"No image has been uploaded";</code>
+
+  <code>echo</code> <code>"&lt;/body&gt;&lt;/html&gt;";</code>
+<code>?&gt;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>The non-HTML section of code has been expanded 
+									from the half-dozen lines of
+									<a href="#image_uploader_uploaddotphp">Example 
+									7-15</a> to more than 20 lines, starting at
+									<code>if ($_FILES)</code>.</p>
+									<p>As with the previous version, this <code>
+									if</code> line checks whether any data was actually 
+									posted, but there is now a matching <code>else</code> 
+									near the bottom of the program that echoes a 
+									message to the screen when nothing has been 
+									uploaded.</p>
+									<p>Within the <code>if</code> statement, the 
+									variable <code>$name</code> is assigned the 
+									value of the filename as retrieved from the 
+									uploading computer (just as before), but this 
+									time we won’t rely on the user having sent us 
+									valid data. Instead, a <code>switch</code> statement 
+									checks the uploaded content type against the 
+									four types of image this program supports. If 
+									a match is made, the variable <code>$ext</code> 
+									is set to the three-letter file extension for 
+									that type. Should no match be found, the file 
+									uploaded was not of an accepted type and the 
+									variable <code>$ext</code> is set to the empty 
+									string <code>""</code>.</p>
+									<div class="note">
+										<h4>Note</h4>
+										<p>In this example the file type still comes 
+										from the browser and can be modified or 
+										changed by the user uploading the file. 
+										In this instance such user manipulation 
+										is not of concern as the files are only 
+										being treated as images. But if the file 
+										could ever be executable, you should not 
+										rely on information you have not ascertained 
+										to be absolutely correct.</p>
+									</div>
+									<p>The next section of code then checks the 
+									variable <code>$ext</code> to see whether it 
+									contains a string and, if so, creates a new 
+									filename called <code>$n</code> with the base 
+									name <em>image</em> and the extension stored 
+									in <code>$ext</code>. This means that the program 
+									has full control over the file type of the file 
+									to be created, as it can be only one of <em>
+									image.jpg</em>, <em>image.gif</em>, <em>image.png</em>, 
+									or <em>image.tif</em>.</p>
+									<p>Safe in the knowledge that the program has 
+									not been compromised, the rest of the PHP code 
+									is much the same as in the previous version. 
+									It moves the uploaded temporary image to its 
+									new location and then displays it while also 
+									displaying the old and new image names.</p>
+									<div class="note">
+										<h4>Note</h4>
+										<p>Don’t worry about having to delete the 
+										temporary file that PHP creates during the 
+										upload process, because if the file has 
+										not been moved or renamed, it will be automatically 
+										removed when the program exits.</p>
+									</div>
+									<p>After the <code>if</code> statement, there 
+									is a matching <code>else</code>, which is executed 
+									only if an unsupported image type was uploaded 
+									(in which case it displays an appropriate error 
+									message).</p>
+									<p>When you write your own file-uploading routines, 
+									I strongly advise you to use a similar approach 
+									and have prechosen names and locations for uploaded 
+									files. That way, no attempts to add pathnames 
+									and other malicious data to the variables you 
+									use can get through. If this means that more 
+									than one user could end up having a file uploaded 
+									with the same name, you could prefix such files 
+									with their user’s usernames, or save them to 
+									individually created folders for each user.</p>
+									<p>But if you must use a supplied filename, 
+									you should sanitize it by allowing only alphanumeric 
+									characters and the period, which you can do 
+									with the following command, using a regular 
+									expression (see
+									<a href="ch17.html#using_ajax">Chapter 17</a>) 
+									to perform a search and replace on <code>$name</code>:</p>
+									<div>
+										<pre>
+<code>$name</code> <code>=</code> <code>preg_replace("/[^A-Za-z0-9.]/",</code> <code>"",</code> <code>$name);</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>This leaves only the characters A–Z, a–z, 
+									0–9 and periods in the string <code>$name</code>, 
+									and strips out everything else.</p>
+									<p>Even better, to ensure that your program 
+									will work on all systems, regardless of whether 
+									they are case-sensitive or case-insensitive, 
+									you should probably use the following command 
+									instead, which changes all uppercase characters 
+									to lowercase at the same time:</p>
+									<div>
+										<pre>
+<code>$name</code> <code>=</code> <code>strtolower(preg_replace("[^A-Za-z0-9.]",</code> <code>"",</code> <code>$name));</code></pre>
+										<div>
+										</div>
+									</div>
+									<div class="note">
+										<h4>Note</h4>
+										<p>Sometimes you may encounter the media 
+										type of <code>image/pjpeg</code>, which 
+										indicates a progressive JPEG, but you can 
+										safely add this to your code as an alias 
+										of <code>image/jpeg</code>, like this:</p>
+										<div>
+											<pre>
+<code>case</code> <code>'image/pjpeg':</code>
+<code>case</code> <code>'image/jpeg':</code> <code>$ext</code> <code>=</code> <code>'jpg';</code> <code>break;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</section>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="system_calls">
+					<h1>System Calls</h1>
+					<p>Sometimes PHP will not have the function you need to perform 
+					a certain action, but the operating system it is running on 
+					may. In such cases, you can use the <code>exec</code> system 
+					call to do the job.</p>
+					<p>For example, to quickly view the contents of the current 
+					directory, you can use a program such as
+					<a href="#executing_a_system_command">Example 7-17</a>. If you 
+					are on a Windows system, it will run as is using the Windows
+					<code>dir</code> command. On Linux, Unix, or macOS, comment 
+					out or remove the first line and uncomment the second to use 
+					the <code>ls</code> system command. You may wish to type this 
+					program, save it as <em>exec.php</em>, and call it up in your 
+					browser.</p>
+					<div id="executing_a_system_command">
+						<h5>Example 7-17. Executing a system command</h5>
+						<div>
+							<pre>
+<code>&lt;?php</code> <code>// exec.php</code>
+  <code>$cmd</code> <code>=</code> <code>"dir";</code>   <code>// Windows, Linux</code>
+  <code>// $cmd = "ls"; // Linux, Unix &amp; Mac</code>
+
+  <code>exec(escapeshellcmd($cmd),</code> <code>$output,</code> <code>$status);</code>
+
+  <code>if</code> <code>($status)</code> <code>echo</code> <code>"Exec command failed";</code>
+  <code>else</code>
+  <code>{</code>
+    <code>echo</code> <code>"&lt;pre&gt;";</code>
+    <code>foreach($output</code> <code>as</code> <code>$line)</code> <code>echo</code> <code>htmlspecialchars("$line\n");</code>
+    <code>echo</code> <code>"&lt;/pre&gt;";</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+							<div>
+							</div>
+						</div>
+					</div>
+					<p>The <code>htmlspecialchars</code> function is called to turn 
+					any special characters returned by the system into ones that 
+					HTML can understand and properly display, not only neatening 
+					the output as for example the <code>&lt;</code> symbol is replaced 
+					with the entity <code>&amp;lt;</code>, but also providing a 
+					very important security measure preventing HTML injection attacks. 
+					And although such attacks are less of a concern when listing 
+					a directory contents, you should make it a habit to always secure 
+					your output.</p>
+					<p>Depending on the system you are using, the result of running 
+					this program will look something like this (from a Windows
+					<code>dir</code> command):</p>
+					<div>
+						<pre>
+Volume in drive C is Hard Disk
+ Volume Serial Number is DC63-0E29
+
+ Directory of C:\Program Files (x86)\Ampps\www
+
+11/04/2025  11:58    &lt;DIR&gt;          .
+11/04/2025  11:58    &lt;DIR&gt;          ..
+28/01/2025  16:45    &lt;DIR&gt;          7th_edition_examples
+08/01/2025  10:34    &lt;DIR&gt;          cgi-bin
+08/01/2025  10:34    &lt;DIR&gt;          error
+29/01/2025  16:18            1,150 favicon.ico
+              1 File(s)      1,150 bytes
+              5 Dir(s)  1,611,387,486,208 bytes free</pre>
+						<div>
+						</div>
+					</div>
+					<p><code>exec</code> takes three arguments:</p>
+					<ul>
+						<li>
+						<p>The command itself (in the previous case, <code>$cmd</code>)</p>
+						</li>
+						<li>
+						<p>An array in which the system will put the output from 
+						the command (in the previous case, <code>$output</code>)</p>
+						</li>
+						<li>
+						<p>A variable to contain the returned status of the call 
+						(which, in the previous case, is <code>$status</code>)</p>
+						</li>
+					</ul>
+					<p>If you wish, you can omit the <code>$output</code> and
+					<code>$status</code> parameters, but you will not know the output 
+					created by the call or even whether it completed successfully.</p>
+					<p>You should also note the use of the <code>escapeshellcmd</code> 
+					function. It is a good habit to always use this when issuing 
+					an <code>exec</code> call, because it sanitizes the command 
+					string, preventing the execution of arbitrary commands, should 
+					you supply user input to the call.</p>
+					<div class="warning">
+						<h4>Warning</h4>
+						<p>The system call functions are typically disabled on shared 
+						web hosts, as they pose a security risk. You should always 
+						try to solve your problems within PHP if you can, and go 
+						to the system directly only if it is really necessary. Also, 
+						going to the system is relatively slow, and you need to 
+						code two implementations if your application is expected 
+						to run on both Windows and Linux/Unix systems.</p>
+					</div>
+					<p>Now that you have mastered programming in PHP, the following 
+					chapter will introduce the MySQL database, with which you can 
+					process all the data a website could ever need to handle. First, 
+					though test your knowledge on the practical PHP tips in this 
+					chapter with the questions below.</p>
+				</div>
+			</section>
+			<section>
+				<div id="questions-id00022">
+					<h1>Questions</h1>
+					<ol>
+						<li>
+						<p>Which <code>printf</code> conversion specifier would 
+						you use to display a floating-point number?</p>
+						</li>
+						<li>
+						<p>What <code>printf</code> statement could be used to take 
+						the input string <code>"Happy Birthday"</code> and output 
+						the string <code>"**Happy"</code>?</p>
+						</li>
+						<li>
+						<p>To send the output from <code>printf</code> to a variable 
+						instead of to a browser, what alternative function would 
+						you use?</p>
+						</li>
+						<li>
+						<p>How would you create a Unix timestamp for 7:11 a.m. on 
+						May 2, 2025?</p>
+						</li>
+						<li>
+						<p>Which file access mode would you use with <code>fopen</code> 
+						to open a file in write and read mode, with the file truncated 
+						and the file pointer at the start?</p>
+						</li>
+						<li>
+						<p>What is the PHP command for deleting the file <em>file.txt</em>?</p>
+						</li>
+						<li>
+						<p>Which PHP function is used to read in an entire file 
+						in one go, even from across the web?</p>
+						</li>
+						<li>
+						<p>Which PHP superglobal variable holds the details on uploaded 
+						files?</p>
+						</li>
+						<li>
+						<p>Which PHP function enables the running of system commands?</p>
+						</li>
+						<li>
+						<p>Which function is used to turn any special characters 
+						returned by the system into ones that HTML can understand 
+						and properly display?</p>
+						</li>
+					</ol>
+					<p>See <a href="app01.html#chapter_7_answers">“Chapter 7 Answers”</a> 
+					in the
+					<a href="app01.html#solutions_to_the_chapter_questions">Appendix 
+					A</a> for the answers to these questions.</p>
+				</div>
+			</section>
+		</div>
+	</section>
+</div>
+
+</body>
+
+</html>

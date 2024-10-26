@@ -1,0 +1,675 @@
+﻿<!DOCTYPE html>
+<html lang="en-gb">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<link href="stylesheet.css" rel="stylesheet" type="text/css" />
+<title>Chapter 2. Setting Up a Development Server</title>
+</head>
+
+<body>
+
+<div id="sbo-rt-content">
+	<section>
+		<div id="setting_up_a_development_server">
+			<h1>Chapter 2. Setting Up a Development Server</h1>
+			<p>If you wish to develop internet applications but don’t have your 
+			own development server, you will have to upload every modification you 
+			make to a server somewhere else on the web before you can test it.</p>
+			<p>Even on a fast broadband connection, this can still represent a significant 
+			slowdown in development time. On a local computer, however, testing 
+			can be as easy as saving an update (usually just a matter of clicking 
+			once on an icon) and then hitting the Refresh button in your browser.</p>
+			<p>Another advantage of a development server is that you don’t have 
+			to worry about embarrassing errors or security problems while you’re 
+			writing and testing, whereas you need to be aware of what people may 
+			see or do with your application when it’s on a public website. It’s 
+			best to iron everything out while you’re still on a home or small office 
+			system, presumably protected by firewalls and other safeguards.</p>
+			<p>Once you have your own development server, you’ll wonder how you 
+			ever managed without one, and it’s easy to set one up. Just follow the 
+			steps in the following sections, using the appropriate instructions 
+			for a PC, a Mac, or a Linux system.</p>
+			<p>In this chapter, we cover just the server side of the web experience, 
+			as described in
+			<a href="ch01.html#introduction_to_dynamic_web_content">Chapter 1</a>. 
+			But to test the results of your work—particularly when we start using 
+			JavaScript, CSS, and HTML later in this book—you should ideally have 
+			an instance of every major web browser running on some system convenient 
+			to you. Sometimes, testing on two different browsers may be sufficient 
+			but whenever possible, the list of browsers should include at least 
+			Mozilla Firefox, Safari, and Google Chrome.</p>
+			<p>Even though there are multiple other browsers based on Google Chromium 
+			browser there may still be minor differences in their implementation 
+			that make it worthwhile testing your code on all possible browsers before 
+			final release. You may need all these once you have a product ready 
+			to release, just to ensure everything runs as expected on all browsers 
+			and platforms.</p>
+			<p>If you plan to ensure that your sites look good on mobile devices 
+			too, you should try to arrange access to a wide range of iOS and Android 
+			devices and services like BrowserStack will help here. Browser developer 
+			tools also offer mobile device emulation to help you verify the site 
+			is responsive and viewable on those smaller screens.</p>
+			<section>
+				<div id="what_is_a_wampcomma_mampcomma_or_lampque">
+					<h1>What Is a WAMP, MAMP, or LAMP?</h1>
+					<p>WAMP, MAMP, and LAMP are abbreviations for “Windows, Apache, 
+					MySQL, and PHP,” “Mac, Apache, MySQL, and PHP,” and “Linux, 
+					Apache, MySQL, and PHP.” These abbreviations each describe a 
+					fully functioning setup used for developing dynamic internet 
+					web pages.</p>
+					<p>WAMPs, MAMPs, and LAMPs come in the form of packages that 
+					bind the bundled programs together so that you don’t have to 
+					install and set them up separately. This means you can simply 
+					download and install a single program and follow a few easy 
+					prompts to get your web development server up and running fast, 
+					with minimal hassle.</p>
+					<p>During installation, several default settings are created 
+					for you. The security configurations of such an installation 
+					will not be as tight as on a production web server, because 
+					it is optimized for local use. For these reasons, you should 
+					never install such a setup as a production server.</p>
+					<p>However, for developing and testing websites and applications, 
+					one of these installations should be entirely sufficient.</p>
+					<div class="warning">
+						<h4>Warning</h4>
+						<p>If you choose not to go the WAMP/MAMP/LAMP route for 
+						building your own development system, you should know that 
+						downloading and integrating the various parts yourself can 
+						be very time-consuming and may require a lot of research 
+						in order to configure everything fully. But if you already 
+						have all the components installed and integrated with one 
+						another, they should work with the examples in this book.</p>
+					</div>
+				</div>
+			</section>
+			<section>
+				<div id="installing_xampp_on_windows">
+					<h1>Installing AMPPS on Windows</h1>
+					<p>There are several available WAMP servers, each offering slightly 
+					different configurations. Different editions of this book have 
+					recommended different WAMP products according to which seems 
+					to offer the best features and appears the most reliable at 
+					the time. Currently AMPPS looks like the best option (although 
+					you could choose other alternatives if you preferred and still 
+					be able to follow through the examples in this book). You can 
+					download AMPPS by clicking the download button on the website’s
+					<a href="http://ampps.com" rel="noopener noreferrer" target="_blank">
+					home page</a>. (There are also Mac and Linux versions available; 
+					see <a href="#installing_xampp_on_mac_os_x">“Installing AMPPS 
+					on macOS”</a> and <a href="#installing_a_lamp_on_linux">“Installing 
+					a LAMP on Linux”</a>.)</p>
+					<p>I recommend that you always download the latest stable release 
+					(as I write this, it’s 4.4, the installer for which is about 
+					46 MB in size). The various Windows, macOS, and Linux installers 
+					are listed on the download page.</p>
+					<p>Once you’ve downloaded the installer, run it to bring up 
+					the window shown in <a href="#the-opening-window-of">Figure 
+					2-1</a>. Before arriving at that window, though, if you use 
+					an antivirus program or have User Account Control activated 
+					on Windows, you may first be shown one or more advisory notices, 
+					and will have to click Yes and/or OK to continue with the installation.</p>
+					<p>Click Next, after which you must accept the agreement. Click 
+					Next once again, and then once more to move past the information 
+					screen. You will now need to confirm the installation location. 
+					This will probably be suggested as something like the following, 
+					depending on the letter of your main hard drive, but you can 
+					change this if you wish:</p>
+					<div>
+						<pre>
+C:\Program Files\Ampps</pre>
+						<div>
+						</div>
+					</div>
+					<figure>
+						<div id="the-opening-window-of">
+							<img alt="" height="458" src="images//lpm7_0201.png" width="600" />
+							<h4>Figure 2-1. The opening window of the installer</h4>
+						</div>
+					</figure>
+					<div class="note">
+						<h4>Note</h4>
+						<p>During the lifetime of this edition, some of the screens 
+						and options shown in the following walk-through may change. 
+						If so, just use your common sense to proceed in as similar 
+						a manner as possible to the sequence of actions described.</p>
+					</div>
+					<p>Then you must accept the agreements in the following screen 
+					and click Next, then after reading the information summary click 
+					Next once more and you will be asked which folder you wish to 
+					install AMPPS into.</p>
+					<p>Once you have decided where to install AMPPS, click Next, 
+					decide where shortcuts should be saved (the default shown is 
+					usually just fine), and click Next again to choose which icons 
+					you wish to install, as shown in <a href="#ampps-icons">Figure 
+					2-2</a>. On the screen that follows, click the Install button 
+					to start the process.</p>
+					<figure>
+						<div id="ampps-icons">
+							<img alt="" height="457" src="images//lpm7_0202.png" width="600" />
+							<h4>Figure 2-2. Choose which icons to install</h4>
+						</div>
+					</figure>
+					<p>Installation will take a few minutes, after which you should 
+					see the completion screen in <a href="#ampps-complete">Figure 
+					2-3</a>, and you can click Finish.</p>
+					<figure>
+						<div id="ampps-complete">
+							<img alt="" height="458" src="images//lpm7_0203.png" width="600" />
+							<h4>Figure 2-3. AMPPS is now installed</h4>
+						</div>
+					</figure>
+					<p>The final thing you must do is install Microsoft Visual C++ 
+					Redistributable, if you haven’t already. A window will pop up 
+					to prompt you, as shown in
+					<a href="#install-visual-c-redist">Figure 2-4</a>. Click Install 
+					to start the installation and if you already have it you will 
+					be told whether you need to reinstall it, which you can skip.</p>
+					<figure>
+						<div id="install-visual-c-redist">
+							<img alt="" height="371" src="images//lpm7_0204.png" width="600" />
+							<h4>Figure 2-4. Install the Visual C++ redistributable 
+							if you don’t already have it</h4>
+						</div>
+					</figure>
+					<p>If you choose to go ahead and install, you will have to agree 
+					to the terms and conditions in the pop-up window that appears 
+					and then click Install. Installation of this should be fairly 
+					fast. Click Close to finish.</p>
+					<p>Once AMPPS is installed, the control window shown in
+					<a href="#the-ampps-control-win">Figure 2-5</a> should appear 
+					at the bottom right of your desktop. You can also call up this 
+					window using the AMPPS application shortcut in the Start menu 
+					or on the desktop, if you allowed these icons to be created.</p>
+					<p>Before proceeding, if you have any further questions, I recommend 
+					you acquaint yourself with the
+					<a href="https://ampps.com/docs/" rel="noopener noreferrer" target="_blank">
+					AMPPS documentation</a>, otherwise you are set to go—there’s 
+					always a Support link at the bottom of the control window that 
+					will take you to the AMPPS website, where you can open up a 
+					trouble ticket should you need to.</p>
+					<figure>
+						<div id="the-ampps-control-win">
+							<img alt="" height="500" src="images//lpm7_0205.png" width="315" />
+							<h4>Figure 2-5. The AMPPS control window</h4>
+						</div>
+					</figure>
+					<p>You may notice that the default version of PHP in AMPPS is 
+					8.2. If you wish to try other versions for any reason, click 
+					the Options button (nine white boxes in a square) within the 
+					AMPPS control window and then select Change PHP Version, whereupon 
+					a new menu will appear from which you can choose to install 
+					a different version.</p>
+					<section>
+						<div id="testing_the_installation">
+							<h2>Testing the Installation</h2>
+							<p>The first thing to do at this point is verify that 
+							everything is working correctly. To do this, enter the 
+							following URL into the address bar of your browser:</p>
+							<div>
+								<pre>
+http://localhost
+</pre>
+								<div>
+								</div>
+							</div>
+							<p>This will call up an introductory screen, where you 
+							will have the opportunity to secure AMPPS by giving 
+							it a password (see <a href="#the-initial-security">Figure 
+							2-6</a>). It is up to you now as to whether or not to 
+							secure the program. If only you will have access to 
+							the PC you may choose not to. But if there could be 
+							any security implications then you probably should password 
+							protect the installation.</p>
+							<figure>
+								<div id="the-initial-security">
+									<img alt="" height="419" src="images//lpm7_0206.png" width="600" />
+									<h4>Figure 2-6. The initial security setup screen</h4>
+								</div>
+							</figure>
+							<p>Once this has been done you will be taken to the 
+							main control page at <em>http://localhost/ampps/</em>. 
+							From here you can configure and control all aspects 
+							of the AMPPS stack, so make a note of this for future 
+							reference, or perhaps set a bookmark in your browser.</p>
+							<p>Next, type the following to view the document root 
+							(described in the following section) of your new Apache 
+							web server:</p>
+							<div>
+								<pre>
+http://localhost</pre>
+								<div>
+								</div>
+							</div>
+							<p>This time, rather than seeing the initial screen 
+							about setting up security, you should see something 
+							similar to <a href="#viewing-the-document">Figure 2-7</a>, 
+							although the files shown may be different.</p>
+							<figure>
+								<div id="viewing-the-document">
+									<img alt="" height="440" src="images//lpm7_0207.png" width="600" />
+									<h4>Figure 2-7. Viewing the document root</h4>
+								</div>
+							</figure>
+						</div>
+					</section>
+					<section>
+						<div id="accessing_the_document_root">
+							<h2>Accessing the Document Root (Windows)</h2>
+							<p>The <em>document root</em> is the directory that 
+							contains the main web documents for a domain. This directory 
+							is the one that the server uses when a basic URL without 
+							a path is typed into a browser, such as <em>http://yahoo.com</em> 
+							or, for your local server, <em>http://localhost.</em></p>
+							<p>By default AMPPS will use the following location 
+							as the document root:</p>
+							<div>
+								<pre>
+<strong>C:\Program Files\Ampps\www</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>To ensure that you have everything correctly configured, 
+							you should now create the obligatory “Hello World” file. 
+							So, create a small HTML file along the following lines 
+							using a plain text editor such as Windows Notepad (which 
+							will work just fine, although better suited applications 
+							called Code Editors are discussed later in this chapter):</p>
+							<div>
+								<pre>
+<code>&lt;!DOCTYPE html&gt;</code>
+<code>&lt;html</code> <code>lang="en"&gt;</code>
+  <code>&lt;head&gt;</code>
+    <code>&lt;title&gt;</code>A quick test<code>&lt;/title&gt;</code>
+  <code>&lt;/head&gt;</code>
+  <code>&lt;body&gt;</code>
+    Hello World!
+  <code>&lt;/body&gt;</code>
+<code>&lt;/html&gt;</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>Once you have typed this, save the file into the 
+							document root directory, using the filename <em>test.html</em>..</p>
+							<p>You can now call this page up in your browser by 
+							entering the following URL in its address bar (see
+							<a href="#your-first-web-page">Figure 2-8</a>):</p>
+							<div>
+								<pre>
+http://localhost/test.html</pre>
+								<div>
+								</div>
+							</div>
+							<figure>
+								<div id="your-first-web-page">
+									<img alt="" height="250" src="images//lpm7_0208.png" width="600" />
+									<h4>Figure 2-8. Your first web page</h4>
+								</div>
+							</figure>
+							<p>Remember that serving a web page from the document 
+							root (or a subfolder) is different from loading one 
+							into a web browser from your computer’s filesystem. 
+							The former will ensure access to PHP, MySQL, and all 
+							the features of a web server, while the latter will 
+							simply load the file into the browser, which will do 
+							its best to display it but will be unable to process 
+							any PHP or other server instructions. So, you should 
+							generally run examples using the <em>localhost</em> 
+							preface from your browser’s address bar, unless you 
+							are certain that the file doesn’t rely on web server 
+							functionality.</p>
+						</div>
+					</section>
+					<section>
+						<div id="alternative_wamps">
+							<h2>Alternative WAMPs</h2>
+							<p>When software is updated, it sometimes works differently 
+							from how you expect, and bugs can even be introduced. 
+							So, if you encounter difficulties that you cannot resolve 
+							in AMPPS, you may prefer to choose one of the other 
+							solutions available on the web.</p>
+							<p>You will still be able to make use of all the examples 
+							in this book, but you’ll have to follow the instructions 
+							supplied with each WAMP, which may not be as easy to 
+							follow as the preceding guide.</p>
+							<p>Here’s a selection of some of the best alternatives, 
+							in my opinion:</p>
+							<ul>
+								<li>
+								<p>
+								<a href="http://easyphp.org" rel="noopener noreferrer" target="_blank">
+								EasyPHP</a></p>
+								</li>
+								<li>
+								<p>
+								<a href="http://apachefriends.org" rel="noopener noreferrer" target="_blank">
+								XAMPP</a></p>
+								</li>
+								<li>
+								<p>
+								<a href="https://wampserver.aviatechno.net/" rel="noopener noreferrer" target="_blank">
+								WAMPServer</a></p>
+								</li>
+							</ul>
+							<div class="note">
+								<h4>Note</h4>
+								<p>Over the life of this edition of the book, it 
+								is very likely that the developers of AMPPS will 
+								make improvements to the software, and therefore 
+								the installation screens and method of use may evolve 
+								over time, as may versions of Apache, PHP, or MySQL. 
+								So, please don’t assume something is wrong if the 
+								screens and operation look different. The AMPPS 
+								developers take every care to ensure it is easy 
+								to use, so just follow any prompts given, and refer 
+								to the documentation on the
+								<a href="http://ampps.com" rel="noopener noreferrer" target="_blank">
+								website</a>.</p>
+							</div>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="installing_xampp_on_mac_os_x">
+					<h1>Installing AMPPS on macOS</h1>
+					<p>AMPPS is also available on macOS, and you can download it 
+					from the
+					<a href="http://ampps.com" rel="noopener noreferrer" target="_blank">
+					AMPPS website</a> (as I write, the current version is 4.3, and 
+					the installer size is around 38 MB).</p>
+					<p>If your browser doesn’t open it automatically once it has 
+					downloaded, double-click the <em>.dmg</em> file, and then drag 
+					the <em>AMPPS</em> folder over to your <em>Applications</em> 
+					folder (see <a href="#ampps-mac1">Figure 2-9</a>).</p>
+					<figure>
+						<div id="ampps-mac1">
+							<img alt="" height="363" src="images//lpm7_0209.png" width="600" />
+							<h4>Figure 2-9. Drag the AMPPS folder to Applications</h4>
+						</div>
+					</figure>
+					<p>Now open your <em>Applications</em> folder in the usual manner, 
+					and double-click the AMPPS program. If your security settings 
+					prevent the file being opened, hold down the Control key and 
+					click the icon once. A new window will pop up asking if you 
+					are sure you wish to open it. Click Open to do so. When the 
+					app starts, you may have to enter your macOS password to proceed.</p>
+					<p>Once AMPPS is up and running, a control window similar to 
+					the one shown in <a href="#the-ampps-control-win">Figure 2-5</a> 
+					will appear at the bottom left of your desktop.</p>
+					<div class="note">
+						<h4>Note</h4>
+						<p>You may notice that the default version of PHP in AMPPS 
+						is 8.2. If you wish to try out a different version for any 
+						reason, click the Options button (nine white boxes in a 
+						square) within the AMPPS control window, and then select 
+						Change PHP Version, whereupon a new menu will appear in 
+						which you can choose to install other versions of PHP.</p>
+					</div>
+					<section>
+						<div id="id187">
+							<h2>Accessing the Document Root (macOS)</h2>
+							<p>By default, AMPPS will use the following location 
+							as the document root:</p>
+							<div>
+								<pre>
+<strong>/Applications/Ampps/www</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>To ensure that you have everything correctly configured, 
+							you should now create the obligatory “Hello World” file. 
+							So, create a small HTML file along the following lines 
+							using the TextEdit program (which will work just fine, 
+							although better suited applications called Code Editors 
+							are discussed later in this chapter):</p>
+							<div>
+								<pre>
+<code>&lt;!DOCTYPE html&gt;</code>
+<code>&lt;html</code> <code>lang="en"&gt;</code>
+&nbsp;&nbsp;<code>&lt;head&gt;</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>&lt;title&gt;</code>A quick test<code>&lt;/title&gt;</code>
+&nbsp;&nbsp;<code>&lt;/head&gt;</code>
+&nbsp;&nbsp;<code>&lt;body&gt;</code>
+&nbsp;&nbsp;&nbsp;&nbsp;Hello World!
+&nbsp;&nbsp;<code>&lt;/body&gt;</code>
+<code>&lt;/html&gt;</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>Once you have typed this, save the file into the 
+							document root directory using the filename <em>test.html</em>.</p>
+							<p>You can now call this page up in your browser by 
+							entering the following URL in its address bar (to see 
+							a similar result to <a href="#your-first-web-page">Figure 
+							2-8</a>):</p>
+							<div>
+								<pre>
+http://localhost/test.html</pre>
+								<div>
+								</div>
+							</div>
+							<div class="note">
+								<h4>Note</h4>
+								<p>Remember that serving a web page from the document 
+								root (or a subfolder) is different from loading 
+								one into a web browser from your computer’s filesystem. 
+								The former will ensure access to PHP, MySQL, and 
+								all the features of a web server, while the latter 
+								will simply load the file into the browser, which 
+								will do its best to display it but will be unable 
+								to process any PHP or other server instructions. 
+								So, you should generally run examples using the
+								<em>localhost</em> preface from your browser’s address 
+								bar, unless you are certain that the file doesn’t 
+								rely on web server functionality.</p>
+							</div>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="installing_a_lamp_on_linux">
+					<h1>Installing a LAMP on Linux</h1>
+					<p>This book is aimed mostly at PC and Mac users, but its contents 
+					will work equally well on a Linux computer. However, there are 
+					dozens of popular flavors of Linux, and each of them may require 
+					installing a LAMP in a slightly different way, so I can’t cover 
+					them all in this book. However, there is a version of AMPPS 
+					available for Linux, which is probably the simplest way for 
+					you to go.</p>
+					<p>That said, some Linux versions come preinstalled with a web 
+					server and MySQL, and the chances are that you may already be 
+					all set to go. To find out, try entering the following into 
+					a browser and see whether you get a default document root web 
+					page:</p>
+					<div>
+						<pre>
+http://localhost</pre>
+						<div>
+						</div>
+					</div>
+					<p>If this works, you probably have the Apache server installed 
+					and may well have MySQL up and running too; check with your 
+					system administrator to be sure.</p>
+					<p>If you don’t yet have a web server installed, however, there’s 
+					a version of AMPPS available that you can download from the
+					<a href="http://ampps.com" rel="noopener noreferrer" target="_blank">
+					AMPPS website</a>.</p>
+					<p>Installation is similar to the sequence shown in the preceding 
+					section. If you need further assistance on using the software, 
+					please refer to the documentation.</p>
+				</div>
+			</section>
+			<section>
+				<div id="working_remotely">
+					<h1>Working Remotely</h1>
+					<p>If you have access to a web server already configured with 
+					PHP and MySQL, you can always use that for your web development. 
+					But unless you have a high-speed connection, it is not always 
+					your best option. Developing locally allows you to test modifications 
+					with little or no upload delay.</p>
+					<p>Accessing MySQL remotely may not be easy either. You should 
+					use the secure SSH protocol to log in to your server to manually 
+					create databases and set permissions from the command line. 
+					Your web hosting company will advise you on how best to do this 
+					and provide you with any password it has set for your MySQL 
+					access (as well as, of course, for getting into the server in 
+					the first place).</p>
+					<section>
+						<div id="logging_in">
+							<h2>Logging In</h2>
+							<p>I recommend that Windows users should install a program 
+							such as
+							<a href="http://putty.org" rel="noopener noreferrer" target="_blank">
+							PuTTY</a> for SSH access (SSH is much more secure than 
+							the Telnet protocol). Although modern Windows come with 
+							SSH preinstalled, PuTTY’s user interface may be a bit 
+							easier to use especially if you’re a beginner.</p>
+							<p>On a Mac, you already have SSH available as well. 
+							Just select the <em>Applications</em> folder, followed 
+							by <em>Utilities</em>, and then launch Terminal. In 
+							the Terminal window, log in to a server using SSH as 
+							follows:</p>
+							<div>
+								<pre>
+ssh <em>mylogin</em>@<em>server.com</em></pre>
+								<div>
+								</div>
+							</div>
+							<p>where <em><code>server.com</code></em> is the name 
+							of the server you wish to log in to and <em><code>mylogin</code></em> 
+							is the username you will log in under. You will then 
+							be prompted for the correct password for that username 
+							and, if you enter it correctly, you will be logged in.</p>
+						</div>
+					</section>
+					<section>
+						<div id="using_ftp">
+							<h2>Transferring Files</h2>
+							<p>To transfer files to and from your web server, you 
+							will generally need a file transfer program that implements 
+							an FTPS or SFTP protocol, to ensure proper security 
+							on your web server. If you go searching the web for 
+							a good client, you’ll find so many that it could take 
+							you quite a while to come across one with all the right 
+							features for you.</p>
+							<div>
+								<h1>Don’t Use FTP</h1>
+								<p>FTP is insecure and should not be used. There 
+								are far safer methods than FTP for transferring 
+								files, such as SSH-based SFTP (SSH File Transfer 
+								Protocol or Secure File Transfer Protocol) and SCP 
+								(Secure Copy Protocol) are gaining traction. Good 
+								FTP programs, however, will also support SFTP and 
+								FTPS (FTP-SSL). Often the means of file transfer 
+								you use will be down to the policies of the company 
+								you work for, but for personal use an FTP program 
+								such as FileZilla (discussed next) will provide 
+								most (if not all) of the functionality and security 
+								you require.</p>
+							</div>
+							<p>My preferred SFTP program is the open source
+							<a href="http://filezilla-project.org" rel="noopener noreferrer" target="_blank">
+							FileZilla</a>, for Windows, Linux, and macOS 10.5 or 
+							newer (see <a href="#filezilla-grab">Figure 2-10</a>). 
+							Full instructions on how to use FileZilla are available 
+							on the
+							<a href="http://wiki.filezilla-project.org" rel="noopener noreferrer" target="_blank">
+							wiki</a>.</p>
+							<figure>
+								<div id="filezilla-grab">
+									<img alt="" height="414" src="images//lpm7_0210.png" width="600" />
+									<h4>Figure 2-10. FileZilla is a full-featured 
+									SFTP program</h4>
+								</div>
+							</figure>
+							<p>Another well-known tool is
+							<a href="https://winscp.net/" rel="noopener noreferrer" target="_blank">
+							WinSCP</a> which, despite its name, also supports SFTP 
+							and FTP. Of course, if you already have an FTPS or SFTP 
+							program, all the better—stick with what you know.</p>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="using_a_program_editor">
+					<h1>Using a Code Editor</h1>
+					<p>Although a plain-text editor works for editing HTML, PHP, 
+					and JavaScript, there have been some tremendous improvements 
+					in dedicated code editors, which now incorporate very handy 
+					features such as colored syntax highlighting. Today’s program 
+					editors are smart and can show you where you have syntax errors 
+					before you even run a program. Once you’ve used a modern editor, 
+					you’ll wonder how you ever managed without one.</p>
+					<p>There are a number of good programs available, but I have 
+					settled on Visual Studio Code (VSC) from Microsoft because it’s 
+					powerful; runs on all of Windows, Mac, and Linux; and is free 
+					(see <a href="#program-editors-like-visual">Figure 2-11</a>). 
+					It is also a comprehensive developing environment and is becoming 
+					ever more standard in the industry.</p>
+					<figure>
+						<div id="program-editors-like-visual">
+							<img alt="" height="398" src="images//lpm7_0211.png" width="600" />
+							<h4>Figure 2-11. Program editors (like Visual Studio 
+							Code) are superior to plain-text editors</h4>
+						</div>
+					</figure>
+					<p>As you can see from
+					<a href="#program-editors-like-visual">Figure 2-11</a>, VSC 
+					highlights the syntax appropriately, using colors to help clarify 
+					what’s going on. What’s more, you can place the cursor next 
+					to brackets or braces, and it will highlight the matching ones 
+					so that you can check whether you have too many or too few. 
+					In fact, VSC does a lot more in addition, which you will discover 
+					and enjoy as you use it. You can download a copy from the
+					<a href="http://code.visualstudio.com" rel="noopener noreferrer" target="_blank">
+					Visual Studio website</a>.</p>
+					<p>Again, if you have a different preferred program editor, 
+					use that; it’s always a good idea to use programs you’re already 
+					familiar with, but I believe you will be hard pushed to find 
+					something better than the now industry standard VSC, so you 
+					should at least know how to use this product as many job positions 
+					will require it.</p>
+					<p>Having reached the end of this chapter you will now have 
+					everything set up and installed ready to commence your journey 
+					into mastering the various development technologies in this 
+					book, beginning with a solid introduction to PHP in the following 
+					chapter. But before you go, take a couple of minutes to answer 
+					the questions below to ensure you have remembered the main points.</p>
+				</div>
+			</section>
+			<section>
+				<div id="questions-id00002">
+					<h1>Questions</h1>
+					<ol>
+						<li>
+						<p>What is the difference between a WAMP, a MAMP, and a 
+						LAMP?</p>
+						</li>
+						<li>
+						<p>What is the purpose of an SFTP program?</p>
+						</li>
+						<li>
+						<p>Name the main disadvantage of working on a remote web 
+						server.</p>
+						</li>
+						<li>
+						<p>Why is it better to use a code editor instead of a plain-text 
+						editor?</p>
+						</li>
+					</ol>
+					<p>See <a href="app01.html#chapter_2_answers">“Chapter 2 Answers”</a> 
+					in the
+					<a href="app01.html#solutions_to_the_chapter_questions">Appendix 
+					A</a> for the answers to these questions.</p>
+				</div>
+			</section>
+		</div>
+	</section>
+</div>
+
+</body>
+
+</html>

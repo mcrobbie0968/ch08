@@ -1,0 +1,2412 @@
+﻿<!DOCTYPE html>
+<html lang="en-gb">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<link href="stylesheet.css" rel="stylesheet" type="text/css" />
+<title>Chapter 3. Introduction to PHP</title>
+</head>
+
+<body>
+
+<div id="sbo-rt-content">
+	<section>
+		<div id="introduction_to_php">
+			<h1>Chapter 3. Introduction to PHP</h1>
+			<p>In <a href="ch01.html#introduction_to_dynamic_web_content">Chapter 
+			1</a>, I explained that PHP is the language that you use to make the 
+			server generate dynamic output—output that is potentially different 
+			each time a browser requests a page. In this chapter, you’ll start learning 
+			this simple but powerful language; it will be the topic of the following 
+			chapters up through <a href="ch07.html#practical_php">Chapter 7</a>.</p>
+			<p>In production, your web pages will be a combination of HTML, CSS, 
+			JavaScript, PHP, and SQL. Furthermore, each page can lead to other pages 
+			to provide users with ways to click through links and fill out forms.</p>
+			<p>We can avoid all that complexity while learning each language, though. 
+			Let’s focus, for now, on just writing PHP code and making sure that 
+			you get the output you expect—or at least that you understand the output 
+			you actually get!</p>
+			<section>
+				<div id="incorporating_php_within_html">
+					<h1>Incorporating PHP Within HTML</h1>
+					<p>By default, PHP documents end with the extension <em>.php</em>. 
+					When a web server encounters this extension in a requested file, 
+					it automatically passes it to the PHP processor. Of course, 
+					web servers are highly configurable, and some web developers 
+					choose to force files ending with <em>.htm</em> or <em>.html</em> 
+					to also get parsed by the PHP processor, usually because they 
+					want to hide their use of PHP.</p>
+					<p>Your PHP program is responsible for passing back a clean 
+					file suitable for display in a web browser. At its very simplest, 
+					a PHP document will output only HTML. To prove this, you can 
+					take any normal HTML document and save it as a PHP document 
+					(for example, saving <em>index.html</em> as <em>index.php</em>), 
+					and it will display identically to the original (as long as 
+					the file is being served with Apache, and not directly from 
+					your filesystem).</p>
+					<p>To trigger the PHP commands, you need to learn a new tag. 
+					Here is the first part:</p>
+					<div>
+						<pre>
+<code>&lt;?php</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>The first thing you may notice is that the tag has not been 
+					closed. This is because entire sections of PHP can be placed 
+					inside this tag, and they finish only when the closing part 
+					is encountered, which looks like this:</p>
+					<div>
+						<pre>
+<code>?&gt;</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>A small PHP “Hello World” program might look like
+					<a href="#invoking_php">Example 3-1</a>.</p>
+					<div id="invoking_php">
+						<h5>Example 3-1. Invoking PHP</h5>
+						<div>
+							<pre>
+<code>&lt;?php</code>
+  <code>echo</code> <code>"Hello world";</code>
+<code>?&gt;</code></pre>
+							<div>
+							</div>
+						</div>
+					</div>
+					<p>Use of this tag can be quite flexible. Some programmers open 
+					the tag at the start of a document and close it right at the 
+					end, outputting any HTML directly from PHP commands. Others, 
+					however, choose to insert only the smallest possible fragments 
+					of PHP within these tags wherever dynamic scripting is required, 
+					leaving the rest of the document in standard HTML.</p>
+					<p>The latter type of programmer generally argues that their 
+					style of coding results in faster code, while the former says 
+					that the speed increase is so minimal that it doesn’t justify 
+					the additional complexity of dropping in and out of PHP many 
+					times in a single document.</p>
+					<p>As you learn more, you will surely discover your preferred 
+					style of PHP development, but for the sake of making the examples 
+					in this book easier to follow, I have adopted the approach of 
+					keeping the number of transfers between PHP and HTML to a minimum—generally 
+					only once or twice in a document.</p>
+					<p>By the way, there is a slight variation to the PHP syntax. 
+					If you browse the internet for PHP examples, you may also encounter 
+					code where the opening and closing syntax looks like this:</p>
+					<div>
+						<pre>
+<code>&lt;?</code>
+  <code>echo</code> <code>"Hello world";</code>
+<code>?&gt;</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>Although it’s not as obvious that the PHP parser is being 
+					called, this is a valid, alternative syntax that also works. 
+					But I discourage its use, as it is incompatible with XML and 
+					is now deprecated (meaning that it is no longer recommended 
+					and support could be removed in future versions).</p>
+					<div class="note">
+						<h4>Note</h4>
+						<p>If you have only PHP code in a file, you may omit the 
+						closing <code>?&gt;</code>. This can be a good practice, 
+						as it will ensure that you have no excess whitespace leaking 
+						from your PHP files. It is especially important when you’re 
+						writing and including object-oriented code otherwise a trailing 
+						newline character inserted after the closing part may be 
+						sent to the browser when it’s not expected.</p>
+					</div>
+				</div>
+			</section>
+			<section>
+				<div id="this_bookapostrophes_examples">
+					<h1>This Book’s Examples</h1>
+					<p>To save you the time it would take to type them all in, all 
+					the examples from this book can be found in the repo for this 
+					book at
+					<a href="https://github.com/RobinNixon/lpmj7" rel="noopener noreferrer" target="_blank">
+					GitHub</a>.</p>
+					<p>In addition to listing all the examples by chapter and example 
+					number, some of the examples may require explicit filenames, 
+					in which case copies of the example(s) are also saved using 
+					the filename(s) in the same folder (such as the upcoming
+					<a href="#your_first_php_program">Example 3-4</a>, which should 
+					be saved as <em>test1.php</em>).</p>
+				</div>
+			</section>
+			<section>
+				<div id="structure_of_php">
+					<h1>The Structure of PHP</h1>
+					<p>We’re going to cover quite a lot of ground in this section, 
+					and I recommend that you work your way through it carefully, 
+					as it sets the foundation for everything else in this book. 
+					As always, there are some useful questions at the end of the 
+					chapter that you can use to test how much you’ve learned.</p>
+					<section>
+						<div id="using_comments">
+							<h2>Using Comments</h2>
+							<p>There are two ways in which you can add comments 
+							to your PHP code. The first turns a single line into 
+							a comment by preceding it with a pair of forward slashes:</p>
+							<div>
+								<pre>
+<code>// This is a comment</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>This version of the comment feature is a great way 
+							to temporarily remove a line of code from a program 
+							that is giving you errors. For example, you could use 
+							such a comment to hide a debugging line of code until 
+							you need it, like this:</p>
+							<div>
+								<pre>
+<code>// echo "X equals $x";</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>You can also use this type of comment directly after 
+							a line of code to describe its action, like this:</p>
+							<div>
+								<pre>
+<code>$x</code> <code>+=</code> <code>10;</code> <code>// Move 10 pixels for visual separation</code></pre>
+								<div>
+								</div>
+							</div>
+							<div>
+								<h1>Single-line <code>#</code> Comments</h1>
+								<p>As well as using <code>//</code> to signify the 
+								start of a single-line comment, you can use the
+								<code>#</code> symbol. However, this is less common 
+								and, as of PHP version 8, single-line comments starting 
+								with <code>#[</code> now have a special meaning 
+								(being treated as attributes). Consequently I prefer 
+								to stick with the <code>//</code> style.</p>
+							</div>
+							<p>When you need to use multiple lines, there’s a second 
+							type of comment, which looks like
+							<a href="#multiline_comment">Example 3-2</a>.</p>
+							<div id="multiline_comment">
+								<h5>Example 3-2. A multi-line comment</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+<code>/* This is a section</code>
+<code>   of multiline comments</code>
+<code>   which will not be</code>
+<code>   interpreted */</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>You can use the <code>/*</code> and <code>*/</code> 
+							pairs of characters to open and close comments almost 
+							anywhere you like inside your code. Most programmers 
+							use this construct to temporarily comment out entire 
+							sections of code that do not work or that, for one reason 
+							or another, they do not wish to be interpreted.</p>
+							<div class="warning">
+								<h4>Warning</h4>
+								<p>A common error is to use <code>/*</code> and
+								<code>*/</code> to comment out a large section of 
+								code that already contains a commented-out section 
+								that uses those characters. You can’t nest comments 
+								this way; the PHP interpreter won’t know where a 
+								comment ends and will display an error message. 
+								However, if you use an editor or IDE with syntax 
+								highlighting, this type of error is easier to spot.</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="basic_syntax">
+							<h2>Basic Syntax</h2>
+							<p>PHP is quite a simple language with roots in C and 
+							Perl (if you have ever come across these), yet it looks 
+							more like Java. It is also very flexible, but there 
+							are a few rules that you need to learn about its syntax 
+							and structure.</p>
+							<section>
+								<div id="semicolons">
+									<h3>Semicolons</h3>
+									<p>You may have noticed in the previous examples 
+									that the PHP commands ended with a semicolon, 
+									like this:</p>
+									<div>
+										<pre>
+<code>$x</code> <code>+=</code> <code>10;</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>One of the most common causes of errors you 
+									will encounter with PHP is forgetting this semicolon. 
+									This causes PHP to treat multiple statements 
+									like one statement, which it is unable to understand, 
+									prompting it to produce a <code>Parse error</code> 
+									message.</p>
+								</div>
+							</section>
+							<section>
+								<div id="dollar_symbol">
+									<h3>The $ symbol</h3>
+									<p>The <code>$</code> symbol has come to be 
+									used in many different ways by different programming 
+									languages. For example, in the BASIC language, 
+									it was used to terminate variable names to denote 
+									them as strings.</p>
+									<p>In PHP, however, you must place a <code>$</code> 
+									in front of <em>all</em> variables. This is 
+									required to make the PHP parser faster, as it 
+									instantly knows whenever it comes across a variable. 
+									Whether your variables are numbers, strings, 
+									or arrays, they should all look something like 
+									those in
+									<a href="#three_different_types_of_variable_assign">
+									Example 3-3</a>.</p>
+									<div id="three_different_types_of_variable_assign">
+										<h5>Example 3-3. Three different types of 
+										variable assignment</h5>
+										<div>
+											<pre>
+<code>$mycounter</code> <code>=</code> <code>1;</code>
+<code>$mystring</code>  <code>=</code> <code>"Hello";</code>
+<code>$myarray</code>   <code>=</code> <code>array("One",</code> <code>"Two",</code> <code>"Three");</code>
+</pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>And really that’s pretty much all the syntax 
+									that you have to remember. Unlike languages 
+									such as Python, which are very strict about 
+									how you indent and lay out your code, PHP leaves 
+									you completely free to use (or not use) all 
+									the indenting and spacing you like. In fact, 
+									sensible use of whitespace is generally encouraged 
+									(along with comprehensive commenting) to help 
+									you understand your code when you come back 
+									to it. It also helps other programmers when 
+									they have to maintain your code.</p>
+								</div>
+							</section>
+						</div>
+					</section>
+					<section>
+						<div id="variables">
+							<h2>Variables</h2>
+							<p>There’s a simple metaphor that will help you understand 
+							what PHP variables are all about. Just think of them 
+							as little (or big) matchboxes! That’s right—matchboxes 
+							that you’ve painted over and written names on.</p>
+							<section>
+								<div id="string_variables">
+									<h3>String variables</h3>
+									<p>Imagine you have a matchbox on which you 
+									have written the word <em>username</em>. You 
+									then write <em>Fred Smith</em> on a piece of 
+									paper and place it into the box (see
+									<a href="#you_can_think_of_variables_as_matchboxes">
+									Figure 3-1</a>). Well, that’s the same process 
+									as assigning a string value to a variable, like 
+									this:</p>
+									<div>
+										<pre>
+<code>$username</code> <code>=</code> <code>"Fred Smith";</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>The quotation marks indicate that “Fred Smith” 
+									is a <em>string</em> of characters. You must 
+									enclose each string in either quotation marks 
+									or apostrophes (single quotes), although there 
+									is a subtle difference between the two types 
+									of quote, which is explained later. When you 
+									want to see what’s in the box, you open it, 
+									take the piece of paper out, and read it. In 
+									PHP, doing so looks like this (which displays 
+									the contents of the variable):</p>
+									<div>
+										<pre>
+<code>echo</code> <code>$username;</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>Or you can assign it to another variable 
+									(photocopy the paper and place the copy in another 
+									matchbox), like this:</p>
+									<div>
+										<pre>
+<code>$current_user</code> <code>=</code> <code>$username;</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>Now let’s bring all these variables together 
+									to form a complete program, as in
+									<a href="#your_first_php_program">Example 3-4</a>.</p>
+									<figure>
+										<div id="you_can_think_of_variables_as_matchboxes">
+											<img alt="" height="447" src="images/lpm7_0301.png" width="600" />
+											<h4>Figure 3-1. You can think of variables 
+											as matchboxes containing items</h4>
+										</div>
+									</figure>
+									<div id="your_first_php_program">
+										<h5>Example 3-4. Your first PHP program</h5>
+										<div>
+											<pre>
+<code>&lt;?php</code> <code>// test1.php</code>
+  <code>$username</code> <code>=</code> <code>"Fred Smith";</code>
+  <code>echo</code> <code>$username;</code>
+  <code>echo</code> <code>"&lt;br&gt;";</code>
+  <code>$current_user</code> <code>=</code> <code>$username;</code>
+  <code>echo</code> <code>$current_user;</code>
+<code>?&gt;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>Now you can call it up by entering the following 
+									into your browser’s address bar:</p>
+									<div>
+										<pre>
+http://localhost/test1.php</pre>
+										<div>
+										</div>
+									</div>
+									<div class="note">
+										<h4>Note</h4>
+										<p>In the unlikely event that during the 
+										installation of your web server (as detailed 
+										in
+										<a href="ch02.html#setting_up_a_development_server">
+										Chapter 2</a>) you changed the port assigned 
+										to the server to anything other than 80, 
+										then you must place that port number within 
+										the URL in this and all other examples in 
+										this book. So, for example, if you changed 
+										the port to 8080, the preceding URL would 
+										become this:</p>
+										<div>
+											<pre>
+http://localhost:8080/test1.php</pre>
+											<div>
+											</div>
+										</div>
+										<p>I won’t mention this again, so just remember 
+										to use the port number (if required) when 
+										trying examples or writing your own code.</p>
+									</div>
+									<p>The result of running this code should be 
+									two occurrences of the name <em>Fred Smith</em>, 
+									the first of which is the result of the
+									<code>echo $username</code> command and the 
+									second of which is the result of the <code>echo 
+									$current_user</code> command.</p>
+								</div>
+							</section>
+							<section>
+								<div id="numeric_variables">
+									<h3>Numeric variables</h3>
+									<p>Variables don’t have to contain just strings—they 
+									can contain numbers too. If we return to the 
+									matchbox analogy, to store the number 17 in 
+									the variable <code>$count</code>, the equivalent 
+									would be placing, say, 17 beads in a matchbox 
+									on which you have written the word <em>count</em>:</p>
+									<div>
+										<pre>
+<code>$count</code> <code>=</code> <code>17;</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>You could also use a floating-point number 
+									(containing a decimal point). The syntax is 
+									the same:</p>
+									<div>
+										<pre>
+<code>$count</code> <code>=</code> <code>17.5;</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>If you want to use the number in PHP, you 
+									can assign the value of <code>$count</code> 
+									to another variable or perhaps just echo it 
+									to the web browser. Either of those would be 
+									the equivalent to simply opening the matchbox 
+									and counting the beads.</p>
+								</div>
+							</section>
+							<section>
+								<div id="arrays">
+									<h3>Arrays</h3>
+									<p>You can think of arrays as several matchboxes 
+									glued together. For example, let’s say we want 
+									to store the player names for a five-person 
+									soccer team in an array called <code>$team</code>. 
+									To do this, we could glue five matchboxes side 
+									by side and write down the names of all the 
+									players on separate pieces of paper, placing 
+									one in each matchbox.</p>
+									<p>Across the top of the whole matchbox assembly 
+									we would write the word <em>team</em> (see
+									<a href="#array_is_like_several_matchboxes_glue">
+									Figure 3-2</a>). The equivalent of this in PHP 
+									would be the following:</p>
+									<div>
+										<pre>
+<code>$team</code> <code>=</code> <code>array('Bill',</code> <code>'Mary',</code> <code>'Mike',</code> <code>'Chris',</code> <code>'Anne');</code></pre>
+										<div>
+										</div>
+									</div>
+									<figure>
+										<div id="array_is_like_several_matchboxes_glue">
+											<img alt="" height="406" src="images/lpm7_0302.png" width="600" />
+											<h4>Figure 3-2. An array is like several 
+											matchboxes glued together</h4>
+										</div>
+									</figure>
+									<p>This syntax is more complicated than the 
+									other examples you’ve seen so far. The array-building 
+									code consists of the following construct:</p>
+									<div>
+										<pre>
+<code>array();</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>with five strings inside. Each string is 
+									enclosed in apostrophes or quotes, and strings 
+									must be separated with commas.</p>
+									<div>
+										<h1>Short array syntax</h1>
+										<p>An alternative short array syntax exists 
+										which uses <code>[...]</code> instead of 
+										the <code>array(...)</code> construct. The 
+										previous array could also be written as:</p>
+										<div>
+											<pre>
+<code>$team</code> <code>=</code> <code>['Bill',</code> <code>'Mary',</code> <code>'Mike',</code> <code>'Chris',</code> <code>'Anne'];</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>If we then wanted to know who player 4 is, 
+									we could use this command:</p>
+									<div>
+										<pre>
+<code>echo</code> <code>$team[3];</code> <code>// Displays the name Chris</code>
+</pre>
+										<div>
+										</div>
+									</div>
+									<p>The reason the previous statement has the 
+									number 3, not 4, is that the first element of 
+									a PHP array is actually the zeroth element, 
+									so the player numbers will therefore be 0 through 
+									4.</p>
+								</div>
+							</section>
+							<section>
+								<div id="two-dimensional_arrays">
+									<h3>Two-dimensional arrays</h3>
+									<p>There’s a lot more you can do with arrays. 
+									For example, instead of being single-dimensional 
+									lines of matchboxes, they can be two-dimensional 
+									matrixes or even have more dimensions.</p>
+									<p>As an example of a two-dimensional array, 
+									let’s say we want to keep track of a game of 
+									tic-tac-toe, which requires a data structure 
+									of nine cells arranged in a 3 × 3 square. To 
+									represent this with matchboxes, imagine nine 
+									of them glued to one other in a matrix of three 
+									rows by three columns using an array named
+									<code>$oxo</code> (see
+									<a href="#multidimensional_array_simulated_with">
+									Figure 3-3</a>).</p>
+									<figure>
+										<div id="multidimensional_array_simulated_with">
+											<img alt="" height="549" src="images/lpm7_0303.png" width="600" />
+											<h4>Figure 3-3. A multidimensional array 
+											simulated with matchboxes</h4>
+										</div>
+									</figure>
+									<p>You can now place a piece of paper with either 
+									an <em>x</em> or an <em>o</em> on it in the 
+									correct matchbox for each move played. To do 
+									this in PHP code, you have to set up an array 
+									containing three more arrays, as in
+									<a href="#defining_a_two-dimensional_array">
+									Example 3-5</a>, in which the array is set up 
+									with a game already in progress.</p>
+									<div id="defining_a_two-dimensional_array">
+										<h5>Example 3-5. Defining a two-dimensional 
+										array</h5>
+										<div>
+											<pre>
+<code>&lt;?php</code>
+  <code>$oxo</code> <code>=</code> <code>array(array('x',</code> <code>' ',</code> <code>'o'),</code>
+               <code>array('o',</code> <code>'o',</code> <code>'x'),</code>
+               <code>array('x',</code> <code>'o',</code> <code>' '));</code>
+<code>?&gt;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>Once again, we’ve moved up a step in complexity, 
+									but it’s easy to understand if you grasp the 
+									basic array syntax. There are three <code>array()</code> 
+									constructs nested inside the outer <code>array()</code> 
+									construct. We’ve filled each row with an array 
+									consisting of just one character: an <em>x</em>, 
+									an <em>o</em>, or a blank space. (We use a blank 
+									space so that all the cells will be the same 
+									width when they are displayed.)</p>
+									<p>To then return the third element in the second 
+									row of this array, you would use the following 
+									PHP command, which will display an <code>x</code>:</p>
+									<div>
+										<pre>
+<code>echo</code> <code>$oxo[1][2];</code></pre>
+										<div>
+										</div>
+									</div>
+									<div class="note">
+										<h4>Note</h4>
+										<p>Remember that array indexes (pointers 
+										at elements within an array) start from 
+										zero, not one, so the <code>[1]</code> in 
+										the previous command refers to the second 
+										of the three arrays, and the <code>[2]</code> 
+										references the third position within that 
+										array. This command will return the contents 
+										of the matchbox three along and two down.</p>
+									</div>
+									<p>As mentioned, we can support arrays with 
+									even more dimensions by simply creating more 
+									arrays within arrays. However, we will not be 
+									covering arrays of more than two dimensions 
+									in this book.</p>
+									<p>And don’t worry if you’re still having difficulty 
+									coming to grips with using arrays, as the subject 
+									is explained in detail in
+									<a href="ch06.html#php_arrays">Chapter 6</a>.</p>
+								</div>
+							</section>
+							<section>
+								<div id="variable_naming_rules">
+									<h3>Variable-naming rules</h3>
+									<p>When creating PHP variables, you must follow 
+									these four rules:</p>
+									<ul>
+										<li>
+										<p>Variable names, after the dollar sign, 
+										must start with a letter of the alphabet 
+										or the <em>_</em> (underscore) character.</p>
+										</li>
+										<li>
+										<p>Variable names can contain only the characters
+										<code>a</code>–<code>z</code>, <code>A</code>–<code>Z</code>,
+										<code>0</code>–<code>9</code>, and <code>
+										_</code> (underscore).</p>
+										</li>
+										<li>
+										<p>Variable names may not contain spaces. 
+										If a variable name must comprise more than 
+										one word, a good idea is to separate the 
+										words with the <code>_</code> <strong>(</strong>underscore<strong>)</strong> 
+										character (e.g., <code>$user_name</code>).</p>
+										</li>
+										<li>
+										<p>Variable names are case-sensitive. The 
+										variable <code>$High_Score</code> is not 
+										the same as the variable <code>$high_score</code>.</p>
+										</li>
+									</ul>
+									<div class="note">
+										<h4>Note</h4>
+										<p>To allow extended ASCII characters that 
+										include accents, PHP also supports the bytes 
+										from 127 through 255 in variable names as 
+										well as Unicode characters. However, be 
+										aware that programmers using English keyboards 
+										will have difficulty accessing any you use.</p>
+									</div>
+								</div>
+							</section>
+						</div>
+					</section>
+					<section>
+						<div id="operators">
+							<h2>Operators</h2>
+							<p><em>Operators</em> let you specify mathematical operations 
+							to perform, such as addition, subtraction, multiplication, 
+							and division. But several other types of operators exist 
+							too, such as the string, comparison, and logical operators. 
+							Math in PHP looks a lot like plain arithmetic—for instance, 
+							the following statement outputs 8:</p>
+							<div>
+								<pre>
+<code>echo</code> <code>6</code> <code>+</code> <code>2;</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>Before moving on to learn what PHP can do for you, 
+							let’s take a moment to examine the various operators 
+							it provides.</p>
+							<section>
+								<div id="arithmetic_operators">
+									<h3>Arithmetic operators</h3>
+									<p>Arithmetic operators do what you would expect—they 
+									are used to perform mathematics. You can use 
+									them for the main four operations (add, subtract, 
+									multiply, and divide) as well as to find a modulus 
+									(the remainder after a division) and to increment 
+									or decrement a value (see
+									<a href="#arithmetic_operators-id00003">Table 
+									3-1</a>).</p>
+									<table id="arithmetic_operators-id00003">
+										<caption>Table 3-1. Arithmetic operators</caption>
+										<thead>
+											<tr>
+												<th>Operator</th>
+												<th>Description</th>
+												<th>Example</th>
+											</tr>
+										</thead>
+										<tr>
+											<td><code>+</code></td>
+											<td>Addition</td>
+											<td><code>$j</code> <strong><code>+</code></strong>
+											<code>1</code></td>
+										</tr>
+										<tr>
+											<td><code>–</code></td>
+											<td>Subtraction</td>
+											<td><code>$j</code> <strong><code>–</code></strong>
+											<code>6</code></td>
+										</tr>
+										<tr>
+											<td><code>*</code></td>
+											<td>Multiplication</td>
+											<td><code>$j</code> <strong><code>*</code></strong>
+											<code>11</code></td>
+										</tr>
+										<tr>
+											<td><code>/</code></td>
+											<td>Division</td>
+											<td><code>$j</code> <strong><code>/</code></strong>
+											<code>4</code></td>
+										</tr>
+										<tr>
+											<td><code>%</code></td>
+											<td>Modulus (the remainder after a division 
+											is performed)</td>
+											<td><code>$j</code> <strong><code>%</code></strong>
+											<code>9</code></td>
+										</tr>
+										<tr>
+											<td><code>++</code></td>
+											<td>Increment</td>
+											<td><strong><code>++</code></strong><code>$j</code></td>
+										</tr>
+										<tr>
+											<td><code>--</code></td>
+											<td>Decrement</td>
+											<td><strong><code>--</code></strong><code>$j</code></td>
+										</tr>
+										<tr>
+											<td><code>**</code></td>
+											<td>Exponentiation (or power)</td>
+											<td><code>$j<strong>**</strong>2</code></td>
+										</tr>
+									</table>
+								</div>
+							</section>
+							<section>
+								<div id="assignment_operators">
+									<h3>Assignment operators</h3>
+									<p>Assignment operators assign values to variables. 
+									They start with the very simple <code>=</code> 
+									and move on to <code>+=</code>, <code>-=</code>, 
+									and so on (see
+									<a href="#assignment_operators-id00004">Table 
+									3-2</a>). The operator <code>+=</code> adds 
+									the value on the right side to the variable 
+									on the left, instead of totally replacing the 
+									value on the left. Thus, if <code>$count</code> 
+									starts with the value <code>5</code>, the statement:</p>
+									<div>
+										<pre>
+<code>$count</code> <code>+=</code> <code>1;</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>sets <code>$count</code> to <code>6</code>, 
+									just like the more familiar assignment statement:</p>
+									<div>
+										<pre>
+<code>$count</code> <code>=</code> <code>$count</code> <code>+</code> <code>1;</code>
+</pre>
+										<div>
+										</div>
+									</div>
+									<p>The <code>/=</code> and <code>*=</code> operators 
+									are similar, but for division and multiplication, 
+									the <code>.=</code> operator concatenates variables, 
+									such that <code>$a .= "."</code> will append 
+									a period to the end of <code>$a</code>:</p>
+									<div>
+										<pre>
+<code>$a</code> <code>=</code> <code>"Hello";</code>
+<code>$a</code> <code>.=</code> <code>".";</code> <code>// Equivalent to writing $a = $a . ".";</code>
+<code>echo</code> <code>$a;</code> <code>// The output is Hello.</code>
+</pre>
+										<div>
+										</div>
+									</div>
+									<p>The <code>%=</code> operator assigns the 
+									modulus:</p>
+									<div>
+										<pre>
+<code>$number</code> <code>=</code> <code>12;</code>
+<code>$number</code> <code>%=</code> <code>10;</code> <code>// Equivalent to writing $number = $number % 10;</code>
+<code>echo</code> <code>$number;</code> <code>// Echoes 2, the remainder of 12 divided by 10.</code>
+</pre>
+										<div>
+										</div>
+									</div>
+									<table id="assignment_operators-id00004">
+										<caption>Table 3-2. Assignment operators</caption>
+										<thead>
+											<tr>
+												<th>Operator</th>
+												<th>Example</th>
+												<th>Equivalent to</th>
+											</tr>
+										</thead>
+										<tr>
+											<td><code>=</code></td>
+											<td><code>$j <strong>=</strong> 15</code></td>
+											<td><code>$j = 15</code></td>
+										</tr>
+										<tr>
+											<td><code>+=</code></td>
+											<td><code>$j <strong>+=</strong> 5</code></td>
+											<td><code>$j = $j + 5</code></td>
+										</tr>
+										<tr>
+											<td><code>–=</code></td>
+											<td><code>$j <strong>-=</strong> 3</code></td>
+											<td><code>$j = $j – 3</code></td>
+										</tr>
+										<tr>
+											<td><code>*=</code></td>
+											<td><code>$j <strong>*=</strong> 8</code></td>
+											<td><code>$j = $j * 8</code></td>
+										</tr>
+										<tr>
+											<td><code>/=</code></td>
+											<td><code>$j <strong>/=</strong> 16</code></td>
+											<td><code>$j = $j / 16</code></td>
+										</tr>
+										<tr>
+											<td><code>.=</code></td>
+											<td><code>$j <strong>.=</strong> $k</code></td>
+											<td><code>$j = $j . $k</code></td>
+										</tr>
+										<tr>
+											<td><code>%=</code></td>
+											<td><code>$j <strong>%=</strong> 4</code></td>
+											<td><code>$j = $j % 4</code></td>
+										</tr>
+									</table>
+								</div>
+							</section>
+							<section>
+								<div id="comparison_operators">
+									<h3>Comparison operators</h3>
+									<p>Comparison operators are generally used inside 
+									a construct such as an <code>if</code> statement 
+									in which you need to compare two items. For 
+									example, you may wish to know whether a variable 
+									you have been incrementing has reached a specific 
+									value, or whether another variable is less than 
+									a set value, and so on (see
+									<a href="#comparison_operators-id00005">Table 
+									3-3</a>).</p>
+									<table id="comparison_operators-id00005">
+										<caption>Table 3-3. Comparison operators</caption>
+										<thead>
+											<tr>
+												<th>Operator</th>
+												<th>Description</th>
+												<th>Example</th>
+											</tr>
+										</thead>
+										<tr>
+											<td><code>==</code></td>
+											<td>Is <em>equal</em> to</td>
+											<td><code>$j <strong>==</strong> 4</code></td>
+										</tr>
+										<tr>
+											<td><code>!=</code></td>
+											<td>Is <em>not equal</em> to</td>
+											<td><code>$j <strong>!=</strong> 21</code></td>
+										</tr>
+										<tr>
+											<td><code>&gt;</code></td>
+											<td>Is <em>greater than</em></td>
+											<td><code>$j <strong>&gt;</strong> 3</code></td>
+										</tr>
+										<tr>
+											<td><code>&lt;</code></td>
+											<td>Is <em>less than</em></td>
+											<td><code>$j <strong>&lt;</strong> 100</code></td>
+										</tr>
+										<tr>
+											<td><code>&gt;=</code></td>
+											<td>Is <em>greater than or equal</em> 
+											to</td>
+											<td><code>$j <strong>&gt;=</strong> 
+											15</code></td>
+										</tr>
+										<tr>
+											<td><code>&lt;=</code></td>
+											<td>Is <em>less than or equal</em> to</td>
+											<td><code>$j <strong>&lt;=</strong> 
+											8</code></td>
+										</tr>
+										<tr>
+											<td><code>&lt;&gt;</code></td>
+											<td>Is <em>not equal</em> to</td>
+											<td><code>$j <strong>&lt;&gt;</strong> 
+											23</code></td>
+										</tr>
+										<tr>
+											<td><code>===</code></td>
+											<td>Is <em>identical</em> to</td>
+											<td><code>$j <strong>===</strong> "987"</code></td>
+										</tr>
+										<tr>
+											<td><code>!==</code></td>
+											<td>Is <em>not identical</em> to</td>
+											<td><code>$j <strong>!==</strong> "1.2e3"</code></td>
+										</tr>
+									</table>
+									<p>Note the difference between <code>=</code> 
+									and <code>==</code>. The first is an assignment 
+									operator, and the second is a comparison operator. 
+									Also remember that <code>==</code> compares 
+									the two values for being equivalent, while
+									<code>===</code> requires them to be identical. 
+									Even advanced programmers can sometimes confuse 
+									the use of these when coding hurriedly, so be 
+									careful.</p>
+								</div>
+							</section>
+							<section>
+								<div id="logical_operators">
+									<h3>Logical operators</h3>
+									<p>If you haven’t used them before, logical 
+									operators may at first seem a little daunting. 
+									But just think of them the way you would use 
+									logic in English. For example, you might say 
+									to yourself, “If the time is later than 12 p.m. 
+									and earlier than 2 p.m., have lunch.” In PHP, 
+									the code for this might look something like 
+									the following (using military, twenty-four hour 
+									time):</p>
+									<div>
+										<pre>
+<code>if</code> <code>($hour</code> <code>&gt;</code> <code>12</code> <code>&amp;&amp;</code> <code>$hour</code> <code>&lt;</code> <code>14)</code> <code>dolunch();</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>Here we have moved the set of instructions 
+									for actually going to lunch into a function 
+									that we will have to create later called
+									<code>dolunch</code>.</p>
+									<p>As the previous example shows, you generally 
+									use a logical operator to combine the results 
+									of two of the comparison operators shown in 
+									the previous section. A logical operator can 
+									also be input to another logical operator: “If 
+									the time is later than 12 p.m. and earlier than 
+									2 p.m., or if the smell of a roast is permeating 
+									the hallway and there are plates on the table.” 
+									As a rule, if something has a <code>TRUE</code> 
+									or <code>FALSE</code> value, it can be input 
+									to a logical operator. A logical operator takes 
+									two true or false inputs and produces a true 
+									or false result.</p>
+									<p><a href="#logical_operators-id00006">Table 
+									3-4</a> shows the logical operators according 
+									to precedence, which is discussed in
+									<a href="ch04.html#expressions_and_control_flow_in_php">
+									Chapter 4</a>.</p>
+									<table id="logical_operators-id00006">
+										<caption>Table 3-4. Logical operators</caption>
+										<thead>
+											<tr>
+												<th>Operator</th>
+												<th>Description</th>
+												<th>Example</th>
+											</tr>
+										</thead>
+										<tr>
+											<td><code>&amp;&amp;</code></td>
+											<td><em>And</em></td>
+											<td><code>$j == 3 <strong>&amp;&amp;</strong> 
+											$k == 2</code></td>
+										</tr>
+										<tr>
+											<td><code>and</code></td>
+											<td>Low-precedence <em>and</em></td>
+											<td><code>$j == 3 <strong>and</strong> 
+											$k == 2</code></td>
+										</tr>
+										<tr>
+											<td><code>||</code></td>
+											<td><em>Or</em></td>
+											<td><code>$j &lt; 5 <strong>||</strong> 
+											$j &gt; 10</code></td>
+										</tr>
+										<tr>
+											<td><code>or</code></td>
+											<td>Low-precedence <em>or</em></td>
+											<td><code>$j &lt; 5 <strong>or</strong> 
+											$j &gt; 10</code></td>
+										</tr>
+										<tr>
+											<td><code>!</code></td>
+											<td><em>Not</em></td>
+											<td><code>! ($j <strong>==</strong> 
+											$k)</code></td>
+										</tr>
+										<tr>
+											<td><code>xor</code></td>
+											<td><em>Exclusive or</em></td>
+											<td><code>$j <strong>xor</strong> $k</code></td>
+										</tr>
+									</table>
+									<p>Note that <code>&amp;&amp;</code> is usually 
+									interchangeable with <code>and</code>; the same 
+									is true for <code>||</code> and <code>or</code>. 
+									However, because <code>and</code> and <code>
+									or</code> have a lower precedence, you should 
+									avoid using them except when they are the only 
+									option, as in the following statement, which
+									<em>must</em> use the <code>or</code> operator 
+									(<code>||</code> cannot be used to force a second 
+									statement to execute if the first fails):</p>
+									<div>
+										<pre>
+<code>$html = file_get_contents($site) </code><strong><code>or</code></strong><code> die("Cannot download from $site");</code></pre>
+										<div>
+										</div>
+									</div>
+									<div>
+										<h1>Operator precedence</h1>
+										<p>Operator precedence determines how particular 
+										expressions are grouped together. The concept 
+										is also used in common math as illustrated 
+										by the following statement:</p>
+										<div>
+											<pre>
+5 + 2 * 3</pre>
+											<div>
+											</div>
+										</div>
+										<p>The result is 11, because multiplication 
+										has a higher precedence than the addition, 
+										so the result is computed as <em>2 multiplied 
+										by 3</em>, which equals to 6, <em>plus 5</em>. 
+										It can be rewritten as:</p>
+										<div>
+											<pre>
+5 + (2 * 3)</pre>
+											<div>
+											</div>
+										</div>
+										<p>The parenthesis in this case are optional 
+										but they help to illustrate the precedence. 
+										In other cases, parenthesis may be used 
+										to change or force precedence, for example 
+										the result of the following statement is 
+										21:</p>
+										<div>
+											<pre>
+(5 + 2) * 3
+</pre>
+											<div>
+											</div>
+										</div>
+										<p>You’ll learn more about operator precedence 
+										in
+										<a href="ch04.html#expressions_and_control_flow_in_php">
+										Chapter 4</a>.</p>
+									</div>
+									<p>The most unusual of these operators is
+									<code>xor</code>, which stands for <em>exclusive 
+									or</em> and returns a <code>TRUE</code> value 
+									if either value is <code>TRUE</code> but a
+									<code>FALSE</code> value if both inputs are
+									<code>TRUE</code> or both inputs are <code>FALSE</code>. 
+									To understand this, imagine that you want to 
+									concoct your own cleaner for household items. 
+									Ammonia makes a good cleaner, and so does bleach, 
+									so you want your cleaner to have one of these. 
+									But the cleaner must not have both, because 
+									the combination is hazardous. In PHP, you could 
+									represent this as follows (using parentheses 
+									because <code>xor</code> has a lower precedence 
+									than <code>=</code>):</p>
+									<div>
+										<pre>
+<code>$ammonia</code> <code>=</code> <code>true;</code>
+<code>$bleach</code> <code>=</code> <code>false;</code>
+<code>$safe</code> <code>=</code> <code>($ammonia</code> <code>xor</code> <code>$bleach);</code>
+<code>echo</code> <code>$safe;</code> <code>// output 1 which is true</code>
+</pre>
+										<div>
+										</div>
+									</div>
+									<p>In this example, if either <code>$ammonia</code> 
+									or <code>$bleach</code> is <code>TRUE</code>,
+									<code>$safe</code> will also be set to <code>
+									TRUE</code>. But if both are <code>TRUE</code> 
+									or both are <code>FALSE</code>, <code>$safe</code> 
+									will be set to <code>FALSE</code>.</p>
+								</div>
+							</section>
+						</div>
+					</section>
+					<section>
+						<div id="variable_assignment">
+							<h2>Variable Assignment</h2>
+							<p>The syntax to assign a value to a variable is always
+							<em><code>$variable = value</code></em>. Or, to reassign 
+							the value to another variable, it is <em><code>$other_variable 
+							= $variable</code></em>, remembering to preface variable 
+							names with <code>$</code> symbols in PHP.</p>
+							<p>There are also a couple of other assignment operators 
+							that you will find useful. For example, we’ve already 
+							seen this:</p>
+							<div>
+								<pre>
+<code>$x</code> <code>+=</code> <code>10;</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>which tells the PHP parser to add the value on the 
+							right (in this instance, the value <code>10</code>) 
+							to the variable <code>$x</code>. Likewise, we could 
+							subtract as follows:</p>
+							<div>
+								<pre>
+<code>$y</code> <code>–=</code> <code>10;</code></pre>
+								<div>
+								</div>
+							</div>
+							<section>
+								<div id="variable_incrementing_and_decrementing">
+									<h3>Variable incrementing and decrementing</h3>
+									<p>Adding or subtracting 1 (known as incrementing 
+									and decrementing) is such a common operation 
+									that PHP provides special operators for it. 
+									You can use one of the following in place of 
+									the <code>+=</code> and <code>-=</code> operators:</p>
+									<div>
+										<pre>
+<code>++$x;</code>
+<code>--$y;</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>In conjunction with a test (an <code>if</code> 
+									statement), you could use the following code:</p>
+									<div>
+										<pre>
+<code>if</code> <code>(++$x</code> <code>==</code> <code>10)</code> <code>echo</code> <code>$x;</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>This tells PHP to <em>first</em> increment 
+									the value of <code>$x</code> and then to test 
+									whether it has the value <code>10</code> and, 
+									if it does, to output its value. But you can 
+									also require PHP to increment (or, as in the 
+									following example, decrement) a variable <em>
+									after</em> it has tested the value, like this:</p>
+									<div>
+										<pre>
+<code>if</code> <code>($y--</code> <code>==</code> <code>0)</code> <code>echo</code> <code>$y;</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>which gives a subtly different result. Suppose
+									<code>$y</code> starts out as <code>0</code> 
+									before the statement is executed. The comparison 
+									will return a <code>TRUE</code> result, but
+									<code>$y</code> will be set to <code>–1</code> 
+									after the comparison is made. So what will the
+									<code>echo</code> statement display: <code>0</code> 
+									or <code>–1</code>? Try to guess, and then try 
+									out the statement in a PHP processor to confirm. 
+									Because this combination of statements is confusing, 
+									it should be taken as an educational example 
+									and not as a guide to good programming style.</p>
+									<p>In short, a variable is incremented or decremented 
+									before the test if the operator is placed before 
+									the variable, whereas the variable is incremented 
+									or decremented after the test if the operator 
+									is placed after the variable.</p>
+									<p>By the way, the correct answer to the previous 
+									question is that the <code>echo</code> statement 
+									will display the result <code>–1</code>, because
+									<code>$y</code> was decremented right after 
+									it was accessed in the <code>if</code> statement, 
+									and before the <code>echo</code> statement.</p>
+								</div>
+							</section>
+							<section>
+								<div id="string_concatenation">
+									<h3>String concatenation</h3>
+									<p><em>Concatenation</em> is a somewhat arcane 
+									term for putting something after another thing. 
+									So, in PHP, string concatenation uses the period 
+									(<code>.</code>) to append one string of characters 
+									to another. The simplest way to do this is as 
+									follows:</p>
+									<div>
+										<pre>
+<code>echo</code> <code>"You have "</code> <code>.</code> <code>$msgs</code> <code>.</code> <code>" messages.";</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>Assuming that the variable <code>$msgs</code> 
+									is set to the value <code>5</code>, the output 
+									from this line of code will be the following:</p>
+									<div>
+										<pre>
+<strong>You have 5 messages.</strong></pre>
+										<div>
+										</div>
+									</div>
+									<p>Just as you can add a value to a numeric 
+									variable with the <code>+=</code> operator, 
+									you can append one string to another using
+									<code>.=</code>, like this:</p>
+									<div>
+										<pre>
+<code>$bulletin</code> <code>=</code> <code>"This is a test of the broadcast system.";</code>
+<code>$newsflash</code> <code>=</code> <code>"Houston, we have a problem.";</code>
+<code>$bulletin</code> <code>.=</code> <code>" "</code> <code>.</code> <code>$newsflash;</code>
+<code>echo</code> <code>$bulletin;</code>
+</pre>
+										<div>
+										</div>
+									</div>
+									<p>In this case, if <code>$bulletin</code> contains 
+									a news bulletin and <code>$newsflash</code> 
+									has a news flash, the command appends the news 
+									flash to the news bulletin so that <code>$bulletin</code> 
+									now comprises both strings of text.</p>
+								</div>
+							</section>
+							<section>
+								<div id="string_types">
+									<h3>String types</h3>
+									<p>PHP supports two types of strings that are 
+									denoted by the type of quotation mark that you 
+									use. If you wish to assign a literal string, 
+									preserving the exact contents, you should use 
+									single quotation marks (apostrophes), like this:</p>
+									<div>
+										<pre>
+<code>$info</code> <code>=</code> <code>'Preface variables with a $ like this: $variable';</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>In this case, every character within the 
+									single-quoted string is assigned to <code>$info</code>. 
+									If you had used double quotes, PHP would have 
+									attempted to evaluate <code>$variable</code> 
+									as a variable.</p>
+									<p>On the other hand, when you want to include 
+									the value of a variable inside a string, you 
+									do so by using double-quoted strings. You can 
+									wrap the variable name in curly braces <code>
+									{</code> and <code>}</code> to explicitly specify 
+									the end of the variable name:</p>
+									<div>
+										<pre>
+<code>echo</code> <code>"This week {$count} people have viewed your profile";</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>As you will realize, this syntax also offers 
+									a simpler option to concatenation in which you 
+									don’t need to use a period, or close and reopen 
+									quotes, to append one string to another. This 
+									is called <em>variable substitution</em> or
+									<i>variable interpolation</i>, and some programmers 
+									use it extensively, whereas others don’t use 
+									it at all.</p>
+								</div>
+							</section>
+							<section>
+								<div id="escaping_characters">
+									<h3>Escaping characters</h3>
+									<p>Sometimes a string needs to contain characters 
+									with special meanings that might be interpreted 
+									incorrectly. For example, the following line 
+									of code will not work, because the second quotation 
+									mark encountered in the word <em>spelling’s</em> 
+									will tell the PHP parser that the string’s end 
+									has been reached. Consequently, the rest of 
+									the line will be rejected as an error:</p>
+									<div>
+										<pre>
+<code>$text</code> <code>=</code> <code>'My spelling's</code> <code>atroshus';</code> <code>// Erroneous syntax</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>To correct this, you can add a backslash 
+									directly before the offending quotation mark 
+									to tell PHP to treat the character literally 
+									and not to interpret it:</p>
+									<div>
+										<pre>
+<code>$text</code> <code>=</code> <code>'My spelling\'s still atroshus';</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>And you can perform this trick in almost 
+									all situations in which PHP would otherwise 
+									return an error by trying to interpret a character. 
+									For example, the following double-quoted string 
+									will be correctly assigned:</p>
+									<div>
+										<pre>
+<code>$text</code> <code>=</code> <code>"She wrote upon it, \"Return to sender\".";</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>Additionally, you can use escape characters 
+									to insert various special characters into strings, 
+									such as tabs, newlines, and carriage returns. 
+									These are represented, as you might guess, by
+									<code>\t</code>, <code>\n</code>, and <code>
+									\r</code>. Here is an example using tabs to 
+									lay out a heading—it is included here merely 
+									to illustrate escapes, because in web pages 
+									there are always better ways to do layout:</p>
+									<div>
+										<pre>
+<code>$heading</code> <code>=</code> <code>"Date\tName\tPayment";</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>These special backslash-preceded characters 
+									work only in double-quoted strings. In single-quoted 
+									strings, the preceding string would be displayed 
+									with the ugly <code>\t</code> sequences instead 
+									of tabs. Within single-quoted strings, only 
+									the escaped apostrophe (<code>\'</code>) and 
+									escaped backslash itself (<code>\\</code>) are 
+									recognized as escaped characters.</p>
+								</div>
+							</section>
+						</div>
+					</section>
+					<section>
+						<div id="multiple-line_commands">
+							<h2>Multiline Strings</h2>
+							<p>There are times when you need to output quite a lot 
+							of text from PHP, and using several <code>echo</code> 
+							(or <code>print</code>) statements would be time-consuming 
+							and messy. To overcome this, PHP offers two conveniences. 
+							The first is just to put multiple lines between quotes, 
+							as in <a href="#multiline_string_echo_statement">Example 
+							3-6</a>. Variables can also be assigned, as in
+							<a href="#multiline_string_assignment">Example 3-7</a>.</p>
+							<div id="multiline_string_echo_statement">
+								<h5>Example 3-6. A multiline string <code>echo</code> 
+								statement</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$author</code> <code>=</code> <code>"Steve Ballmer";</code>
+
+  <code>echo</code> <code>"Developers, developers, developers, developers, developers,</code>
+<code>  developers, developers, developers, developers!</code>
+
+<code>  - $author.";</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<div id="multiline_string_assignment">
+								<h5>Example 3-7. A multiline string assignment</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$author</code> <code>=</code> <code>"Bill Gates";</code>
+
+  <code>$text</code> <code>=</code> <code>"Measuring programming progress by lines of code is like</code>
+<code>  Measuring aircraft building progress by weight.</code>
+
+<code>  - $author.";</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>PHP also offers a multiline sequence using the
+							<code>&lt;&lt;&lt;</code> operator—commonly referred 
+							to as a <em>here-document</em> or <em>heredoc</em>—as 
+							a way of specifying a string literal, preserving the 
+							line breaks and other whitespace (including indentation) 
+							in the text. Its use can be seen in
+							<a href="#alternative_multiline_echo_statement">Example 
+							3-8</a>.</p>
+							<div id="alternative_multiline_echo_statement">
+								<h5>Example 3-8. Alternative multiline <code>echo</code> 
+								statement</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$author</code> <code>=</code> <code>"Brian W. Kernighan";</code>
+
+  <code>echo</code> <code>&lt;&lt;&lt;_END</code>
+<code>  Debugging is twice as hard as writing the code in the first place.</code>
+<code>  Therefore, if you write the code as cleverly as possible, you are,</code>
+<code>  by definition, not smart enough to debug it.</code>
+
+<code>  - $author.</code>
+<code>_END;</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>This code tells PHP to output everything between 
+							the two <code>_END</code> tags as if it were a double-quoted 
+							string (except that quotes in a heredoc do not need 
+							to be escaped). This means it’s possible, for example, 
+							for a developer to write entire sections of HTML directly 
+							into PHP code and then just replace specific dynamic 
+							parts with PHP variables.</p>
+							<p>It is important to remember that the closing
+							<code>_END;</code> <em>must</em> appear right at the 
+							start of a new line, and it must be the <em>only</em> 
+							thing on that line—not even a comment is allowed to 
+							be added after it (nor even a single space). Once you 
+							have closed a multi-line block, you are free to use 
+							the same tag name again.</p>
+							<div class="note">
+								<h4>Note</h4>
+								<p>Remember: using the <code>&lt;&lt;&lt;_END..._END;</code> 
+								heredoc construct, you don’t have to add <code>\n</code> 
+								linefeed characters to send a linefeed—just press 
+								Return and start a new line. Also, unlike in either 
+								a double-quote- or single-quote-delimited string, 
+								you are free to use all the single and double quotes 
+								you like within a heredoc, without escaping them 
+								by preceding them with a backslash (<code>\</code>).</p>
+							</div>
+							<p><a href="#multiline_string_variable_assignment">Example 
+							3-9</a> shows how to use the same syntax to assign multiple 
+							lines to a variable.</p>
+							<div id="multiline_string_variable_assignment">
+								<h5>Example 3-9. A multiline string variable assignment</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$author</code> <code>=</code> <code>"Scott Adams";</code>
+
+  <code>$out</code> <code>=</code> <code>&lt;&lt;&lt;_END</code>
+<code>  Normal people believe that if it ain't broke, don't fix it.</code>
+<code>  Engineers believe that if it ain't broke, it doesn't have enough</code>
+<code>  features yet.</code>
+
+<code>  - $author.</code>
+<code>_END;</code>
+<code>echo</code> <code>$out;</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>The variable <code>$out</code> will then be populated 
+							with the contents between the two tags. If you were 
+							appending, rather than assigning, you could also have 
+							used <code>.=</code> in place of <code>=</code> to append 
+							the string to <code>$out</code>.</p>
+							<p>Be careful not to place a semicolon directly after 
+							the first occurrence of <code>_END</code>, as that would 
+							terminate the multi-line block before it had even started 
+							and cause a <code>Parse error</code> message.</p>
+							<p>By the way, the <code>_END</code> tag is simply one 
+							I chose for these examples because it is unlikely to 
+							be used anywhere else in PHP code and is therefore unique. 
+							You can use any tag you like, such as <code>_SECTION1</code> 
+							or <code>_OUTPUT</code> and so on. Also, to help differentiate 
+							tags such as this from variables or functions, the general 
+							practice is to preface them with an underscore.</p>
+							<section>
+								<div id="id218">
+									<h3>Using a Nowdoc</h3>
+									<p>If you wish to prevent PHP from parsing any 
+									variables encountered within a heredoc, you 
+									can use a <em>nowdoc</em> instead. It works 
+									in almost the same way, except that the name 
+									you choose for your end tag should be enclosed 
+									in single quotes at the start of the nowdoc, 
+									as in
+									<a href="#a-nowdoc-multiline-assignment">Example 
+									3-10</a>, where the difference between it and
+									<a href="#multiline_string_variable_assignment">
+									Example 3-9</a> is shown in bold.</p>
+									<div id="a-nowdoc-multiline-assignment">
+										<h5>Example 3-10. A Nowdoc multiline assignment</h5>
+										<div>
+											<pre>
+<code>&lt;?php
+&nbsp;&nbsp;$author = "Scott Adams";
+
+&nbsp;&nbsp;</code><strong><code>$out = &lt;&lt;&lt;'_END'</code></strong><code>
+&nbsp;&nbsp;Normal people believe that if it ain't broke, don't fix it.
+&nbsp;&nbsp;Engineers believe that if it ain't broke, it doesn't have enough
+&nbsp;&nbsp;features yet.
+
+&nbsp;&nbsp;- $author.
+_END;
+echo $out;
+?&gt;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>In this instance <b>$author</b> will <em>
+									not</em> be replaced with the string <b>Scott 
+									Adams</b>, and will simply remain displayed 
+									as <b>$author</b>.</p>
+									<div class="note">
+										<h4>Note</h4>
+										<p>Laying out text over multiple lines is 
+										usually just a convenience to make your 
+										PHP code easier to read, because once it 
+										is displayed in a web page, HTML formatting 
+										rules take over and whitespace is suppressed 
+										(but in heredoc, <code>$author</code> in 
+										our example will still be replaced with 
+										the variable’s value, unlike in nowdoc).</p>
+										<p>So, for example, if you load these multi-line 
+										output examples into a browser, they will
+										<em>not</em> display over several lines, 
+										because all browsers treat newlines just 
+										like spaces. However, if you use the browser’s 
+										View Source feature, you will find that 
+										the newlines are correctly placed and that 
+										PHP preserved the line breaks.</p>
+									</div>
+								</div>
+							</section>
+						</div>
+					</section>
+					<section>
+						<div id="variable_typing">
+							<h2>Variable Typing</h2>
+							<p>PHP is a loosely typed language. This means that 
+							variables do not have to be declared before they are 
+							used and that PHP always converts variables to the type 
+							required by their context when they are accessed.</p>
+							<p>For example, you can create a multiple-digit number 
+							and extract the <em>n</em>th digit from it simply by 
+							assuming it to be a string. In
+							<a href="#automatic_conversion_from_a_number_to_a">Example 
+							3-11</a>, the numbers <code>12345</code> and <code>67890</code> 
+							are multiplied together, returning a result of <code>
+							838102050</code>, which is then placed in the variable
+							<code>$number</code>.</p>
+							<div id="automatic_conversion_from_a_number_to_a">
+								<h5>Example 3-11. Automatic conversion from a number 
+								to a string</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$number</code> <code>=</code> <code>12345</code> <code>*</code> <code>67890;</code>
+  <code>echo</code> <code>substr($number,</code> <code>3,</code> <code>1);</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>At the point of the assignment, <code>$number</code> 
+							is a numeric variable. But on the second line, a call 
+							is placed to the PHP function <code>substr</code>, which 
+							asks for one character to be returned from <code>$number</code>, 
+							starting at the fourth position (remember that PHP offsets 
+							start from zero). To do this, PHP turns <code>$number</code> 
+							into a nine-character string so that <code>substr</code> 
+							can access it and return the character, which in this 
+							case is <code>1</code>.</p>
+							<p>The same goes for turning a string into a number, 
+							and so on. In
+							<a href="#automatically_converting_a_string_to_a_n">
+							Example 3-12</a>, the variable <code>$pi</code> is set 
+							to a string value, which is then automatically turned 
+							into a floating-point number in the third line by the 
+							equation for calculating a circle’s area, which outputs 
+							the value <code>78.5398175</code>.</p>
+							<div id="automatically_converting_a_string_to_a_n">
+								<h5>Example 3-12. Automatically converting a string 
+								to a number</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$pi</code>     <code>=</code> <code>"3.1415927";</code>
+  <code>$radius</code> <code>=</code> <code>5;</code>
+  <code>echo</code> <code>$pi</code> <code>*</code> <code>($radius</code> <code>*</code> <code>$radius);</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>In practice, what this all means is that you don’t 
+							have to worry too much about your variable types, although 
+							it is possible for type declarations to be added to 
+							function arguments, return values, and (as of PHP 7.4.0) 
+							class properties,ensuring that the value is of the specified 
+							type at call time, otherwise a<a href="https://www.php.net/manual/en/class.typeerror.php" rel="noopener noreferrer" target="_blank">TypeError</a> 
+							is thrown.</p>
+							<p>Assuming type declarations are not being used, just 
+							assign them values that make sense to you, and PHP will 
+							convert them if necessary. Then, when you want to retrieve 
+							values, just ask for them—for example, with an <code>
+							echo</code> statement, but do remember that sometimes 
+							automatic conversions do not operate quite as you might 
+							expect.</p>
+							<p>If type declarations are being used to make the code 
+							behave more predictably, you can change the type of 
+							the variable by prefixing it with the chosen type in 
+							parentheses, like this:</p>
+							<div>
+								<pre>
+<code>$string</code> <code>=</code> <code>(string)$number;</code>
+<code>$number</code> <code>=</code> <code>(int)$string;</code>
+<code>$boolean</code> <code>=</code> <code>(bool)$integer;</code>
+</pre>
+								<div>
+								</div>
+							</div>
+							<p>Sometimes, it may not be clear at the first sight 
+							how the type conversion (sometimes called <em>type casting</em>) 
+							will go and what will be the result. The PHP manual 
+							has all the
+							<a href="https://www.php.net/language.types.type-juggling#language.types.typecasting" rel="noopener noreferrer" target="_blank">
+							conversion rules nicely documented</a>.</p>
+						</div>
+					</section>
+					<section>
+						<div id="constants">
+							<h2>Constants</h2>
+							<p><em>Constants</em> are similar to variables, holding 
+							information to be accessed later, except that they are 
+							what they sound like—constant. In other words, once 
+							you have defined one, its value is set for the remainder 
+							of the program and cannot be altered.</p>
+							<p>For example, you can use a constant to hold the location 
+							of your server root (the folder with the main files 
+							of your website). You would define such a constant like 
+							this:</p>
+							<div>
+								<pre>
+<code>define("ROOT_LOCATION",</code> <code>"/usr/local/www/");</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>Then, to read the contents of the variable, you just 
+							refer to it like a regular variable (but it isn’t preceded 
+							by a dollar sign):</p>
+							<div>
+								<pre>
+<code>$directory</code> <code>=</code> <code>ROOT_LOCATION;</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>Now, whenever you need to run your PHP code on a 
+							different server with a different folder configuration, 
+							you have only a single line of code to change.</p>
+							<div class="note">
+								<h4>Note</h4>
+								<p>The main two things you have to remember about 
+								constants are that they must <em>not</em> be prefaced 
+								with a <code>$</code> (unlike regular variables) 
+								and that you can define them only using the
+								<code>define</code> function.</p>
+							</div>
+							<p>It is generally a standard practice to use only uppercase 
+							letters for constant variable names, especially if other 
+							people will also read your code.</p>
+						</div>
+					</section>
+					<section>
+						<div id="predefined_constants">
+							<h2>Predefined Constants</h2>
+							<p>PHP comes ready-made with dozens of predefined constants 
+							that you won’t generally use as a beginner. However, 
+							there are a few—known as the <em>magic constants</em>—that 
+							you will find useful. The names of the magic constants 
+							always have two underscores at the beginning and two 
+							at the end so that you won’t accidentally try to name 
+							one of your own constants with a name that is already 
+							taken. They are detailed in
+							<a href="#phpapostrophes_magic_constants">Table 3-5</a>. 
+							The concepts referred to in the table will be introduced 
+							in future chapters.</p>
+							<table id="phpapostrophes_magic_constants">
+								<caption>Table 3-5. PHP’s magic constants</caption>
+								<thead>
+									<tr>
+										<th>Magic constant</th>
+										<th>Description</th>
+									</tr>
+								</thead>
+								<tr>
+									<td><code>__LINE__</code></td>
+									<td>The current line number of the file.</td>
+								</tr>
+								<tr>
+									<td><code>__FILE__</code></td>
+									<td>The full path and filename of the file. 
+									If used inside an <code>include</code>, the 
+									name of the included file is returned. Some 
+									operating systems allow aliases for directories, 
+									called <em>symbolic links</em>; in <code>__FILE__</code> 
+									these are always changed to the actual directories.</td>
+								</tr>
+								<tr>
+									<td><code>__DIR__</code></td>
+									<td>The directory of the file. If used inside 
+									an <code>include</code>, the directory of the 
+									included file is returned. This is equivalent 
+									to <em><code>dirname</code></em><code>(__FILE__)</code>. 
+									This directory name does not have a trailing 
+									slash unless it is the root directory.</td>
+								</tr>
+								<tr>
+									<td><code>__FUNCTION__</code></td>
+									<td>The function name. Returns the function 
+									name as it was declared (case-sensitive).</td>
+								</tr>
+								<tr>
+									<td><code>__CLASS__</code></td>
+									<td>The class name. Returns the class name as 
+									it was declared (case-sensitive).</td>
+								</tr>
+								<tr>
+									<td><code>__METHOD__</code></td>
+									<td>The class method name. The method name is 
+									returned as it was declared (case-sensitive).</td>
+								</tr>
+								<tr>
+									<td><code>__NAMESPACE__</code></td>
+									<td>The name of the current namespace. This 
+									constant is defined at compile time (case-sensitive).</td>
+								</tr>
+							</table>
+							<p>One handy use of these variables is for debugging, 
+							when you need to insert a line of code to see whether 
+							the program flow reaches it:</p>
+							<div>
+								<pre>
+<code>echo</code> <code>"This is line "</code> <code>.</code> <code>__LINE__</code> <code>.</code> <code>" of file "</code> <code>.</code> <code>__FILE__;</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>This prints the current program line in the current 
+							file (including the path) to the web browser.</p>
+						</div>
+					</section>
+					<section>
+						<div id="difference_between_the_echo_and_prin">
+							<h2>The Difference Between the echo and print Commands</h2>
+							<p>So far, you have seen the <code>echo</code> command 
+							used in a number of different ways to output text from 
+							the server to your browser. In some cases, a string 
+							literal has been output. In others, strings have first 
+							been concatenated or variables have been evaluated. 
+							I’ve also shown output spread over multiple lines.</p>
+							<p>But there is an alternative to <code>echo</code> 
+							that you can use: <code>print</code>. The two commands 
+							are quite similar, but <code>print</code> is a function-like 
+							construct that takes a single parameter and has a return 
+							value (which is always <code>1</code>), whereas
+							<code>echo</code> is purely a PHP language construct. 
+							Since both commands are constructs, neither requires 
+							parentheses.</p>
+							<p>By and large, the <code>echo</code> command usually 
+							will be a tad faster than <code>print</code>, because 
+							it doesn’t set a return value. On the other hand, because 
+							it isn’t implemented like a function, <code>echo</code> 
+							cannot be used as part of a more complex expression, 
+							whereas <code>print</code> can. Here’s an example to 
+							output whether the value of a variable is <code>TRUE</code> 
+							or <code>FALSE</code> using <code>print</code>—something 
+							you could not perform in the same manner with <code>
+							echo</code>, because it would display a <code>Parse 
+							error</code> message as the ternary operator expects 
+							an expression that returns a value and while for example
+							<code>echo "TRUE"</code> doesn’t, <code>print "TRUE"</code> 
+							returns <code>1</code>:</p>
+							<div>
+								<pre>
+<code>$b</code> <code>?</code> <code>print</code> <code>"TRUE"</code> <code>:</code> <code>print</code> <code>"FALSE";</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>The question mark is simply a way of interrogating 
+							whether variable <code>$b</code> is <code>TRUE</code> 
+							or <code>FALSE</code>. Whichever command is on the left 
+							of the following colon is executed if <code>$b</code> 
+							is <code>TRUE</code>, whereas the command to the right 
+							of the colon is executed if <code>$b</code> is <code>
+							FALSE</code>.</p>
+							<p>Generally, though, the examples in this book use
+							<code>echo</code>, and I recommend that you do so as 
+							well until you reach such a point in your PHP development 
+							that you discover the need for using <code>print</code>.</p>
+						</div>
+					</section>
+					<section>
+						<div id="functions">
+							<h2>Functions</h2>
+							<p><em>Functions</em> separate out and encapsulate sections 
+							of code that perform a particular task more than once. 
+							For example, maybe you often need to look up a date 
+							and return it in a certain format. That would be a good 
+							example to turn into a function. The code doing it might 
+							be only three lines long, but if you have to paste it 
+							into your program a dozen times, you’re making your 
+							program unnecessarily large and complex if you don’t 
+							use a function. And if you decide to change the date 
+							format later, putting it in a function means having 
+							to change it in only one place.</p>
+							<p>Placing code into a function not only shortens your 
+							program and makes it more readable but also adds extra 
+							functionality (pun intended), because functions can 
+							be passed parameters to make them perform differently. 
+							They can also return values to the calling code.</p>
+							<p>To create a function, declare it in the manner shown 
+							in <a href="#simple_function_declaration">Example 3-13</a>.</p>
+							<div id="simple_function_declaration">
+								<h5>Example 3-13. A simple function declaration</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>function</code> <code>longdate($timestamp)</code>
+  <code>{</code>
+    <code>return</code> <code>date("l F jS Y",</code> <code>$timestamp);</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>This function returns a date in the format <em>Sunday 
+							May 2nd 2027</em>. Any number of parameters can be passed 
+							between the initial parentheses; we have chosen to accept 
+							just one. The curly braces enclose all the code that 
+							is executed when you later call the function. Note that 
+							the first letter within the <code>date</code> function 
+							call in this example is a lowercase letter L, not to 
+							be confused with the number 1.</p>
+							<p>To output today’s date using this function, place 
+							the following call in your code:</p>
+							<div>
+								<pre>
+<code>echo</code> <code>longdate(time());</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>If you need to print out the date 17 days ago, you 
+							now just have to issue the following call:</p>
+							<div>
+								<pre>
+<code>echo</code> <code>longdate(time()</code> <code>-</code> <code>17</code> <code>*</code> <code>24</code> <code>*</code> <code>60</code> <code>*</code> <code>60);</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>which passes to <code>longdate</code> the current 
+							time less the number of seconds since 17 days ago (17 
+							days × 24 hours × 60 minutes × 60 seconds).</p>
+							<p>Functions can also accept multiple parameters and 
+							return multiple results, using techniques that I’ll 
+							introduce over the following chapters.</p>
+						</div>
+					</section>
+					<section>
+						<div id="variable_scope">
+							<h2>Variable Scope</h2>
+							<p>If you have a very long program, it’s quite possible 
+							that you could start to run out of good variable names, 
+							but with PHP you can decide the <em>scope</em> of a 
+							variable. In other words, you can, for example, tell 
+							it that you want the variable <code>$temp</code> to 
+							be used only inside a particular function and to forget 
+							it was ever used when the function returns. In fact, 
+							this is the default scope for PHP variables.</p>
+							<p>Alternatively, you could inform PHP that a variable 
+							is global in scope and thus can be accessed by every 
+							other part of your program.</p>
+							<section>
+								<div id="local_variables">
+									<h3>Local variables</h3>
+									<p><em>Local variables</em> are variables that 
+									are created within, and can be accessed only 
+									by, a function. They are generally temporary 
+									variables that are used to store partially processed 
+									results prior to the function’s return.</p>
+									<p>One set of local variables is the list of 
+									arguments to a function. In the previous section, 
+									we defined a function that accepted a parameter 
+									named <code>$timestamp</code>. This is meaningful 
+									only in the body of the function; you can’t 
+									get or set its value outside the function.</p>
+									<p>For another example of a local variable, 
+									take another look at the <code>longdate</code> 
+									function, which is modified slightly in
+									<a href="#expanded_version_of_the_longdate_func">
+									Example 3-14</a>.</p>
+									<div id="expanded_version_of_the_longdate_func">
+										<h5>Example 3-14. An expanded version of 
+										the <code>longdate</code> function</h5>
+										<div>
+											<pre>
+<code>&lt;?php</code>
+  <code>function</code> <code>longdate($timestamp)</code>
+  <code>{</code>
+    <code>$temp</code> <code>=</code> <code>date("l F jS Y",</code> <code>$timestamp);</code>
+    <code>return</code> <code>"The date is $temp";</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>Here we have assigned the value returned 
+									by the <code>date</code> function to the temporary 
+									variable <code>$temp</code>, which is then inserted 
+									into the string returned by the function. As 
+									soon as the function returns, the <code>$temp</code> 
+									variable and its contents disappear, as if they 
+									had never been used at all.</p>
+									<p>Now, to see the effects of variable scope 
+									making an outside variable invisible inside 
+									a function, let’s look at some similar code 
+									in
+									<a href="#this_attempt_to_access_dollartemp_in_fun">
+									Example 3-15</a>. Here <code>$temp</code> has 
+									been created <em>before</em> we call the
+									<code>longdate</code> function.</p>
+									<div id="this_attempt_to_access_dollartemp_in_fun">
+										<h5>Example 3-15. This attempt to access
+										<code>$temp</code> in function <code>longdate</code> 
+										will fail</h5>
+										<div>
+											<pre>
+<code>&lt;?php</code>
+  <code>$temp</code> <code>=</code> <code>"The date is ";</code>
+  <code>echo</code> <code>longdate(time());</code>
+
+  <code>function</code> <code>longdate($timestamp)</code>
+  <code>{</code>
+    <code>return</code> <code>$temp</code> <code>.</code> <code>date("l F jS Y",</code> <code>$timestamp);</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>However, because <code>$temp</code> was neither 
+									created within the <code>longdate</code> function 
+									nor passed to it as a parameter, <code>longdate</code> 
+									cannot access it. Therefore, this code snippet 
+									outputs only the date, not the preceding text. 
+									In fact, depending on how PHP is configured, 
+									it may first display the error message <code>
+									Notice: Undefined variable: temp</code>, something 
+									you don’t want your users to see.</p>
+									<p>The reason for this is that, by default, 
+									variables created within a function are local 
+									to that function, and variables created outside 
+									of any functions can be accessed only by nonfunction 
+									code.</p>
+									<p>Some ways to repair
+									<a href="#this_attempt_to_access_dollartemp_in_fun">
+									Example 3-15</a> appear in Examples
+									<a href="#rewriting_to_refer_to_dollartemp_within">
+									3-16</a> and
+									<a href="#alternative_solution_passing_dollarte">
+									3-17</a>.</p>
+									<div id="rewriting_to_refer_to_dollartemp_within">
+										<h5>Example 3-16. Rewriting to refer to
+										<code>$temp</code> within its local scope 
+										fixes the problem</h5>
+										<div>
+											<pre>
+<code>&lt;?php</code>
+  <code>$temp</code> <code>=</code> <code>"The date is ";</code>
+  <code>echo</code> <code>$temp</code> <code>.</code> <code>longdate(time());</code>
+
+  <code>function</code> <code>longdate($timestamp)</code>
+  <code>{</code>
+    <code>return</code> <code>date("l F jS Y",</code> <code>$timestamp);</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>
+									<a href="#rewriting_to_refer_to_dollartemp_within">
+									Example 3-16</a> moves the reference to
+									<code>$temp</code> out of the function. The 
+									reference appears in the same scope where the 
+									variable was defined.</p>
+									<div id="alternative_solution_passing_dollarte">
+										<h5>Example 3-17. An alternative solution: 
+										passing <code>$temp</code> as an argument</h5>
+										<div>
+											<pre>
+<code>&lt;?php</code>
+  <code>$temp</code> <code>=</code> <code>"The date is ";</code>
+  <code>echo</code> <code>longdate($temp,</code> <code>time());</code>
+
+  <code>function</code> <code>longdate($text,</code> <code>$timestamp)</code>
+  <code>{</code>
+    <code>return</code> <code>$text</code> <code>.</code> <code>date("l F jS Y",</code> <code>$timestamp);</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>The solution in
+									<a href="#alternative_solution_passing_dollarte">
+									Example 3-17</a> passes <code>$temp</code> to 
+									the <code>longdate</code> function as an extra 
+									argument. <code>longdate</code> reads it into 
+									a temporary variable that it creates called
+									<code>$text</code> and outputs the desired result.</p>
+									<div class="note">
+										<h4>Note</h4>
+										<p>Forgetting the scope of a variable is 
+										a common programming error, so remembering 
+										how variable scope works will help you debug 
+										some quite obscure problems. Suffice it 
+										to say that unless you have declared a variable 
+										otherwise, its scope is limited to being 
+										local: either to the current function, or 
+										to the code outside of any functions, depending 
+										on whether it was first created or accessed 
+										inside or outside a function.</p>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div id="global_variables">
+									<h3>Global variables</h3>
+									<p>There are cases when you need a variable 
+									to have <em>global</em> scope, because you want 
+									all your code to be able to access it. Also, 
+									some data may be large and complex, and you 
+									don’t want to keep passing it as arguments to 
+									functions.</p>
+									<p>To access variables from global scope, add 
+									the keyword <code>global</code>. Let’s assume 
+									that you have a way of logging your users in 
+									to your website and want all your code to know 
+									whether it is interacting with a logged-in user 
+									or a guest. One way to do this is to use the
+									<code>global</code> keyword before a variable, 
+									such as <code>$IS_LOGGED_IN</code>:</p>
+									<div>
+										<pre>
+<code>global</code> <code>$IS_LOGGED_IN;</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>Now your login function simply has to set 
+									that variable to <code>1</code> upon a successful 
+									login attempt or <code>0</code> upon failure. 
+									Because the scope of the variable is set to 
+									global, every line of code in your program can 
+									access it.</p>
+									<p>You should use variables given global access 
+									with caution, though. I recommend that you create 
+									them only when you absolutely cannot find another 
+									way of achieving the result you desire. In general, 
+									programs that are broken into small parts and 
+									segregated data are less buggy and easier to 
+									maintain. If you have a thousand-line program 
+									(and some day you will) in which you discover 
+									that a global variable has the wrong value at 
+									some point, how long will it take you to find 
+									the code that set it incorrectly?</p>
+									<p>Also, if you have too many variables with 
+									global scope, you run the risk of using one 
+									of those names again locally, or at least thinking 
+									you have used it locally, when in fact it has 
+									already been declared as global. All manner 
+									of strange bugs can arise from such situations.</p>
+									<div class="note">
+										<h4>Note</h4>
+										<p>I generally adopt the convention of making 
+										all variable names that require global access 
+										uppercase (just as it’s recommended that 
+										constants should be uppercase, except constants 
+										are not prefixed with <code>$</code>) so 
+										that I can see at a glance the scope of 
+										a variable.</p>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div id="static_variables">
+									<h3>Static variables</h3>
+									<p>In the section <a href="#local_variables">
+									“Local variables”</a>, I mentioned that the 
+									value of a local variable is wiped out when 
+									the function ends. If a function runs many times, 
+									it starts with a fresh copy of the variable, 
+									and the previous setting has no effect.</p>
+									<p>Here’s an interesting case. What if you have 
+									a local variable inside a function that you 
+									don’t want any other parts of your code to have 
+									access to, but you would also like to keep its 
+									value for the next time the function is called? 
+									Why? Perhaps because you want a counter to track 
+									how many times a function is called. The solution 
+									is to declare a <em>static</em> variable, as 
+									shown in
+									<a href="#function_using_a_static_variable">
+									Example 3-18</a>.</p>
+									<div id="function_using_a_static_variable">
+										<h5>Example 3-18. A function using a static 
+										variable</h5>
+										<div>
+											<pre>
+<code>&lt;?php</code>
+  <code>function</code> <code>test()</code>
+  <code>{</code>
+    <code>static</code> <code>$count</code> <code>=</code> <code>0;</code>
+    <code>echo</code> <code>$count;</code>
+    <code>$count++;</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>Here, the very first line of the function
+									<code>test</code> creates a static variable 
+									called <code>$count</code> and initializes it 
+									to a value of <code>0</code>. The next line 
+									outputs the variable’s value; the final one 
+									increments it.</p>
+									<p>The next time the function is called, because
+									<code>$count</code> has already been declared, 
+									the first line of the function is skipped. Then 
+									the previously incremented value of <code>$count</code> 
+									is displayed before the variable is again incremented.</p>
+									<p>If you plan to use static variables, you 
+									should note that you cannot assign the result 
+									of an expression in their definitions. They 
+									can be initialized only with predetermined values 
+									(see
+									<a href="#allowed_and_disallowed_static_variable_d">
+									Example 3-19</a>). Generally, however, like 
+									global variables, static variables make functions 
+									less deterministic, meaning that the function 
+									may have a different output given the same input, 
+									and are best avoided in preference for functions 
+									with no side effects like changing a static 
+									variable.</p>
+									<div id="allowed_and_disallowed_static_variable_d">
+										<h5>Example 3-19. Allowed and disallowed 
+										static variable declarations</h5>
+										<div>
+											<pre>
+<code>&lt;?php</code>
+  <code>static</code> <code>$int</code> <code>=</code> <code>0;</code>         <code>// Allowed</code>
+  <code>static</code> <code>$int</code> <code>=</code> <code>1</code> <code>+</code> <code>2;</code>     <code>// Correct (as of PHP 5.6)</code>
+  <code>static</code> <code>$int</code> <code>=</code> <code>sqrt(144);</code> <code>// Disallowed</code>
+<code>?&gt;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div id="superglobal_variables">
+									<h3>Superglobal variables</h3>
+									<p>Several predefined variables are also available. 
+									These are known as <em>superglobal variables</em>, 
+									which means that they are provided by the PHP 
+									environment but are global within the program, 
+									accessible absolutely everywhere.</p>
+									<p>These superglobals contain lots of useful 
+									information about the currently running program 
+									and its environment (see
+									<a href="#phpapostrophes_superglobal_variables">
+									Table 3-6</a>). They are structured as associative 
+									arrays, a topic discussed in
+									<a href="ch06.html#php_arrays">Chapter 6</a>.</p>
+									<table id="phpapostrophes_superglobal_variables">
+										<caption>Table 3-6. PHP’s superglobal variables</caption>
+										<thead>
+											<tr>
+												<th>Superglobal name</th>
+												<th>Contents</th>
+											</tr>
+										</thead>
+										<tr>
+											<td><code>$GLOBALS</code></td>
+											<td>All variables that are currently 
+											defined in the global scope of the script. 
+											The variable names are the keys of the 
+											array.</td>
+										</tr>
+										<tr>
+											<td><code>$_SERVER</code></td>
+											<td>Information such as headers, paths, 
+											and locations of scripts. The entries 
+											in this array are created by the web 
+											server, and there is no guarantee that 
+											every web server will provide any or 
+											all of these.</td>
+										</tr>
+										<tr>
+											<td><code>$_GET</code></td>
+											<td>Variables passed to the current 
+											script via the HTTP GET method.</td>
+										</tr>
+										<tr>
+											<td><code>$_POST</code></td>
+											<td>Variables passed to the current 
+											script via the HTTP POST method.</td>
+										</tr>
+										<tr>
+											<td><code>$_FILES</code></td>
+											<td>Items uploaded to the current script 
+											via the HTTP POST method.</td>
+										</tr>
+										<tr>
+											<td><code>$_COOKIE</code></td>
+											<td>Variables passed to the current 
+											script via HTTP cookies.</td>
+										</tr>
+										<tr>
+											<td><code>$_SESSION</code></td>
+											<td>Session variables available to the 
+											current script.</td>
+										</tr>
+										<tr>
+											<td><code>$_REQUEST</code></td>
+											<td>Contents of information passed from 
+											the browser; by default, <code>$_GET</code>,
+											<code>$_POST</code>, and <code>$_COOKIE</code>.</td>
+										</tr>
+										<tr>
+											<td><code>$_ENV</code></td>
+											<td>Variables passed to the current 
+											script via the environment method.</td>
+										</tr>
+									</table>
+									<p>All of the superglobals (except for <code>
+									$GLOBALS</code>) are named with a single initial 
+									underscore and only capital letters; therefore, 
+									you should avoid naming your own variables in 
+									this manner to avoid potential confusion.</p>
+									<p>To illustrate how you use them, let’s look 
+									at a common example. Among the many nuggets 
+									of information supplied by superglobal variables 
+									is the URL of the page that referred the user 
+									to the current web page. This referring page 
+									information can be accessed like this:</p>
+									<div>
+										<pre>
+<code>$came_from</code> <code>=</code> <code>$_SERVER['HTTP_REFERER'];</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>It’s that simple. Oh, and if the user came 
+									straight to your web page, such as by typing 
+									its URL directly into a browser, <code>$came_from</code> 
+									will be set to an empty string.</p>
+									<div>
+										<h1>Difference between Superglobals and 
+										Constants</h1>
+										<p>Superglobals are regular variables thathave 
+										the full scope of a program during runtime, 
+										are visible and usable everywhere, whereas 
+										constants, while also visible inside functions, 
+										have no scope whatsoever, because they are 
+										accessed early on at compile time and ‘baked' 
+										as fixed values into the run-time code before 
+										any scope is even created.</p>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div id="superglobals_and_security">
+									<h3>Superglobals and security</h3>
+									<p>A word of caution is in order before you 
+									start using superglobal variables, because they 
+									are often used by hackers trying to find exploits 
+									to break into your website. What they do is 
+									load up <code>$_POST</code>, <code>$_GET</code>, 
+									or other superglobals with malicious code, such 
+									as Unix or MySQL commands that can damage or 
+									display sensitive data if you naively access 
+									them.</p>
+									<p>Therefore, you should always sanitize superglobals 
+									before using them. One way to do this is via 
+									the PHP <code>htmlentities</code> function. 
+									It converts all characters into HTML entities. 
+									For example, less-than and greater-than characters 
+									(<code>&lt;</code> and <code>&gt;</code>) are 
+									transformed into the strings <code>&amp;lt;</code> 
+									and <code>&amp;gt;</code> so that they are rendered 
+									harmless, as are all quotes and backslashes, 
+									and so on.</p>
+									<p>Therefore, a much better way to access
+									<code>$_SERVER</code> (and other superglobals) 
+									is:</p>
+									<div>
+										<pre>
+<code>$came_from</code> <code>=</code> <code>htmlentities($_SERVER['HTTP_REFERER']);</code></pre>
+										<div>
+										</div>
+									</div>
+									<div class="warning">
+										<h4>Warning</h4>
+										<p>Using the <code>htmlentities</code> function 
+										for sanitization is an important practice 
+										in any circumstance where user or other 
+										third-party data is being processed for 
+										output, not just with superglobals.</p>
+									</div>
+									<p>This chapter has provided you with a solid 
+									introduction to using PHP. In
+									<a href="ch04.html#expressions_and_control_flow_in_php">
+									Chapter 4</a>, you’ll start using what you’ve 
+									learned to build expressions and control program 
+									flow—in other words, do some actual programming.</p>
+									<p>But before moving on, I recommend that you 
+									test yourself with some (if not all) of the 
+									following questions to ensure that you have 
+									fully digested the contents of this chapter.</p>
+								</div>
+							</section>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="questions-id00007">
+					<h1>Questions</h1>
+					<ol>
+						<li>
+						<p>What tag is used to invoke PHP to start interpreting 
+						program code? And what is the short form of the tag?</p>
+						</li>
+						<li>
+						<p>What are the two types of comment tags?</p>
+						</li>
+						<li>
+						<p>Which character must be placed at the end of every PHP 
+						statement?</p>
+						</li>
+						<li>
+						<p>Which symbol is used to preface all PHP variables?</p>
+						</li>
+						<li>
+						<p>What can a variable store?</p>
+						</li>
+						<li>
+						<p>What is the difference between <code>$variable = 1</code>,
+						<code>$variable == 1</code> and <code>$variable === 1</code>?</p>
+						</li>
+						<li>
+						<p>Why do you suppose that an underscore is allowed in variable 
+						names (<code>$current_user</code>), whereas hyphens are 
+						not (<code>$current-user</code>)?</p>
+						</li>
+						<li>
+						<p>Are variable names case-sensitive?</p>
+						</li>
+						<li>
+						<p>Can you use spaces in variable names?</p>
+						</li>
+						<li>
+						<p>How do you convert one variable type to another (say, 
+						a string to a number)?</p>
+						</li>
+						<li>
+						<p>What is the difference between <code>++$j</code> and
+						<code>$j++</code>?</p>
+						</li>
+						<li>
+						<p>Are the operators <code>&amp;&amp;</code> and <code>and</code> 
+						interchangeable?</p>
+						</li>
+						<li>
+						<p>How can you create a multiline <code>echo</code> or assignment?</p>
+						</li>
+						<li>
+						<p>Can you redefine a constant?</p>
+						</li>
+						<li>
+						<p>How do you escape a quotation mark?</p>
+						</li>
+						<li>
+						<p>What is the difference between the <code>echo</code> 
+						and <code>print</code> commands?</p>
+						</li>
+						<li>
+						<p>What is the purpose of functions?</p>
+						</li>
+						<li>
+						<p>How can you make a variable accessible to all parts of 
+						a PHP program?</p>
+						</li>
+						<li>
+						<p>If you generate data within a function, what are a couple 
+						of ways to convey the data to the rest of the program?</p>
+						</li>
+						<li>
+						<p>What is the result of combining a string with a number?</p>
+						</li>
+					</ol>
+					<p>See <a href="app01.html#chapter_3_answers">“Chapter 3 Answers”</a> 
+					in the
+					<a href="app01.html#solutions_to_the_chapter_questions">Appendix 
+					A</a> for the answers to these questions.</p>
+				</div>
+			</section>
+		</div>
+	</section>
+</div>
+
+</body>
+
+</html>

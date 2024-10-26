@@ -1,0 +1,2196 @@
+﻿<!DOCTYPE html>
+<html lang="en-gb">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<link href="stylesheet.css" rel="stylesheet" type="text/css" />
+<title>Chapter 4. Expressions and Control Flow in PHP</title>
+</head>
+
+<body>
+
+<div id="sbo-rt-content">
+	<section>
+		<div id="expressions_and_control_flow_in_php">
+			<h1>Chapter 4. Expressions and Control Flow in PHP</h1>
+			<p>The previous chapter introduced several topics in passing that this 
+			chapter covers more fully, such as making choices (branching) and creating 
+			complex expressions. In the previous chapter, I wanted to focus on the 
+			most basic syntax and operations in PHP, but I couldn’t avoid touching 
+			on more advanced topics. Now I can fill in the background that you need 
+			to use these powerful PHP features properly.</p>
+			<p>In this chapter, you will get a thorough grounding in how PHP programming 
+			works in practice and how to control the flow of the program.</p>
+			<section>
+				<div id="expressions">
+					<h1>Expressions</h1>
+					<p>Let’s start with the most fundamental part of any programming 
+					language: <em>expressions</em>.</p>
+					<p>An expression is a combination of values, variables, operators, 
+					and functions that results in a value. It’s familiar to anyone 
+					who has studied algebra. Here’s an example:</p>
+					<div>
+						<pre>
+<em><code>y</code></em><code> = 3 (|2</code><em><code>x</code></em><code>| + 4)</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>Which in PHP would be:</p>
+					<div>
+						<pre>
+<code>$y</code> <code>=</code> <code>3</code> <code>*</code> <code>(abs(2</code> <code>*</code> <code>$x)</code> <code>+</code> <code>4);</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>The value returned (<em><code>y</code></em> in this mathematical 
+					statement, or <code>$y</code> in the PHP code) can be a number, 
+					a string, or a <em>Boolean value</em> (named after George Boole, 
+					a 19th-century English mathematician and philosopher). By now, 
+					you should be familiar with the first two value types, but I’ll 
+					explain the third.</p>
+					<section>
+						<div id="true_or_falsequestion_mark">
+							<h2>TRUE or FALSE?</h2>
+							<p>A basic Boolean value can be either <code>TRUE</code> 
+							or <code>FALSE</code>. For example, the expression
+							<code>20 &gt; 9</code> (20 is greater than 9) is
+							<code>TRUE</code>, and the expression <code>5 == 6</code> 
+							(5 is equal to 6) is <code>FALSE</code>. (You can combine 
+							such operations using other classic Boolean operators 
+							such as <code>AND</code>, <code>OR</code>, and <code>
+							XOR</code>, which are covered later in this chapter.)</p>
+							<div class="note">
+								<h4>Note</h4>
+								<p>Note that I am using uppercase letters for the 
+								names <code>TRUE</code> and <code>FALSE</code>. 
+								This is because they are predefined constants in 
+								PHP. You can use the lowercase versions if you prefer, 
+								as they are also predefined.</p>
+							</div>
+							<p>PHP doesn’t actually print the predefined constants 
+							if you ask it to do so as in
+							<a href="#outputting_the_values_of_true_and_false">Example 
+							4-1</a>. For each line, the example prints out a letter 
+							followed by a colon and a predefined constant. Only 
+							strings can be printed in PHP, and conversion rules 
+							have been defined for other types, like numbers or Boolean 
+							values. When converting to string, PHP arbitrarily assigns 
+							a string value of <code>"1"</code> to <code>TRUE</code>, 
+							so <code>1</code> is displayed after <code>a:</code> 
+							when the example runs. Even more mysteriously, the line 
+							starting with <code>b:</code> doesn’t print <code>0</code> 
+							as you may expect. That’s because during the conversion,
+							<code>FALSE</code> is converted to an empty string
+							<code>""</code>. The constant <code>FALSE</code> is 
+							different than <code>NULL</code>, another predefined 
+							constant that denotes nothing, even though both are 
+							converted to an empty string when printed.</p>
+							<div id="outputting_the_values_of_true_and_false">
+								<h5>Example 4-1. Outputting the values of <code>
+								TRUE</code> and <code>FALSE</code></h5>
+								<div>
+									<pre>
+<code>// test2.php</code>
+<code>echo</code> <code>"a: ["</code> <code>.</code> <code>TRUE</code>  <code>.</code> <code>"]&lt;br&gt;";</code>
+<code>echo</code> <code>"b: ["</code> <code>.</code> <code>FALSE</code> <code>.</code> <code>"]&lt;br&gt;";</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>The <code>&lt;br&gt;</code> tags are there to create 
+							line breaks and thus separate the output into two lines 
+							in HTML. Here is the output:</p>
+							<div>
+								<pre>
+<strong>a: [1]</strong>
+<strong>b: []</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>Turning to Boolean expressions,
+							<a href="#four_simple_boolean_expressions">Example 4-2</a> 
+							shows some simple expressions: the two I mentioned earlier, 
+							plus a couple more.</p>
+							<div id="four_simple_boolean_expressions">
+								<h5>Example 4-2. Four simple Boolean expressions</h5>
+								<div>
+									<pre>
+<code>echo</code> <code>"a: ["</code> <code>.</code> <code>(20</code> <code>&gt;</code> <code>9)</code> <code>.</code> <code>"]&lt;br&gt;";</code>
+<code>echo</code> <code>"b: ["</code> <code>.</code> <code>(5</code> <code>==</code> <code>6)</code> <code>.</code> <code>"]&lt;br&gt;";</code>
+<code>echo</code> <code>"c: ["</code> <code>.</code> <code>(1</code> <code>==</code> <code>0)</code> <code>.</code> <code>"]&lt;br&gt;";</code>
+<code>echo</code> <code>"d: ["</code> <code>.</code> <code>(1</code> <code>==</code> <code>1)</code> <code>.</code> <code>"]&lt;br&gt;";</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>The output from this code is:</p>
+							<div>
+								<pre>
+<strong>a: [1]</strong>
+<strong>b: []</strong>
+<strong>c: []</strong>
+<strong>d: [1]</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>By the way, in some languages <code>FALSE</code> 
+							may be defined as <code>0</code> or even <code>–1</code>, 
+							so it’s worth checking on its definition in each language 
+							you use. Luckily, you don’t normally have to worry about 
+							what <code>TRUE</code> and <code>FALSE</code> look like 
+							internally.</p>
+						</div>
+					</section>
+					<section>
+						<div id="literals_and_variables">
+							<h2>Literals and Variables</h2>
+							<p>These are the most basic elements of programming, 
+							and the building blocks of expressions. A <em>literal</em> 
+							simply means something that evaluates to itself, such 
+							as the number <code>73</code> or the string <code>"Hello"</code>. 
+							A variable, which we’ve already seen has a name beginning 
+							with a dollar sign, evaluates to the value that has 
+							been assigned to it. The simplest expression is just 
+							a single literal or variable, because both return a 
+							value.</p>
+							<p><a href="#literals_and_variables-id00008">Example 
+							4-3</a> shows two literals and two variables, all of 
+							which return values, albeit of different types.</p>
+							<div id="literals_and_variables-id00008">
+								<h5>Example 4-3. Literals and variables</h5>
+								<div>
+									<pre>
+<code>$myname</code> <code>=</code> <code>"Brian";</code>
+<code>$myage</code>  <code>=</code> <code>37;</code>
+
+<code>echo</code> <code>"a: "</code> <code>.</code> <code>73</code>      <code>.</code> <code>"&lt;br&gt;";</code> <code>// Numeric literal</code>
+<code>echo</code> <code>"b: "</code> <code>.</code> <code>"Hello"</code> <code>.</code> <code>"&lt;br&gt;";</code> <code>// String literal</code>
+<code>echo</code> <code>"c: "</code> <code>.</code> <code>$myname</code> <code>.</code> <code>"&lt;br&gt;";</code> <code>// String variable</code>
+<code>echo</code> <code>"d: "</code> <code>.</code> <code>$myage</code>  <code>.</code> <code>"&lt;br&gt;";</code> <code>// Numeric variable</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<div>
+								<h1>About Literals and non-literals</h1>
+								<p>The difference between a literal and a non-literal 
+								is that if you assign a literal to a variable, the 
+								variable will have the same value as the literal, 
+								even if you assign it repeatedly. However, if you 
+								assign a function output to a variable, for example, 
+								the function may have a different output each time 
+								it is called, making the variable content non-literal.</p>
+							</div>
+							<p>And, as you’d expect, you see a return value from 
+							all of these in the following output:</p>
+							<div>
+								<pre>
+<strong>a: 73</strong>
+<strong>b: Hello</strong>
+<strong>c: Brian</strong>
+<strong>d: 37</strong></pre>
+								<div>
+								</div>
+							</div>
+							<p>In conjunction with operators, it’s possible to create 
+							more complex expressions that evaluate to useful results.</p>
+							<p>Programmers combine expressions with other language 
+							constructs, such as the assignment operators we saw 
+							earlier, to form <em>statements</em>.
+							<a href="#expression_and_a_statement">Example 4-4</a> 
+							shows two statements. The first assigns the result of 
+							the expression <code>366 - $day_number</code> to the 
+							variable <code>$days_to_new_year</code>, and the second 
+							outputs a friendly message only if the expression
+							<code>$days_to_new_year &lt; 30</code> evaluates to
+							<code>TRUE</code>.</p>
+							<div id="expression_and_a_statement">
+								<h5>Example 4-4. An expression and a statement</h5>
+								<div>
+									<pre>
+<code>$days_to_new_year</code> <code>=</code> <code>366</code> <code>-</code> <code>$day_number;</code> <code>// Expression</code>
+
+<code>if</code> <code>($days_to_new_year</code> <code>&lt;</code> <code>30)</code>
+<code>{</code>
+   <code>echo</code> <code>"Not long now till new year";</code>  <code>// Statement</code>
+<code>}</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="operators-id00009">
+					<h1>Operators</h1>
+					<p>PHP offers a lot of powerful operators of different types—arithmetic, 
+					string, logical, assignment, comparison, and more (see
+					<a href="#php_operator_types">Table 4-1</a>).</p>
+					<table id="php_operator_types">
+						<caption>Table 4-1. PHP operator types</caption>
+						<thead>
+							<tr>
+								<th>Operator</th>
+								<th>Description</th>
+								<th>Example</th>
+							</tr>
+						</thead>
+						<tr>
+							<td>Arithmetic</td>
+							<td>Basic mathematics</td>
+							<td><code>$a + $b</code></td>
+						</tr>
+						<tr>
+							<td>Array</td>
+							<td>Array union</td>
+							<td><code>$a + $b</code></td>
+						</tr>
+						<tr>
+							<td>Assignment</td>
+							<td>Assign values</td>
+							<td><code>$a = $b + 23</code></td>
+						</tr>
+						<tr>
+							<td>Bitwise</td>
+							<td>Manipulate bits within bytes</td>
+							<td><code>12 ^ 9</code></td>
+						</tr>
+						<tr>
+							<td>Comparison</td>
+							<td>Compare two values</td>
+							<td><code>$a &lt; $b</code></td>
+						</tr>
+						<tr>
+							<td>Execution</td>
+							<td>Execute contents of backticks</td>
+							<td><code>`ls -al`</code></td>
+						</tr>
+						<tr>
+							<td>Increment/decrement</td>
+							<td>Add or subtract 1</td>
+							<td><code>$a++</code></td>
+						</tr>
+						<tr>
+							<td>Logical</td>
+							<td>Boolean</td>
+							<td><code>$a and $b</code></td>
+						</tr>
+						<tr>
+							<td>String</td>
+							<td>Concatenation</td>
+							<td><code>$a . $b</code></td>
+						</tr>
+					</table>
+					<p>Each operator takes a different number of operands:</p>
+					<ul>
+						<li>
+						<p><em>Unary</em> operators, such as incrementing (<code>$a++</code>) 
+						or negation (!<code>$a</code>), take a single operand.</p>
+						</li>
+						<li>
+						<p><em>Binary</em> operators, which represent the bulk of 
+						PHP operators (including addition, subtraction, multiplication, 
+						and division), take two operands.</p>
+						</li>
+						<li>
+						<p>The one <em>ternary</em> operator, which takes the form
+						<code>expr ? x : y</code>, requires three operands. It’s 
+						a terse, single-line <code>if</code> statement that returns
+						<code>x</code> if <code>expr</code> is <code>TRUE</code> 
+						and <code>y</code> if <code>expr</code> is <code>FALSE</code>.</p>
+						</li>
+					</ul>
+					<div>
+						<h1>About Execution Operators</h1>
+						<p>While the execution operators are powerful you should 
+						avoid using them unless strictly necessary and you know 
+						precisely what you are doing, because you could potentially 
+						expose a massive vulnerability in your project.</p>
+					</div>
+					<section>
+						<div id="operator_precedence">
+							<h2>Operator Precedence</h2>
+							<p>If all operators had the same precedence, they would 
+							be processed in the order in which they are encountered 
+							(from left to right in English). In fact, many operators 
+							do have the same precedence. Take a look at
+							<a href="#three_equivalent_expressions">Example 4-5</a>.</p>
+							<div id="three_equivalent_expressions">
+								<h5>Example 4-5. Three equivalent expressions</h5>
+								<div>
+									<pre>
+<code>1</code> <code>+</code> <code>2</code> <code>+</code> <code>3</code> <code>-</code> <code>4</code> <code>+</code> <code>5</code>   <code>// 7</code>
+<code>2</code> <code>-</code> <code>4</code> <code>+</code> <code>5</code> <code>+</code> <code>3</code> <code>+</code> <code>1</code>   <code>// 7</code>
+<code>5</code> <code>+</code> <code>2</code> <code>-</code> <code>4</code> <code>+</code> <code>1</code> <code>+</code> <code>3</code>   <code>// 7</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Here you will see that although the numbers (and 
+							their preceding operators) have been moved around, the 
+							result of each expression is the value <code>7</code>, 
+							because the plus and minus operators have the same precedence. 
+							We can try the same thing with multiplication and division 
+							(see
+							<a href="#three_expressions_that_are_also_equivale">
+							Example 4-6</a>).</p>
+							<div id="three_expressions_that_are_also_equivale">
+								<h5>Example 4-6. Three expressions that are also 
+								equivalent</h5>
+								<div>
+									<pre>
+<code>1</code> <code>*</code> <code>2</code> <code>*</code> <code>3</code> <code>/</code> <code>4</code> <code>*</code> <code>5</code>   <code>// 7.5</code>
+<code>2</code> <code>/</code> <code>4</code> <code>*</code> <code>5</code> <code>*</code> <code>3</code> <code>*</code> <code>1</code>   <code>// 7.5</code>
+<code>5</code> <code>*</code> <code>2</code> <code>/</code> <code>4</code> <code>*</code> <code>1</code> <code>*</code> <code>3</code>   <code>// 7.5</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Here the resulting value is always <code>7.5</code>. 
+							But things change when we mix operators with <em>different</em> 
+							precedences in an expression, as in
+							<a href="#three_expressions_using_operators_of_mix">
+							Example 4-7</a>.</p>
+							<div id="three_expressions_using_operators_of_mix">
+								<h5>Example 4-7. Three expressions using operators 
+								of mixed precedence</h5>
+								<div>
+									<pre>
+<code>1 + 2 * 3 - 4 * 5    // Without precedence </code><em><code>would be</code></em><code> 25
+2 - 4 * 5 * 3 + 1    // Without precedence </code><em><code>would be</code></em><code> -29
+5 + 2 - 4 + 1 * 3    // Without precedence </code><em><code>would be</code></em><code> 12</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>If there were no operator precedence, these three 
+							expressions would evaluate to <code>25</code>, <code>
+							–29</code>, and <code>12</code>, respectively. But because 
+							multiplication and division take precedence over addition 
+							and subtraction, the expressions are evaluated as if 
+							there were parentheses around these parts of the expressions, 
+							just like mathematical notation (see
+							<a href="#three_expressions_showing_implied_parent">
+							Example 4-8</a>).</p>
+							<div id="three_expressions_showing_implied_parent">
+								<h5>Example 4-8. Three expressions showing implied 
+								parentheses</h5>
+								<div>
+									<pre>
+<code>1</code> <code>+</code> <code>(2</code> <code>*</code> <code>3)</code> <code>-</code> <code>(4</code> <code>*</code> <code>5)</code>   <code>// With precendence: -13 </code>
+<code>2</code> <code>-</code> <code>(4</code> <code>*</code> <code>5</code> <code>*</code> <code>3)</code> <code>+</code> <code>1</code>     <code>// With precendence: -57</code>
+<code>5</code> <code>+</code> <code>2</code> <code>-</code> <code>4</code> <code>+</code> <code>(1</code> <code>*</code> <code>3)</code>     <code>// With precendence: 6</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>PHP evaluates the sub-expressions within parentheses 
+							first to derive the semi-completed expressions in
+							<a href="#after_evaluating_the_sub-expressions_in">Example 
+							4-9</a>.</p>
+							<div id="after_evaluating_the_sub-expressions_in">
+								<h5>Example 4-9. After evaluating the sub-expressions 
+								in parentheses</h5>
+								<div>
+									<pre>
+<code>1</code> <code>+</code> <code>(6)</code> <code>-</code> <code>(20)</code>    <code>// With precendence: -13</code>
+<code>2</code> <code>-</code> <code>(60)</code> <code>+</code> <code>1</code>      <code>// With precendence: -57</code>
+<code>5</code> <code>+</code> <code>2</code> <code>-</code> <code>4</code> <code>+</code> <code>(3)</code>   <code>// With precendence: 6</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>The final results of these expressions are <code>
+							–13</code>, <code>–57</code>, and <code>6</code>, respectively 
+							(quite different from the results of <code>25</code>,
+							<code>–29</code>, and <code>12</code> that we would 
+							have seen had there been no operator precedence).</p>
+							<p>Of course, you can override the default operator 
+							precedence by inserting your own parentheses and forcing 
+							whatever order you want (see
+							<a href="#forcing_left-to-right_evaluation">Example 
+							4-10</a>).</p>
+							<div id="forcing_left-to-right_evaluation">
+								<h5>Example 4-10. Forcing left-to-right evaluation</h5>
+								<div>
+									<pre>
+<code>((1</code> <code>+</code> <code>2)</code> <code>*</code> <code>3</code> <code>-</code> <code>4)</code> <code>*</code> <code>5</code>    <code>// With forced precedence: 25</code>
+<code>(2</code> <code>-</code> <code>4)</code> <code>*</code> <code>5</code> <code>*</code> <code>3</code> <code>+</code> <code>1</code>      <code>// With forced precedence: -29</code>
+<code>(5</code> <code>+</code> <code>2</code> <code>-</code> <code>4</code> <code>+</code> <code>1)</code> <code>*</code> <code>3</code>      <code>// With forced precedence: 12</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>With parentheses correctly inserted, we now see the 
+							values <code>25</code>, <code>–29</code>, and <code>
+							12</code>, respectively.</p>
+							<p><a href="#precedence_of_php_operators_left_par">Table 
+							4-2</a> lists PHP’s operators in order of precedence 
+							from high to low.</p>
+							<table id="precedence_of_php_operators_left_par">
+								<caption>Table 4-2. The precedence of PHP operators 
+								(high to low)</caption>
+								<thead>
+									<tr>
+										<th>Operator(s)</th>
+										<th>Type</th>
+									</tr>
+								</thead>
+								<tr>
+									<td><code>()</code></td>
+									<td>Parentheses</td>
+								</tr>
+								<tr>
+									<td><code>++ --</code></td>
+									<td>Increment/decrement</td>
+								</tr>
+								<tr>
+									<td><code>!</code></td>
+									<td>Logical</td>
+								</tr>
+								<tr>
+									<td><code>* / %</code></td>
+									<td>Arithmetic</td>
+								</tr>
+								<tr>
+									<td><code>+ - .</code></td>
+									<td>Arithmetic and string</td>
+								</tr>
+								<tr>
+									<td><code>&lt;&lt; &gt;&gt;</code></td>
+									<td>Bitwise</td>
+								</tr>
+								<tr>
+									<td><code>&lt; &lt;= &gt; &gt;= &lt;&gt;</code></td>
+									<td>Comparison</td>
+								</tr>
+								<tr>
+									<td><code>== != === !==</code></td>
+									<td>Comparison</td>
+								</tr>
+								<tr>
+									<td><code>&amp;</code></td>
+									<td>Bitwise (and references)</td>
+								</tr>
+								<tr>
+									<td><code>^</code></td>
+									<td>Bitwise</td>
+								</tr>
+								<tr>
+									<td><code>|</code></td>
+									<td>Bitwise</td>
+								</tr>
+								<tr>
+									<td><code>&amp;&amp;</code></td>
+									<td>Logical</td>
+								</tr>
+								<tr>
+									<td><code>||</code></td>
+									<td>Logical</td>
+								</tr>
+								<tr>
+									<td><code>? :</code></td>
+									<td>Ternary</td>
+								</tr>
+								<tr>
+									<td><code>= += -= *= /= .= %= &amp;= != ^= &lt;&lt;= &gt;&gt;=</code></td>
+									<td>Assignment</td>
+								</tr>
+								<tr>
+									<td><code>and</code></td>
+									<td>Logical</td>
+								</tr>
+								<tr>
+									<td><code>xor</code></td>
+									<td>Logical</td>
+								</tr>
+								<tr>
+									<td><code>or</code></td>
+									<td>Logical</td>
+								</tr>
+							</table>
+							<p>The order in this table is not arbitrary but carefully 
+							designed so that the most common and intuitive precedences 
+							are the ones you can get without parentheses. For instance, 
+							you can separate two comparisons with an <code>and</code> 
+							or <code>or</code> and get what you’d expect.</p>
+						</div>
+					</section>
+					<section>
+						<div id="associativity">
+							<h2>Associativity</h2>
+							<p>We’ve been looking at processing expressions from 
+							left to right, except where operator precedence is in 
+							effect. But some operators require processing from right 
+							to left, and this direction of processing is called 
+							the operator’s <em>associativity</em>. For some operators, 
+							there is no associativity.</p>
+							<p>Associativity (as detailed in
+							<a href="#operator_associativity">Table 4-3</a>) becomes 
+							important in cases in which you do not explicitly force 
+							precedence, so you need to be aware of the default actions 
+							of operators.</p>
+							<table id="operator_associativity">
+								<caption>Table 4-3. Operator associativity</caption>
+								<thead>
+									<tr>
+										<th>Operator</th>
+										<th>Description</th>
+										<th>Associativity</th>
+									</tr>
+								</thead>
+								<tr>
+									<td><code>&lt; &lt;= &gt;= == != === !== &lt;&gt;</code></td>
+									<td>Comparison</td>
+									<td>None</td>
+								</tr>
+								<tr>
+									<td><code>!</code></td>
+									<td>Logical <code>NOT</code></td>
+									<td>Right</td>
+								</tr>
+								<tr>
+									<td><code>~</code></td>
+									<td>Bitwise <code>NOT</code></td>
+									<td>Right</td>
+								</tr>
+								<tr>
+									<td><code>++ --</code></td>
+									<td>Increment and decrement</td>
+									<td>Right</td>
+								</tr>
+								<tr>
+									<td><code>(int)</code></td>
+									<td>Cast to an integer</td>
+									<td>Right</td>
+								</tr>
+								<tr>
+									<td><code>(double) (float) (real)</code></td>
+									<td>Cast to a floating-point number</td>
+									<td>Right</td>
+								</tr>
+								<tr>
+									<td><code>(string)</code></td>
+									<td>Cast to a string</td>
+									<td>Right</td>
+								</tr>
+								<tr>
+									<td><code>(array)</code></td>
+									<td>Cast to an array</td>
+									<td>Right</td>
+								</tr>
+								<tr>
+									<td><code>(object)</code></td>
+									<td>Cast to an object</td>
+									<td>Right</td>
+								</tr>
+								<tr>
+									<td><code>@</code></td>
+									<td>Inhibit error reporting</td>
+									<td>Right</td>
+								</tr>
+								<tr>
+									<td><code>= += -= *= /=</code></td>
+									<td>Assignment</td>
+									<td>Right</td>
+								</tr>
+								<tr>
+									<td><code>.= %= &amp;= |= ^= &lt;&lt;= &gt;&gt;=</code></td>
+									<td>Assignment</td>
+									<td>Right</td>
+								</tr>
+								<tr>
+									<td><code>+</code></td>
+									<td>Addition and unary plus</td>
+									<td>Left</td>
+								</tr>
+								<tr>
+									<td><code>-</code></td>
+									<td>Subtraction and negation</td>
+									<td>Left</td>
+								</tr>
+								<tr>
+									<td><code>*</code></td>
+									<td>Multiplication</td>
+									<td>Left</td>
+								</tr>
+								<tr>
+									<td><code>/</code></td>
+									<td>Division</td>
+									<td>Left</td>
+								</tr>
+								<tr>
+									<td><code>%</code></td>
+									<td>Modulus</td>
+									<td>Left</td>
+								</tr>
+								<tr>
+									<td><code>.</code></td>
+									<td>String concatenation</td>
+									<td>Left</td>
+								</tr>
+								<tr>
+									<td><code>&lt;&lt; &gt;&gt; &amp; ^ |</code></td>
+									<td>Bitwise</td>
+									<td>Left</td>
+								</tr>
+								<tr>
+									<td><code>?:</code></td>
+									<td>Ternary</td>
+									<td>Left</td>
+								</tr>
+								<tr>
+									<td><code>|| &amp;&amp; and or xor</code></td>
+									<td>Logical</td>
+									<td>Left</td>
+								</tr>
+								<tr>
+									<td><code>,</code></td>
+									<td>Separator</td>
+									<td>Left</td>
+								</tr>
+							</table>
+							<p>For example, let’s take a look at the assignment 
+							operator in <a href="#multiple-assignment_statement">
+							Example 4-11</a>, where three variables are all set 
+							to the value <code>0</code>.</p>
+							<div id="multiple-assignment_statement">
+								<h5>Example 4-11. A multiple-assignment statement</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$level</code> <code>=</code> <code>$score</code> <code>=</code> <code>$time</code> <code>=</code> <code>0;</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>This multiple assignment is possible only if the 
+							rightmost part of the expression is evaluated first 
+							and then processing continues in a right-to-left direction.</p>
+							<div class="note">
+								<h4>Note</h4>
+								<p>As a newcomer to PHP, you should avoid the potential 
+								pitfalls of operator associativity by always nesting 
+								your sub-expressions within parentheses to force 
+								the order of evaluation. This will also help other 
+								programmers who may have to maintain your code to 
+								understand what is happening.</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="relational_operators">
+							<h2>Relational Operators</h2>
+							<p>Relational operators answer questions such as “Does 
+							this variable have a value of zero?” and “Which variable 
+							has a greater value?” These operators test two operands 
+							and return a Boolean result of either <code>TRUE</code> 
+							or <code>FALSE</code>. There are three types of relational 
+							operators: <em>equality</em>, <em>comparison</em>, and
+							<em>logical</em>.</p>
+							<section>
+								<div id="equality">
+									<h3>Equality</h3>
+									<p>As we’ve already seen a few times in this 
+									chapter, the equality operator is <code>==</code> 
+									(two equals signs). It is important not to confuse 
+									it with the <code>=</code> (single equals sign) 
+									assignment operator. In
+									<a href="#assigning_a_value_and_testing_for_equali">
+									Example 4-12</a>, the first statement assigns 
+									a value and the second tests it for equality.</p>
+									<div id="assigning_a_value_and_testing_for_equali">
+										<h5>Example 4-12. Assigning a value and 
+										testing for equality</h5>
+										<div>
+											<pre>
+<code>$month</code> <code>=</code> <code>"March";</code>
+
+<code>if</code> <code>($month</code> <code>==</code> <code>"April")</code> <code>echo</code> <code>"A quarter of a year has passed";</code>
+</pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>As you see, by returning either <code>TRUE</code> 
+									or <code>FALSE</code>, the equality operator 
+									enables you to test for conditions using, for 
+									example, an <code>if</code> statement. But that’s 
+									not the whole story, because PHP is a loosely 
+									typed language. If the two operands of an equality 
+									expression are of different types, PHP will 
+									convert them to whatever type makes the best 
+									sense to it. The <em>identity</em> operator, 
+									which consists of three equals signs in a row, 
+									can be used to compare items without doing conversion.</p>
+									<p>For example, any strings composed entirely 
+									of numbers will be converted to numbers whenever 
+									compared with a number. In
+									<a href="#equality_and_identity_operators">Example 
+									4-13</a>, <code>$a</code> and <code>$b</code> 
+									are two different strings, and we might therefore 
+									expect neither of the <code>if</code> statements 
+									to output a result.</p>
+									<div id="equality_and_identity_operators">
+										<h5>Example 4-13. The equality and identity 
+										operators</h5>
+										<div>
+											<pre>
+<code>$a</code> <code>=</code> <code>"1000";</code>
+<code>$b</code> <code>=</code> <code>"+1000";</code>
+
+<code>if</code> <code>($a</code> <code>==</code> <code>$b)</code>  <code>echo</code> <code>"1";</code>
+<code>if</code> <code>($a</code> <code>===</code> <code>$b)</code> <code>echo</code> <code>"2";</code>
+</pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>However, if you run the example, you will 
+									see that it outputs the number <code>1</code>, 
+									which means that the first <code>if</code> statement 
+									evaluated to <code>TRUE</code>. This is because 
+									both strings were first converted to numbers, 
+									and <code>1000</code> is the same numerical 
+									value as <code>+1000</code>. In contrast, the 
+									second <code>if</code> statement uses the identity 
+									operator, so it compares <code>$a</code> and
+									<code>$b</code> as strings, sees that they are 
+									different, and thus doesn’t output anything.</p>
+									<p>As with forcing operator precedence, whenever 
+									you have any doubt about how PHP will convert 
+									operand types, you can use the identity operator 
+									to turn this behavior off. And although the 
+									equality operator <code>==</code> looks useful 
+									in the previous example, it’s the identity operator
+									<code>===</code> that’s recommended for comparisons 
+									especially in any new code to reduce risk of 
+									unintended behavior from type conversions.</p>
+									<p>In the same way that you can use the equality 
+									operator to test for operands being equal, you 
+									can test for them <em>not</em> being equal using
+									<code>!=</code>, the inequality operator. Take 
+									a look at
+									<a href="#inequality_and_not_identical_operato">
+									Example 4-14</a>, which is a rewrite of
+									<a href="#equality_and_identity_operators">Example 
+									4-13</a>, in which the equality and identity 
+									operators have been replaced with their inverses.</p>
+									<div id="inequality_and_not_identical_operato">
+										<h5>Example 4-14. The inequality and not-identical 
+										operators</h5>
+										<div>
+											<pre>
+<code>$a</code> <code>=</code> <code>"1000";</code>
+<code>$b</code> <code>=</code> <code>"+1000";</code>
+
+<code>if</code> <code>($a</code> <code>!=</code> <code>$b)</code>  <code>echo</code> <code>"1";</code>
+<code>if</code> <code>($a</code> <code>!==</code> <code>$b)</code> <code>echo</code> <code>"2";</code>
+</pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>And, as you might expect, the first <code>
+									if</code> statement does not output the number
+									<code>1</code>, because the code is asking whether
+									<code>$a</code> and <code>$b</code> are <em>
+									not</em> equal to each other numerically.</p>
+									<p>Instead, this code outputs the number
+									<code>2</code>, because the second <code>if</code> 
+									statement is asking whether <code>$a</code> 
+									and <code>$b</code> are <em>not</em> identical 
+									to each other in their actual string type, and 
+									the answer is <code>TRUE</code>; they are not 
+									the same.</p>
+								</div>
+							</section>
+							<section>
+								<div id="comparison_operators-id00010">
+									<h3>Comparison operators</h3>
+									<p>Using comparison operators, you can test 
+									for more than just equality and inequality. 
+									PHP also gives you <code>&gt;</code> (is greater 
+									than), <code>&lt;</code> (is less than),
+									<code>&gt;=</code> (is greater than or equal 
+									to), and <code>&lt;=</code> (is less than or 
+									equal to) to play with.
+									<a href="#four_comparison_operators">Example 
+									4-15</a> shows these in use.</p>
+									<div id="four_comparison_operators">
+										<h5>Example 4-15. The four comparison operators</h5>
+										<div>
+											<pre>
+<code>$a</code> <code>=</code> <code>2;</code> <code>$b</code> <code>=</code> <code>3;</code>
+
+<code>if</code> <code>($a</code> <code>&gt;</code> <code>$b)</code>  <code>echo</code> <code>"$a is greater than $b&lt;br&gt;";</code>
+<code>if</code> <code>($a</code> <code>&lt;</code> <code>$b)</code>  <code>echo</code> <code>"$a is less than $b&lt;br&gt;";</code>
+<code>if</code> <code>($a</code> <code>&gt;=</code> <code>$b)</code> <code>echo</code> <code>"$a is greater than or equal to $b&lt;br&gt;";</code>
+<code>if</code> <code>($a</code> <code>&lt;=</code> <code>$b)</code> <code>echo</code> <code>"$a is less than or equal to $b&lt;br&gt;";</code>
+</pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>In this example, where <code>$a</code> is
+									<code>2</code> and <code>$b</code> is <code>
+									3</code>, the following is output:</p>
+									<div>
+										<pre>
+<strong>2 is less than 3</strong>
+<strong>2 is less than or equal to 3</strong></pre>
+										<div>
+										</div>
+									</div>
+									<p>Try this example yourself, altering the values 
+									of <code>$a</code> and <code>$b</code>, to see 
+									the results. Try setting them to the same value 
+									and see what happens.</p>
+								</div>
+							</section>
+							<section>
+								<div id="logical_operators-id00011">
+									<h3>Logical operators</h3>
+									<p>Logical operators produce true or false results 
+									and therefore are also known as <em>Boolean 
+									operators</em>. There are four of them (see
+									<a href="#logical_operators-id00012">Table 4-4</a>).</p>
+									<table id="logical_operators-id00012">
+										<caption>Table 4-4. The logical operators</caption>
+										<thead>
+											<tr>
+												<th>Logical<br />
+												operator</th>
+												<th>Description</th>
+											</tr>
+										</thead>
+										<tr>
+											<td><code>AND</code></td>
+											<td><code>TRUE</code> if both operands 
+											are <code>TRUE</code></td>
+										</tr>
+										<tr>
+											<td><code>OR</code></td>
+											<td><code>TRUE</code> if either operand 
+											is <code>TRUE</code></td>
+										</tr>
+										<tr>
+											<td><code>XOR</code></td>
+											<td><code>TRUE</code> if one of the 
+											two operands is <code>TRUE</code></td>
+										</tr>
+										<tr>
+											<td><code>!</code></td>
+											<td><code>TRUE</code> if operand is
+											<code>FALSE</code>, or <code>FALSE</code> 
+											if operand is <code>TRUE</code> (<em>NOT 
+											operator</em>)</td>
+										</tr>
+									</table>
+									<p>You can see these operators used in
+									<a href="#logical_operators_in_use">Example 
+									4-16</a>. Note that the <code>!</code> symbol 
+									is required by PHP in place of <code>NOT</code>. 
+									Furthermore, the operators can be lower- or 
+									uppercase (as in the case of or below, which 
+									is in lower rather than uppercase).</p>
+									<div id="logical_operators_in_use">
+										<h5>Example 4-16. The logical operators 
+										in use</h5>
+										<div>
+											<pre>
+<code>$a</code> <code>=</code> <code>1;</code> <code>$b</code> <code>=</code> <code>0;</code>
+
+<code>echo</code> <code>($a</code> <code>AND</code> <code>$b)</code> <code>.</code> <code>"&lt;br&gt;";</code>
+<code>echo</code> <code>($a</code> <code>or</code>  <code>$b)</code> <code>.</code> <code>"&lt;br&gt;";</code>
+<code>echo</code> <code>($a</code> <code>XOR</code> <code>$b)</code> <code>.</code> <code>"&lt;br&gt;";</code>
+<code>echo</code> <code>!$a</code>         <code>.</code> <code>"&lt;br&gt;";</code>
+</pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>Line by line, this example outputs nothing,
+									<code>1</code>, <code>1</code>, and nothing, 
+									meaning that only the second and third <code>
+									echo</code> statements evaluate as <code>TRUE</code>. 
+									(Remember that <code>NULL</code>—or nothing—represents 
+									a value of <code>FALSE</code>.) This is because 
+									the <code>AND</code> statement requires both 
+									operands to be <code>TRUE</code> if it is going 
+									to return a value of <code>TRUE</code>, while 
+									the fourth statement performs a <code>NOT</code> 
+									on the value of <code>$a</code>, turning it 
+									from <code>TRUE</code> (a value of <code>1</code>) 
+									to <code>FALSE</code>. If you wish to experiment 
+									with this, try out the code, giving <code>$a</code> 
+									and <code>$b</code> varying values of <code>
+									1</code> and <code>0</code>.</p>
+									<div class="note">
+										<h4>Note</h4>
+										<p>When coding, remember that <code>AND</code> 
+										and <code>OR</code> have lower precedence 
+										than the other versions of the operators,
+										<code>&amp;&amp;</code> and <code>||</code>.</p>
+									</div>
+									<p>The <code>OR</code> operator can cause unintentional 
+									problems in <code>if</code> statements, because 
+									the second operand will not be evaluated if 
+									the first is evaluated as <code>TRUE</code>. 
+									In
+									<a href="#statement_using_the_or_operator">Example 
+									4-17</a>, the function <code>getnext</code> 
+									will never be called if <code>$finished</code> 
+									has a value of <code>1</code>.</p>
+									<div id="statement_using_the_or_operator">
+										<h5>Example 4-17. A statement using the
+										<code>OR</code> operator</h5>
+										<div>
+											<pre>
+<code>if</code> <code>($finished</code> <code>==</code> <code>1</code> <code>OR</code> <code>getnext()</code> <code>==</code> <code>1)</code> <code>exit;</code>
+</pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>If you need <code>getnext</code> to be called 
+									at each <code>if</code> statement, you could 
+									rewrite the code as has been done in
+									<a href="#quotation_markif_dotdotdot_orquotati">
+									Example 4-18</a>.</p>
+									<div id="quotation_markif_dotdotdot_orquotati">
+										<h5>Example 4-18. The <code>if...OR</code> 
+										statement modified to ensure calling of
+										<code>getnext</code></h5>
+										<div>
+											<pre>
+<code>$gn</code> <code>=</code> <code>getnext();</code>
+
+<code>if</code> <code>($finished</code> <code>==</code> <code>1</code> <code>OR</code> <code>$gn</code> <code>==</code> <code>1)</code> <code>exit;</code>
+</pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>In this case, the code executes the <code>
+									getnext</code> function and stores the value 
+									returned in <code>$gn</code> before executing 
+									the <code>if</code> statement and, while this 
+									has now ensured that <code>getnext</code> is 
+									called as required, if <code>$finished</code> 
+									equals 1 then the value in <code>$gn</code> 
+									will not be tested due to the <code>or</code> 
+									operator.</p>
+									<div class="note">
+										<h4>Note</h4>
+										<p>Another solution is to switch the two 
+										clauses to make sure that <code>getnext</code> 
+										is executed, as it will then appear first 
+										in the expression.</p>
+									</div>
+									<p>
+									<a href="#all_possible_php_logical_expressions">
+									Table 4-5</a> shows all the possible variations 
+									of using the logical operators. You should also 
+									note that <code>!TRUE</code> equals <code>FALSE</code>, 
+									and <code>!FALSE</code> equals <code>TRUE</code>.</p>
+									<table id="all_possible_php_logical_expressions">
+										<caption>Table 4-5. All possible PHP logical 
+										expressions</caption>
+										<thead>
+											<tr>
+												<th>Inputs</th>
+												<th></th>
+												<th colspan="3">Operators and results</th>
+											</tr>
+										</thead>
+										<tr>
+											<th>a</th>
+											<th>b</th>
+											<th>AND</th>
+											<th>OR</th>
+											<th>XOR</th>
+										</tr>
+										<tr>
+											<td><code>TRUE</code></td>
+											<td><code>TRUE</code></td>
+											<td><code>TRUE</code></td>
+											<td><code>TRUE</code></td>
+											<td><code>FALSE</code></td>
+										</tr>
+										<tr>
+											<td><code>TRUE</code></td>
+											<td><code>FALSE</code></td>
+											<td><code>FALSE</code></td>
+											<td><code>TRUE</code></td>
+											<td><code>TRUE</code></td>
+										</tr>
+										<tr>
+											<td><code>FALSE</code></td>
+											<td><code>TRUE</code></td>
+											<td><code>FALSE</code></td>
+											<td><code>TRUE</code></td>
+											<td><code>TRUE</code></td>
+										</tr>
+										<tr>
+											<td><code>FALSE</code></td>
+											<td><code>FALSE</code></td>
+											<td><code>FALSE</code></td>
+											<td><code>FALSE</code></td>
+											<td><code>FALSE</code></td>
+										</tr>
+									</table>
+								</div>
+							</section>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="conditionals">
+					<h1>Conditionals</h1>
+					<p><em>Conditionals</em> alter program flow. They enable you 
+					to ask questions about certain things and respond to the answers 
+					you get in different ways. Conditionals are central to creating 
+					dynamic web pages—the goal of using PHP in the first place—because 
+					they make it easy to render different output each time a page 
+					is viewed.</p>
+					<p>I’ll present three basic conditionals in this section: the
+					<code>if</code> statement, the <code>switch</code> statement, 
+					and the <code>?</code> operator. In addition, looping conditionals 
+					(which we’ll get to shortly) execute code over and over until 
+					a condition is met.</p>
+					<section>
+						<div id="if_statement">
+							<h2>The if Statement</h2>
+							<p>One way of thinking about program flow is to imagine 
+							it as a single-lane highway that you are driving along. 
+							It’s pretty much a straight line, but now and then you 
+							encounter various signs telling you where to go.</p>
+							<p>In the case of an <code>if</code> statement, you 
+							could imagine coming across a detour sign that you have 
+							to follow if a certain condition is <code>TRUE</code>. 
+							If so, you drive off and follow the detour until you 
+							return to the main road and then continue on your way 
+							in your original direction. Or, if the condition isn’t
+							<code>TRUE</code>, you ignore the detour and carry on 
+							driving (see
+							<a href="#program_flow_is_like_a_single-lane_highw">
+							Figure 4-1</a>).</p>
+							<figure>
+								<div id="program_flow_is_like_a_single-lane_highw">
+									<img alt="" height="314" src="images/lpm7_0401.png" width="600" />
+									<h4>Figure 4-1. Program flow is like a single-lane 
+									highway</h4>
+								</div>
+							</figure>
+							<p>The contents of the <code>if</code> condition can 
+							be any valid PHP expression, including tests for equality, 
+							comparison expressions, tests for <code>0</code> and
+							<code>NULL</code>, and even function calls (either to 
+							built-in functions or to ones that you write).</p>
+							<p>The actions to take when an <code>if</code> condition 
+							is <code>TRUE</code> are generally placed inside curly 
+							braces (<code>{ }</code>). You can but should not ignore 
+							the braces even if you have only a single statement 
+							to execute, because if you always use curly braces, 
+							you’ll avoid having to hunt down difficult-to-trace 
+							bugs, such as when you add an extra line to a condition 
+							and it doesn’t get evaluated due to the lack of braces.</p>
+							<div class="note">
+								<h4>Note</h4>
+								<p>A notorious security vulnerability known as the 
+								“goto fail” bug haunted the Secure Sockets Layer 
+								(SSL) code in Apple’s products for many years because 
+								a programmer had forgotten the curly braces around 
+								an <code>if</code> statement, causing a function 
+								to sometimes report a successful connection when 
+								that may not actually have always been the case. 
+								This allowed a malicious attacker to get a secure 
+								certificate to be accepted when it should have been 
+								rejected. If in doubt, place braces around your
+								<code>if</code> statements, although for brevity 
+								and clarity, and where the code is small and the 
+								intention clear and obvious, some examples in this 
+								book do omit the braces for single statements.</p>
+							</div>
+							<p>In <a href="#if_statement_with_curly_braces">Example 
+							4-19</a>, imagine that it is the end of the month and 
+							all your bills have been paid, so you are performing 
+							some bank account maintenance.</p>
+							<div id="if_statement_with_curly_braces">
+								<h5>Example 4-19. An <code>if</code> statement with 
+								curly braces</h5>
+								<div>
+									<pre>
+<code>if</code> <code>($bank_balance</code> <code>&lt;</code> <code>100)</code>
+<code>{</code>
+  <code>$money</code>         <code>=</code> <code>1000;</code>
+  <code>$bank_balance</code> <code>+=</code> <code>$money;</code>
+<code>}</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>In this example, you are checking your balance to 
+							see whether it is less than 100 dollars (or whatever 
+							your currency is). If so, you pay yourself $1,000 and 
+							then add it to the balance. (If only making money were 
+							that simple!)</p>
+							<p>If the bank balance is $100 or greater, the conditional 
+							statements are ignored and the program flow skips to 
+							the next line (not shown).</p>
+							<p>In this book, opening curly braces generally start 
+							on a new line. Some people like to place the first curly 
+							brace to the right of the conditional expression; others 
+							start a new line with it. Either of these is fine, because 
+							PHP allows you to set out your whitespace characters 
+							(spaces, newlines, and tabs) any way you choose. However, 
+							you will find your code easier to read and debug if 
+							you indent each level of conditionals with a tab.</p>
+						</div>
+					</section>
+					<section>
+						<div id="else_statement">
+							<h2>The else Statement</h2>
+							<p>Sometimes when a conditional is not <code>TRUE</code>, 
+							you may not want to continue on to the main program 
+							code immediately but might wish to do something else 
+							instead. This is where the <code>else</code> statement 
+							comes in. With it, you can set up a second detour on 
+							your highway, as in
+							<a href="#highway_now_has_an_if_detour_and_an">Figure 
+							4-2</a>.</p>
+							<p>With an <code>if...else</code> statement, the first 
+							conditional statement is executed if the condition is
+							<code>TRUE</code>. But if it’s <code>FALSE</code>, the 
+							second one is executed. One of the two choices <em>must</em> 
+							be executed. Under no circumstance can both (or neither) 
+							be executed.
+							<a href="#if_dotdotdot_else_statement_with_curl">Example 
+							4-20</a> shows the use of the <code>if...else</code> 
+							structure.</p>
+							<figure>
+								<div id="highway_now_has_an_if_detour_and_an">
+									<img alt="" height="575" src="images/lpm7_0402.png" width="600" />
+									<h4>Figure 4-2. Highway now has an <code>if</code> 
+									detour and an <code>else</code> detour</h4>
+								</div>
+							</figure>
+							<div id="if_dotdotdot_else_statement_with_curl">
+								<h5>Example 4-20. An <code>if...else</code> statement 
+								with curly braces</h5>
+								<div>
+									<pre>
+<code>if</code> <code>($bank_balance</code> <code>&lt;</code> <code>100)</code>
+<code>{</code>
+  <code>$money</code>         <code>=</code> <code>1000;</code>
+  <code>$bank_balance</code> <code>+=</code> <code>$money;</code>
+<code>}</code>
+<code>else</code>
+<code>{</code>
+  <code>$savings</code>      <code>+=</code> <code>50;</code>
+  <code>$bank_balance</code> <code>-=</code> <code>50;</code>
+<code>}</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>In this example, if you’ve ascertained that you have 
+							$100 or more in the bank, the <code>else</code> statement 
+							is executed, placing some of this money into your savings 
+							account.</p>
+							<p>As with the <code>if</code> statements, curly braces 
+							are always recommended for the <code>else</code> statement 
+							as well. First, they make the code easier to understand. 
+							Second, they let you easily add more statements to the 
+							branch later.</p>
+						</div>
+					</section>
+					<section>
+						<div id="elseif_statement">
+							<h2>The elseif Statement</h2>
+							<p>There are also times when you want one of a number 
+							of different possibilities to occur, based upon a sequence 
+							of conditions. You can achieve this using the <code>
+							elseif</code> statement. As you might imagine, it is 
+							like an <code>else</code> statement, except that you 
+							place a further conditional expression prior to the 
+							conditional code. In
+							<a href="#if_dotdotdot_elseif_dotdotdot_else_st">Example 
+							4-21</a>, you can see a complete <code>if...elseif...else</code> 
+							construct.</p>
+							<div id="if_dotdotdot_elseif_dotdotdot_else_st">
+								<h5>Example 4-21. An <code>if...elseif...else</code> 
+								statement with curly braces</h5>
+								<div>
+									<pre>
+<code>if</code> <code>($bank_balance</code> <code>&lt;</code> <code>100)</code>
+<code>{</code>
+  <code>$money</code>         <code>=</code> <code>1000;</code>
+  <code>$bank_balance</code> <code>+=</code> <code>$money;</code>
+<code>}</code>
+<code>elseif</code> <code>($bank_balance</code> <code>&gt;</code> <code>200)</code>
+<code>{</code>
+  <code>$savings</code>      <code>+=</code> <code>100;</code>
+  <code>$bank_balance</code> <code>-=</code> <code>100;</code>
+<code>}</code>
+<code>else</code>
+<code>{</code>
+  <code>$savings</code>      <code>+=</code> <code>50;</code>
+  <code>$bank_balance</code> <code>-=</code> <code>50;</code>
+<code>}</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>In the example, an <code>elseif</code> statement 
+							has been inserted between the <code>if</code> and
+							<code>else</code> statements. It checks whether your 
+							bank balance exceeds $200 and, if so, decides that you 
+							can afford to save $100 this month.</p>
+							<p>Although I’m starting to stretch the metaphor a bit 
+							too far, you can imagine this as a multiway set of detours 
+							(see <a href="#highway_with_ifcomma_elseifcomma_and">
+							Figure 4-3</a>).</p>
+							<figure>
+								<div id="highway_with_ifcomma_elseifcomma_and">
+									<img alt="" height="500" src="images/lpm7_0403.png" width="600" />
+									<h4>Figure 4-3. The highway with <code>if</code>,
+									<code>elseif</code>, and <code>else</code> detours</h4>
+								</div>
+							</figure>
+							<div class="note">
+								<h4>Note</h4>
+								<p>An <code>else</code> statement closes either 
+								an <code>if...else</code> or an <code>if...elseif...else</code> 
+								statement. You can leave out a final <code>else</code> 
+								if it is not required, but you cannot have one before 
+								an <code>elseif</code>; you also cannot have an
+								<code>elseif</code> before an <code>if</code> statement.</p>
+							</div>
+							<p>You may have as many <code>elseif</code> statements 
+							as you like. But as the number of <code>elseif</code> 
+							statements increases, you would probably be better advised 
+							to consider a <code>switch</code> statement if it fits 
+							your needs. We’ll look at that next.</p>
+						</div>
+					</section>
+					<section>
+						<div id="switch_statement">
+							<h2>The switch Statement</h2>
+							<p>The <code>switch</code> statement is useful where 
+							one variable, or the result of an expression, can have 
+							multiple values, each of which should trigger a different 
+							activity.</p>
+							<p>For example, consider a PHP-driven menu system that 
+							passes a single string to the main menu code according 
+							to what the user requests. Let’s say the options are 
+							Home, About, News, Login, and Links, and we set the 
+							variable <code>$page</code> to one of these, according 
+							to the user’s input.</p>
+							<p>If we write the code for this using <code>if...elseif...else</code>, 
+							it might look like
+							<a href="#multiple-line_if_dotdotdot_elseif_dotd">Example 
+							4-22</a>.</p>
+							<div id="multiple-line_if_dotdotdot_elseif_dotd">
+								<h5>Example 4-22. A multiline <code>if...elseif...else</code> 
+								statement</h5>
+								<div>
+									<pre>
+<code>if</code>     <code>($page</code> <code>==</code> <code>"Home")</code>  <code>echo</code> <code>"You selected Home";</code>
+<code>elseif</code> <code>($page</code> <code>==</code> <code>"About")</code> <code>echo</code> <code>"You selected About";</code>
+<code>elseif</code> <code>($page</code> <code>==</code> <code>"News")</code>  <code>echo</code> <code>"You selected News";</code>
+<code>elseif</code> <code>($page</code> <code>==</code> <code>"Login")</code> <code>echo</code> <code>"You selected Login";</code>
+<code>elseif</code> <code>($page</code> <code>==</code> <code>"Links")</code> <code>echo</code> <code>"You selected Links";</code>
+<code>else</code>                      <code>echo</code> <code>"Unrecognized selection";</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>If we use a <code>switch</code> statement, the code 
+							might look like <a href="#switch_statement-id00013">
+							Example 4-23</a>.</p>
+							<div id="switch_statement-id00013">
+								<h5>Example 4-23. A <code>switch</code> statement</h5>
+								<div>
+									<pre>
+<code>switch</code> <code>($page)</code>
+<code>{</code>
+  <code>case</code> <code>"Home":</code>
+      <code>echo</code> <code>"You selected Home";</code>
+      <code>break;</code>
+  <code>case</code> <code>"About":</code>
+      <code>echo</code> <code>"You selected About";</code>
+      <code>break;</code>
+  <code>case</code> <code>"News":</code>
+      <code>echo</code> <code>"You selected News";</code>
+      <code>break;</code>
+  <code>case</code> <code>"Login":</code>
+      <code>echo</code> <code>"You selected Login";</code>
+      <code>break;</code>
+  <code>case</code> <code>"Links":</code>
+      <code>echo</code> <code>"You selected Links";</code>
+      <code>break;</code>
+<code>}</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>As you can see, <code>$page</code> is mentioned only 
+							once at the start of the <code>switch</code> statement. 
+							Thereafter, the <code>case</code> command checks for 
+							matches. When one occurs, the matching conditional statement 
+							is executed. Of course, in a real program you would 
+							have code here to display or jump to a page, rather 
+							than simply telling the user what was selected.</p>
+							<div class="note">
+								<h4>Note</h4>
+								<p>With <code>switch</code> statements, you do not 
+								use curly braces inside <code>case</code> commands. 
+								Instead, they commence with a colon and end with 
+								the <code>break</code> statement. The entire list 
+								of cases in the <code>switch</code> statement is 
+								enclosed in a set of curly braces, though.</p>
+							</div>
+							<section>
+								<div id="breaking_out">
+									<h3>Breaking out</h3>
+									<p>If you wish to break out of the <code>switch</code> 
+									statement because a condition has been fulfilled, 
+									use the <code>break</code> command. This command 
+									tells PHP to exit the <code>switch</code> and 
+									jump to the following statement.</p>
+									<p>If you were to leave out the <code>break</code> 
+									commands in
+									<a href="#switch_statement-id00013">Example 
+									4-23</a> and the case of <code>Home</code> evaluated 
+									to be <code>TRUE</code>, all five cases would 
+									then be executed due to what is known as fall-through. 
+									Or, if <code>$page</code> had the value
+									<code>News</code>, all the <code>case</code> 
+									commands from then on would execute. This is 
+									deliberate and allows for some advanced programming, 
+									but generally you should remember to issue a
+									<code>break</code> command every time a set 
+									of <code>case</code> conditionals has finished 
+									executing. In fact, leaving out the <code>break</code> 
+									statement is a common error.</p>
+								</div>
+							</section>
+							<section>
+								<div id="default_action">
+									<h3>Default action</h3>
+									<p>A typical requirement in <code>switch</code> 
+									statements is to fall back on a default action 
+									if none of the <code>case</code> conditions 
+									are met. For example, in the case of the menu 
+									code in <a href="#switch_statement-id00013">
+									Example 4-23</a>, you could add the code in
+									<a href="#default_statement_to_add_to_example_4">
+									Example 4-24</a> immediately before the final 
+									curly brace.</p>
+									<div id="default_statement_to_add_to_example_4">
+										<h5>Example 4-24. A default statement to 
+										add to
+										<a href="#switch_statement-id00013">Example 
+										4-23</a></h5>
+										<div>
+											<pre>
+<code>default:</code>
+    <code>echo</code> <code>"Unrecognized selection";</code>
+    <code>break;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>This replicates the effect of the <code>else</code> 
+									statement in
+									<a href="#multiple-line_if_dotdotdot_elseif_dotd">
+									Example 4-22</a>.</p>
+									<p>Although a <code>break</code> command is 
+									not required here because the default is the 
+									final sub-statement and program flow will automatically 
+									continue to the closing curly brace, should 
+									you decide to move the <code>default</code> 
+									statement higher up (not generally recommended 
+									practice), it would definitely need a <code>
+									break</code> command to prevent program flow 
+									from dropping into the following statements. 
+									Generally, the safest practice is to always 
+									include the <code>break</code> command.</p>
+								</div>
+							</section>
+							<section>
+								<div id="alternative_syntax">
+									<h3>Alternative syntax</h3>
+									<p>If you prefer, you may replace the first 
+									curly brace in a <code>switch</code> statement 
+									with a single colon and the final curly brace 
+									with an <code>endswitch</code> command, as in
+									<a href="#alternate_switch_statement_syntax">
+									Example 4-25</a>. However, this approach is 
+									not commonly used and is mentioned here only 
+									in case you encounter it in third-party code.</p>
+									<div id="alternate_switch_statement_syntax">
+										<h5>Example 4-25. Alternate <code>switch</code> 
+										statement syntax</h5>
+										<div>
+											<pre>
+<code>switch</code> <code>($page):</code>
+  <code>case</code> <code>"Home":</code>
+      <code>echo</code> <code>"You selected Home";</code>
+      <code>break;</code>
+
+  <code>// etc</code>
+
+  <code>case</code> <code>"Links":</code>
+      <code>echo</code> <code>"You selected Links";</code>
+      <code>break;</code>
+<code>endswitch;</code>
+</pre>
+											<div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</section>
+						</div>
+					</section>
+					<section>
+						<div id="question_mark_operator">
+							<h2>The <code>?</code> (or ternary) Operator</h2>
+							<p>One way of avoiding the verbosity of <code>if</code> 
+							and <code>else</code> statements is to use the more 
+							compact ternary operator, <code>?</code>, which is unusual 
+							in that it takes three operands rather than the typical 
+							two.</p>
+							<p>We briefly came across this in
+							<a href="ch03.html#introduction_to_php">Chapter 3</a> 
+							in the discussion about the difference between the
+							<code>print</code> and <code>echo</code> statements 
+							as an example of an operator type that works well with
+							<code>print</code> but not <code>echo</code>.</p>
+							<p>The <code>?</code> operator is passed an expression 
+							that it must evaluate, along with two expressions to 
+							execute: one for when the expression evaluates to
+							<code>TRUE</code>, the other for when it is <code>FALSE</code>.
+							<a href="#using_the_question_mark_operator">Example 
+							4-26</a> shows code we might use for writing a warning 
+							about the fuel level of a car to its digital dashboard.</p>
+							<div id="using_the_question_mark_operator">
+								<h5>Example 4-26. Using the <code>?</code> operator</h5>
+								<div>
+									<pre>
+<code>echo</code> <code>$fuel</code> <code>&lt;=</code> <code>1</code> <code>?</code> <code>"Fill tank now"</code> <code>:</code> <code>"There's enough fuel";</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>In this statement, if there is one gallon or less 
+							of fuel (in other words, <code>$fuel</code> is set to
+							<code>1</code> or less), the string <code>Fill tank 
+							now</code> is returned to the preceding <code>echo</code> 
+							statement. Otherwise, the string <code>There's enough 
+							fuel</code> is returned. You can also assign the value 
+							returned in a <code>?</code> statement to a variable 
+							(see
+							<a href="#assigning_a_question_markconditional_res">
+							Example 4-27</a>).</p>
+							<div id="assigning_a_question_markconditional_res">
+								<h5>Example 4-27. Assigning a <code>?</code> conditional 
+								result to a variable</h5>
+								<div>
+									<pre>
+<code>$enough</code> <code>=</code> <code>$fuel</code> <code>&lt;=</code> <code>1</code> <code>?</code> <code>FALSE</code> <code>:</code> <code>TRUE;</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Here, <code>$enough</code> will be assigned the value
+							<code>TRUE</code> only when there is more than a gallon 
+							of fuel; otherwise, it is assigned the value <code>FALSE</code>.</p>
+							<p>If you find the <code>?</code> operator confusing, 
+							you are free to stick to <code>if</code> statements, 
+							but you should be familiar with the operator because 
+							you’ll see it in other people’s code. It can be hard 
+							to read, because it often mixes multiple occurrences 
+							of the same variable. For instance, code such as the 
+							following is quite popular:</p>
+							<div>
+								<pre>
+<code>$saved</code> <code>=</code> <code>$saved</code> <code>&gt;=</code> <code>$new</code> <code>?</code> <code>$saved</code> <code>:</code> <code>$new;</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>If you take it apart carefully, you can figure out 
+							what this code does:</p>
+							<div>
+								<pre>
+<code>$saved</code> <code>=</code>                <code>// Set the value of $saved to...</code>
+        <code>$saved</code> <code>&gt;=</code> <code>$new</code>  <code>// Check $saved against $new</code>
+    <code>?</code>                   <code>// Yes, comparison is true...</code>
+        <code>$saved</code>          <code>// ... so assign the current value of $saved</code>
+    <code>:</code>                   <code>// No, comparison is false...</code>
+        <code>$new;</code>           <code>// ... so assign the value of $new</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>It’s a concise way to keep track of the largest value 
+							that you’ve seen as a program progresses. You save the 
+							largest value in <code>$saved</code> and compare it 
+							to <code>$new</code> each time you get a new value. 
+							Programmers familiar with the <code>?</code> operator 
+							find it more convenient than <code>if</code> statements 
+							for such short comparisons. When not used for writing 
+							compact code, it is typically used to make some decision 
+							inline, such as when you are testing whether a variable 
+							is set before passing it to a function.</p>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="looping">
+					<h1>Looping</h1>
+					<p>One of the great things about computers is that they can 
+					repeat tasks quickly and tirelessly. Often you may want a program 
+					to repeat the same sequence of code again and again until something 
+					happens, such as a user inputting a value or the program reaching 
+					a natural end. PHP’s loop structures provide the perfect way 
+					to do this.</p>
+					<p>To picture how this works, look at
+					<a href="#imagining_a_loop_as_part_of_a_program_hi">Figure 4-4</a>. 
+					It is much the same as the highway metaphor used to illustrate
+					<code>if</code> statements, except the detour also has a loop 
+					section that—once a vehicle has entered it—can be exited only 
+					under the right program conditions.</p>
+					<figure>
+						<div id="imagining_a_loop_as_part_of_a_program_hi">
+							<img alt="" height="314" src="images/lpm7_0404.png" width="600" />
+							<h4>Figure 4-4. Imagining a loop as part of a program 
+							highway layout</h4>
+						</div>
+					</figure>
+					<section>
+						<div id="while_loops">
+							<h2>while Loops</h2>
+							<p>Let’s turn the digital car dashboard in
+							<a href="#using_the_question_mark_operator">Example 
+							4-26</a> into a loop that continuously checks the fuel 
+							level as you drive, using a <code>while</code> loop 
+							(<a href="#while_loop">Example 4-28</a>).</p>
+							<div id="while_loop">
+								<h5>Example 4-28. A <code>while</code> loop</h5>
+								<div>
+									<pre>
+<code>$fuel</code> <code>=</code> <code>10;</code>
+
+<code>while</code> <code>($fuel</code> <code>&gt;</code> <code>1)</code>
+<code>{</code>
+  <code>// Keep driving...</code>
+  <code>echo</code> <code>"There's enough fuel";</code>
+<code>}</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Actually, you might prefer to keep a green light 
+							lit rather than output text, but the point is that whatever 
+							positive indication you wish to make about the level 
+							of fuel is placed inside the <code>while</code> loop. 
+							By the way, if you try this example for yourself, note 
+							that it will keep printing the string until you exit 
+							the program.</p>
+							<div class="note">
+								<h4>Note</h4>
+								<p>As with <code>if</code> statements, you will 
+								notice that curly braces are required to hold the 
+								statements inside the <code>while</code> statements, 
+								unless there’s only one.</p>
+							</div>
+							<p>For another example of a <code>while</code> loop 
+							that displays the 12 times table, see
+							<a href="#while_loop_to_print_the_12_times_table">Example 
+							4-29</a>.</p>
+							<div id="while_loop_to_print_the_12_times_table">
+								<h5>Example 4-29. A <code>while</code> loop to print 
+								the 12 times table</h5>
+								<div>
+									<pre>
+<code>$count</code> <code>=</code> <code>1;</code>
+
+<code>while</code> <code>($count</code> <code>&lt;=</code> <code>12)</code>
+<code>{</code>
+  <code>echo</code> <code>"$count times 12 is "</code> <code>.</code> <code>$count</code> <code>*</code> <code>12</code> <code>.</code> <code>"&lt;br&gt;";</code>
+  <code>++$count;</code>
+<code>}</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Here the variable <code>$count</code> is initialized 
+							to a value of <code>1</code>, and then a <code>while</code> 
+							loop starts with the comparative expression <code>$count &lt;= 
+							12</code>. This loop will continue executing until the 
+							variable is greater than 12. The output from this code 
+							is as follows:</p>
+							<div>
+								<pre>
+<strong>1 times 12 is 12</strong>
+<strong>2 times 12 is 24</strong>
+<strong>3 times 12 is 36</strong>
+<em>and so on...</em></pre>
+								<div>
+								</div>
+							</div>
+							<p>Inside the loop, a string is printed along with the 
+							value of <code>$count</code> multiplied by 12. For neatness, 
+							this is followed with a <code>&lt;br&gt;</code> tag 
+							to force a new line. Then <code>$count</code> is incremented, 
+							ready for the final curly brace that tells PHP to return 
+							to the start of the loop.</p>
+							<p>At this point, <code>$count</code> is again tested 
+							to see whether it is greater than 12. It isn’t, but 
+							it now has the value <code>2</code>, and after another 
+							11 times around the loop, it will have the value
+							<code>13</code>. When that happens, the code within 
+							the <code>while</code> loop is skipped and execution 
+							passes to the code following the loop, which, in this 
+							case, is the end of the program.</p>
+							<p>If the <code>++$count</code> statement (which could 
+							equally have been <code>$count++</code>) had not been 
+							there, this loop would be like the first one in this 
+							section. It would never end, and only the result of
+							<code>1 * 12</code> would be printed over and over.</p>
+							<p>But there is a much neater way this loop can be written. 
+							Take a look at
+							<a href="#shortened_version_of_example_4-29">Example 
+							4-30</a>.</p>
+							<div id="shortened_version_of_example_4-29">
+								<h5>Example 4-30. A shortened version of
+								<a href="#while_loop_to_print_the_12_times_table">
+								Example 4-29</a></h5>
+								<div>
+									<pre>
+<code>$count</code> <code>=</code> <code>0;</code>
+
+<code>while</code> <code>(++$count</code> <code>&lt;=</code> <code>12)</code>
+  <code>echo</code> <code>"$count times 12 is "</code> <code>.</code> <code>$count</code> <code>*</code> <code>12</code> <code>.</code> <code>"&lt;br&gt;";</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>In this example, it was possible to move the
+							<code>++$count</code> statement from the statements 
+							inside the <code>while</code> loop into the conditional 
+							expression of the loop. What now happens is that PHP 
+							encounters the variable <code>$count</code> at the start 
+							of each iteration of the loop and, noticing that it 
+							is prefaced with the increment operator, first increments 
+							the variable and only then compares it to the value
+							<code>12</code>. You can therefore see that <code>$count</code> 
+							now has to be initialized to <code>0</code>, not
+							<code>1</code>, because it is incremented as soon as 
+							the loop is entered. If you keep the initialization 
+							at <code>1</code>, only results between 2 and 12 will 
+							be output.</p>
+							<div>
+								<h1>Multi Line Statements</h1>
+								<p>In the preceding example, no braces are placed 
+								around the code following the <code>while</code> 
+								statement, and therefore only that line will be 
+								executed. If you wish to add more commands at this 
+								point then ensure curly braces are used to surround 
+								them.</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="do_dotdotdot_while_loops">
+							<h2>do...while Loops</h2>
+							<p>A slight variation to the <code>while</code> loop 
+							is the <code>do...while</code> loop, used when you want 
+							a block of code to be executed at least once and made 
+							conditional only after that.
+							<a href="#do_dotdotdot_while_loop_for_printing_t">Example 
+							4-31</a> shows a modified version of the code for the 
+							12 times table that uses such a loop.</p>
+							<div id="do_dotdotdot_while_loop_for_printing_t">
+								<h5>Example 4-31. A <code>do...while</code> loop 
+								for printing the 12 times table</h5>
+								<div>
+									<pre>
+<code>$count</code> <code>=</code> <code>1;</code>
+<code>do</code>
+  <code>echo</code> <code>"$count times 12 is "</code> <code>.</code> <code>$count</code> <code>*</code> <code>12</code> <code>.</code> <code>"&lt;br&gt;";</code>
+<code>while</code> <code>(++$count</code> <code>&lt;=</code> <code>12);</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Notice how we are back to initializing <code>$count</code> 
+							to <code>1</code> (rather than <code>0</code>) because 
+							of the loop’s <code>echo</code> statement being executed 
+							before we have an opportunity to increment the variable. 
+							Other than that, though, the code looks pretty similar.</p>
+							<p>Of course, if you have more than a single statement 
+							inside a <code>do...while</code> loop, remember to use 
+							curly braces, as in
+							<a href="#expanding_example_4-31_to_use_curly_brac">
+							Example 4-32</a>.</p>
+							<div id="expanding_example_4-31_to_use_curly_brac">
+								<h5>Example 4-32. Expanding
+								<a href="#do_dotdotdot_while_loop_for_printing_t">
+								Example 4-31</a> to use curly braces</h5>
+								<div>
+									<pre>
+<code>$count</code> <code>=</code> <code>1;</code>
+
+<code>do</code> <code>{</code>
+  <code>echo</code> <code>"$count times 12 is "</code> <code>.</code> <code>$count</code> <code>*</code> <code>12;</code>
+  <code>echo</code> <code>"&lt;br&gt;";</code>
+<code>}</code> <code>while</code> <code>(++$count</code> <code>&lt;=</code> <code>12);</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="for_loops">
+							<h2>for Loops</h2>
+							<p>The final kind of loop statement, the <code>for</code> 
+							loop, combines the abilities to set up variables as 
+							you enter the loop, test for conditions while iterating 
+							loops, and modify variables after each iteration.</p>
+							<p>
+							<a href="#outputting_the_times_table_for_12_from_a">
+							Example 4-33</a> shows how to write the multiplication 
+							table program with a <code>for</code> loop.</p>
+							<div id="outputting_the_times_table_for_12_from_a">
+								<h5>Example 4-33. Outputting the 12 times table 
+								from a <code>for</code> loop</h5>
+								<div>
+									<pre>
+<code>for</code> <code>($count</code> <code>=</code> <code>1</code> <code>;</code> <code>$count</code> <code>&lt;=</code> <code>12</code> <code>;</code> <code>++$count)</code>
+  <code>echo</code> <code>"$count times 12 is "</code> <code>.</code> <code>$count</code> <code>*</code> <code>12</code> <code>.</code> <code>"&lt;br&gt;";</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>See how the code has been reduced to a single
+							<code>for</code> statement containing a single conditional 
+							statement? Here’s what is going on. Each <code>for</code> 
+							statement takes three parameters:</p>
+							<ul>
+								<li>
+								<p>An initialization expression</p>
+								</li>
+								<li>
+								<p>A condition expression</p>
+								</li>
+								<li>
+								<p>A modification expression</p>
+								</li>
+							</ul>
+							<p>These are separated by semicolons like this:
+							<code>for (</code><em><code>expr1</code></em> <code>
+							;</code> <em><code>expr2</code></em> <code>;</code>
+							<em><code>expr3</code></em><code>)</code>. At the start 
+							of the first iteration of the loop, the initialization 
+							expression is executed. In the case of the times table 
+							code, <code>$count</code> is initialized to the value
+							<code>1</code>. Then, each time around the loop, the 
+							condition expression (in this case, <code>$count &lt;= 
+							12</code>) is tested, and the loop is entered only if 
+							the condition is <code>TRUE</code>. Finally, at the 
+							end of each iteration, the modification expression is 
+							executed. In the case of the times table code, the variable
+							<code>$count</code> is incremented.</p>
+							<p>All this structure neatly removes any requirement 
+							to place the controls for a loop within its body, freeing 
+							it up just for the statements you want the loop to perform.</p>
+							<p>Remember to use curly braces with a <code>for</code> 
+							loop if it will contain more than one statement, as 
+							in <a href="#for_loop_from_example_4-33_with_adde">Example 
+							4-34</a>.</p>
+							<div id="for_loop_from_example_4-33_with_adde">
+								<h5>Example 4-34. The <code>for</code> loop from
+								<a href="#outputting_the_times_table_for_12_from_a">
+								Example 4-33</a> with added curly braces</h5>
+								<div>
+									<pre>
+<code>for</code> <code>($count</code> <code>=</code> <code>1</code> <code>;</code> <code>$count</code> <code>&lt;=</code> <code>12</code> <code>;</code> <code>++$count)</code>
+<code>{</code>
+  <code>echo</code> <code>"$count times 12 is "</code> <code>.</code> <code>$count</code> <code>*</code> <code>12;</code>
+  <code>echo</code> <code>"&lt;br&gt;";</code>
+<code>}</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Let’s compare when to use <code>for</code> and
+							<code>while</code> loops. The <code>for</code> loop 
+							is explicitly designed around a single value that changes 
+							on a regular basis. Usually you have a value that increments, 
+							as when you are passed a list of user choices and want 
+							to process each choice in turn. But you can transform 
+							the variable any way you like. A more complex form of 
+							the <code>for</code> statement even lets you perform 
+							multiple operations in each of the three parameters:</p>
+							<div>
+								<pre>
+<code>for</code> <code>($i</code> <code>=</code> <code>1,</code> <code>$j</code> <code>=</code> <code>1</code> <code>;</code> <code>$i</code> <code>+</code> <code>$j</code> <code>&lt;</code> <code>10</code> <code>;</code> <code>$i++</code> <code>,</code> <code>$j++)</code>
+<code>{</code>
+  <code>// ...</code>
+<code>}</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>That’s complicated and not recommended for first-time 
+							users, though. The key is to distinguish commas from 
+							semicolons. The three parameters must be separated by 
+							semicolons. Within each parameter, multiple statements 
+							can be separated by commas. Thus, in the previous example, 
+							the first and third parameters each contain two statements:</p>
+							<div>
+								<pre>
+<code>$i</code> <code>=</code> <code>1,</code> <code>$j</code> <code>=</code> <code>1</code>  <code>// Initialize $i and $j</code>
+<code>$i</code> <code>+</code> <code>$j</code> <code>&lt;</code> <code>10</code>    <code>// Terminating condition</code>
+<code>$i++,</code> <code>$j++</code>      <code>// Modify $i and $j at the end of each iteration</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>The main thing to take from this example is that 
+							you must separate the three parameter sections with 
+							semicolons, not commas (which should be used only to 
+							separate statements within a parameter section).</p>
+							<p>So, when is a <code>while</code> statement more appropriate 
+							than a <code>for</code> statement? When your condition 
+							doesn’t depend on a simple, regular change to a variable. 
+							For instance, if you want to check for some special 
+							input or error and end the loop when it occurs, use 
+							a <code>while</code> statement.</p>
+						</div>
+					</section>
+					<section>
+						<div id="breaking_out_of_a_loop">
+							<h2>Breaking Out of a Loop</h2>
+							<p>Just as you saw how to break out of a <code>switch</code> 
+							statement, you can also break out of a <code>for</code> 
+							loop (or any loop) using the same <code>break</code> 
+							command. This step can be necessary when, for example, 
+							one of your statements returns an error and the loop 
+							cannot continue executing safely. One case in which 
+							this might occur is when writing a file returns an error, 
+							possibly because the disk is full (see
+							<a href="#writing_a_file_using_a_for_loop_with_err">
+							Example 4-35</a>).</p>
+							<div id="writing_a_file_using_a_for_loop_with_err">
+								<h5>Example 4-35. Writing a file using a <code>for</code> 
+								loop with error trapping</h5>
+								<div>
+									<pre>
+<code>$fp</code> <code>=</code> <code>fopen("text.txt",</code> <code>'wb');</code>
+
+<code>for</code> <code>($j</code> <code>=</code> <code>0</code> <code>;</code> <code>$j</code> <code>&lt;</code> <code>100</code> <code>;</code> <code>++$j)</code>
+<code>{</code>
+  <code>$written</code> <code>=</code> <code>fwrite($fp,</code> <code>"data");</code>
+
+  <code>if</code> <code>($written</code> <code>==</code> <code>FALSE)</code> <code>break;</code>
+<code>}</code>
+
+<code>fclose($fp);</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>This is the most complicated piece of code that you 
+							have seen so far, but you’re ready for it. We’ll look 
+							into the file-handling commands in
+							<a href="ch07.html#practical_php">Chapter 7</a>, but 
+							for now all you need to know is that the first line 
+							opens the file <em>text.txt</em> for writing in binary 
+							mode and then returns a pointer to the file in the variable
+							<code>$fp</code>, which is used later to refer to the 
+							open file.</p>
+							<p>The loop then iterates 100 times (from 0 to 99), 
+							writing the string <code>data</code> to the file. After 
+							each write, the variable <code>$written</code> is assigned 
+							a value by the <code>fwrite</code> function representing 
+							the number of characters correctly written. But if there 
+							is an error, the <code>fwrite</code> function assigns 
+							the value <code>FALSE</code>.</p>
+							<p>The behavior of <code>fwrite</code> makes it easy 
+							for the code to check the variable <code>$written</code> 
+							to see whether it is set to <code>FALSE</code> and, 
+							if so, to break out of the loop to the following statement 
+							that closes the file.</p>
+							<p>The <code>break</code> command is even more powerful 
+							than you might think, because if you have loops nested 
+							more than one layer deep that you need to break out 
+							of, you can follow the <code>break</code> command with 
+							a number to indicate how many levels to break out of:</p>
+							<div>
+								<pre>
+<code>break</code> <code>2;</code></pre>
+								<div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="continue_statement">
+							<h2>The continue Statement</h2>
+							<p>The <code>continue</code> statement is a little like 
+							a <code>break</code> statement, except that it instructs 
+							PHP to stop processing the current iteration of the 
+							loop and move right to its next iteration. So, instead 
+							of breaking out of the whole loop, PHP exits only the 
+							current iteration.</p>
+							<p>This approach can be useful in cases where you know 
+							there is no point continuing execution within the current 
+							loop and you want to prevent an error from occurring 
+							by moving right along to the next iteration of the loop. 
+							In
+							<a href="#trapping_division-by-zero_errors_using_c">
+							Example 4-36</a>, a <code>continue</code> statement 
+							is used to prevent a division-by-zero error from being 
+							issued when the variable <code>$j</code> has a value 
+							of <code>0</code>.</p>
+							<div id="trapping_division-by-zero_errors_using_c">
+								<h5>Example 4-36. Trapping division-by-zero errors 
+								using <code>continue</code></h5>
+								<div>
+									<pre>
+<code>$j</code> <code>=</code> <code>11;</code>
+
+<code>while</code> <code>($j</code> <code>&gt;</code> <code>-10)</code>
+<code>{</code>
+  <code>$j--;</code>
+
+  <code>if</code> <code>($j</code> <code>==</code> <code>0)</code> <code>continue;</code>
+
+  <code>echo</code> <code>(10</code> <code>/</code> <code>$j)</code> <code>.</code> <code>"&lt;br&gt;";</code>
+<code>}</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>For all values of <code>$j</code> between <code>10</code> 
+							and <code>–10</code>, with the exception of <code>0</code>, 
+							the result of calculating <code>10</code> divided by
+							<code>$j</code> is displayed. But for the case of
+							<code>$j</code> being <code>0</code>, the <code>continue</code> 
+							statement is issued, and execution skips immediately 
+							to the next iteration of the loop.</p>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="implicit_and_explicit_casting">
+					<h1>Implicit and Explicit Casting</h1>
+					<p>PHP is a loosely typed language that allows you to declare 
+					a variable and its type simply by using it. It also automatically 
+					converts values from one type to another whenever required. 
+					This is called <em>implicit casting</em>.</p>
+					<p>However, at times PHP’s implicit casting may not be what 
+					you want. In
+					<a href="#this_expression_returns_a_floating-point">Example 
+					4-37</a>, note that the inputs to the division are integers. 
+					By default, PHP converts the output to floating point so it 
+					can give the most precise value—4.66 recurring.</p>
+					<div id="this_expression_returns_a_floating-point">
+						<h5>Example 4-37. This expression returns a floating-point 
+						number</h5>
+						<div>
+							<pre>
+<code>$a</code> <code>=</code> <code>56;</code>
+<code>$b</code> <code>=</code> <code>12;</code>
+<code>$c</code> <code>=</code> <code>$a</code> <code>/</code> <code>$b;</code>
+
+<code>echo</code> <code>$c;</code>
+</pre>
+							<div>
+							</div>
+						</div>
+					</div>
+					<p>But what if we had wanted <code>$c</code> to be an integer 
+					instead? There are various ways we could achieve this, one of 
+					which is to force the result of <code>$a / $b</code> to be cast 
+					to an integer value using the integer cast type <code>(int)</code>, 
+					like this:</p>
+					<div>
+						<pre>
+<code>$c</code> <code>=</code> <code>(int)</code> <code>($a</code> <code>/</code> <code>$b);</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>This is called <em>explicit</em> casting. Note that in order 
+					to ensure that the value of the entire expression is cast to 
+					an integer, we place the expression within parentheses. Otherwise, 
+					only the variable <code>$a</code> would have been cast to an 
+					integer—a pointless exercise, as the division by <code>$b</code> 
+					would still have returned a floating-point number.</p>
+					<p>You can explicitly cast variables and literals to the types 
+					shown in <a href="#phpapostrophes_cast_types">Table 4-6</a>.</p>
+					<table id="phpapostrophes_cast_types">
+						<caption>Table 4-6. PHP’s cast types</caption>
+						<thead>
+							<tr>
+								<th>Cast type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tr>
+							<td><code>(int) (integer)</code></td>
+							<td>Cast to an integer by dropping the decimal portion.</td>
+						</tr>
+						<tr>
+							<td><code>(bool) (boolean)</code></td>
+							<td>Cast to a Boolean.</td>
+						</tr>
+						<tr>
+							<td><code>(float) (double) (real)</code></td>
+							<td>Cast to a floating-point number.</td>
+						</tr>
+						<tr>
+							<td><code>(string)</code></td>
+							<td>Cast to a string.</td>
+						</tr>
+						<tr>
+							<td><code>(array)</code></td>
+							<td>Cast to an array.</td>
+						</tr>
+						<tr>
+							<td><code>(object)</code></td>
+							<td>Cast to an object.</td>
+						</tr>
+					</table>
+					<div class="note">
+						<h4>Note</h4>
+						<p>PHP also has built-in functions that do the same thing. 
+						For example, to obtain an integer value, you could use the
+						<code>intval</code> function. But those functions often 
+						do more than just casting, for example the <code>intval</code> 
+						function supports specifying the base for the conversion. 
+						Usually, simple casting as mentioned above is enough to 
+						change the type.</p>
+					</div>
+				</div>
+			</section>
+			<section>
+				<div id="php_dynamic_linking">
+					<h1>PHP Modularization</h1>
+					<p>Because PHP is a programming language, and the output from 
+					it can be completely different for each user, it’s possible 
+					for an entire website to run from a single PHP web page. Each 
+					time the user clicks something, the details can be sent back 
+					to the same web page, which decides what to do next according 
+					to the various cookies and/or other session details it may have 
+					stored.</p>
+					<p>But although it is possible to build an entire website this 
+					way, it’s not recommended, because your source code will grow 
+					and grow and start to become unwieldy, as it has to account 
+					for every possible action a user could take.</p>
+					<p>Instead, it’s much more sensible to split your website development 
+					into different parts, or modules, that are dynamically called 
+					up (or linked) as required. For example, one distinct process 
+					is signing up for a website, along with all the checking this 
+					entails to validate an email address, determine whether a username 
+					is already taken, and so on.</p>
+					<p>A second module might be one that logs users in before handing 
+					them off to the main part of your website. Then you might have 
+					a messaging module with the facility for users to leave comments, 
+					a module containing links and useful information, another to 
+					allow uploading of images, and more.</p>
+					<p>As long as you have created a way to track your user through 
+					your website by means of cookies or session variables (both 
+					of which we’ll look at more closely in later chapters), you 
+					can split up your website into sensible sections of PHP code, 
+					each one self-contained, and therefore treat yourself to a much 
+					easier future, developing each new feature and maintaining old 
+					ones. If you have a team, different people can work on different 
+					modules so that each programmer needs to learn just one part 
+					of the program thoroughly.</p>
+				</div>
+			</section>
+			<section>
+				<div id="questions-id00014">
+					<h1>Questions</h1>
+					<ol>
+						<li>
+						<p>When printing data that contains <code>TRUE</code> and
+						<code>FALSE</code> constants, what’s displayed instead of 
+						those two constants and why?</p>
+						</li>
+						<li>
+						<p>What are the simplest two forms of expressions?</p>
+						</li>
+						<li>
+						<p>What is the difference between unary, binary, and ternary 
+						operators?</p>
+						</li>
+						<li>
+						<p>What is the best way to force your own operator precedence?</p>
+						</li>
+						<li>
+						<p>What is meant by <em>operator associativity</em>?</p>
+						</li>
+						<li>
+						<p>When would you use the <code>===</code> (identity) operator?</p>
+						</li>
+						<li>
+						<p>Name the three conditional statement types.</p>
+						</li>
+						<li>
+						<p>What command can you use to skip the current iteration 
+						of a loop and move on to the next one?</p>
+						</li>
+						<li>
+						<p>What’s the difference between the <code>for</code> loop 
+						and the <code>while</code> loop?</p>
+						</li>
+						<li>
+						<p>How do <code>if</code> and <code>while</code> statements 
+						interpret conditional expressions of different data types?</p>
+						</li>
+					</ol>
+					<p>See <a href="app01.html#chapter_4_answers">“Chapter 4 Answers”</a> 
+					in the
+					<a href="app01.html#solutions_to_the_chapter_questions">Appendix 
+					A</a> for the answers to these questions.</p>
+				</div>
+			</section>
+		</div>
+	</section>
+</div>
+
+</body>
+
+</html>

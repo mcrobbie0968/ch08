@@ -1,0 +1,18 @@
+﻿.note, .warning {
+	background-color: aliceblue;
+}
+a {
+	color: blue;
+}
+body {
+	background-color: white;
+	color: black;
+	font-family: verdana;
+}
+code, pre {
+	background-color: aliceblue;
+	font-size: large;
+}
+table, td, th {
+	border: 1px black solid;
+}

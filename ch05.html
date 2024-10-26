@@ -1,0 +1,1749 @@
+﻿<!DOCTYPE html>
+<html lang="en-gb">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<link href="stylesheet.css" rel="stylesheet" type="text/css" />
+<title>Chapter 5. PHP Functions and Objects</title>
+</head>
+
+<body>
+
+<div id="sbo-rt-content">
+	<section>
+		<div id="php_functions_and_objects">
+			<h1>Chapter 5. PHP Functions and Objects</h1>
+			<p>The basic requirements of any programming language include somewhere 
+			to store data, a means of directing program flow with statements like
+			<code>if</code> and <code>else</code>, and a few bits and pieces such 
+			as expression evaluation, file management, and text output. PHP has 
+			all these to make life easier. But even with all these in your toolkit, 
+			programming can be clumsy and tedious, especially if you have to rewrite 
+			portions of very similar code each time you need them.</p>
+			<p>That’s where functions and objects come in. As you might guess, a
+			<em>function</em> is a set of statements that performs a particular 
+			function and—optionally—returns a value. You can pull out a section 
+			of code that you have used more than once, place it into a function, 
+			and call the function by name when you want to call the code.</p>
+			<p>In PHP functions have many advantages over contiguous, inline code. 
+			For example, they:</p>
+			<ul>
+				<li>
+				<p>Involve less typing</p>
+				</li>
+				<li>
+				<p>Reduce syntax and other programming errors</p>
+				</li>
+				<li>
+				<p>Decrease the loading time of program files</p>
+				</li>
+				<li>
+				<p>Accept arguments and can therefore be used for general as well 
+				as specific cases</p>
+				</li>
+				<li>
+				<p>Are easier to write tests for</p>
+				</li>
+			</ul>
+			<p>Object-oriented programming takes this concept a step further. A
+			<em>class</em>&nbsp;is like a template that allows you to create <em>
+			objects</em>, which encapsulate one ore more functions and the data 
+			they use.</p>
+			<p>In this chapter, you’ll learn all about using functions, from defining 
+			and calling them to passing arguments. With that knowledge under your 
+			belt, you’ll start creating functions and using them in your own objects 
+			(where they will be referred to as <em>methods</em>).</p>
+			<div class="note">
+				<h4>Note </h4>
+				<p>It is now highly unusual (and definitely not recommended) to 
+				use any version of PHP lower than 5.4. Therefore, this chapter assumes 
+				that this release is the bare minimum version you will be working 
+				with, and I would strongly recommend you stick with a minimum of 
+				version 8.2&nbsp;(the version supplied with AMPPS as described in
+				<a href="ch02.html#setting_up_a_development_server">Chapter&nbsp;2</a>). 
+				Should you need to use a different version such as the newer 8.x 
+				releases, you can install one from the AMPPS control panel, as described 
+				in <a href="ch02.html#setting_up_a_development_server">Chapter&nbsp;2</a>.</p>
+			</div>
+			<section>
+				<div id="php_functions">
+					<h1>PHP Functions</h1>
+					<p>PHP comes with hundreds of ready-made, built-in functions, 
+					making it a very rich language. To use a function, call it by 
+					name. For example, you can see the <code>date</code> function 
+					in action here:</p>
+					<div>
+						<pre>
+<code>echo</code> <code>date('l');</code> <code>// Displays the day of the week</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>The parentheses tell PHP that you’re referring to a function. 
+					Otherwise, it thinks you’re referring to a constant or variable.</p>
+					<p>Functions can take any number of arguments, including zero. 
+					For example, <code>phpinfo</code>, as shown next, displays lots 
+					of information about the current installation of PHP and requires 
+					no argument:</p>
+					<div>
+						<pre>
+<code>phpinfo();</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>The result of calling this function can be seen in
+					<a href="#phpinfo">Figure&nbsp;5-1</a>.</p>
+					<figure>
+						<div id="phpinfo">
+							<img alt="" height="425" src="images/lpm7_0501.png" width="600" />
+							<h4>Figure 5-1. The output of PHP’s built-in&nbsp;<code>phpinfo</code>&nbsp;function
+							</h4>
+						</div>
+					</figure>
+					<div class="warning">
+						<h4>Warning </h4>
+						<p>The <code>phpinfo</code> function is extremely useful 
+						for obtaining information about your current PHP installation, 
+						but that information could also be very useful to potential 
+						hackers. Therefore, never leave a call to this function 
+						in any production code.</p>
+					</div>
+					<p>Some of the built-in functions that use one or more arguments 
+					appear in <a href="#three_string_functions">Example&nbsp;5-1</a>.</p>
+					<div id="three_string_functions">
+						<h5>Example 5-1. Three string functions</h5>
+						<div>
+							<pre>
+<code>&lt;?php</code>
+  <code>echo</code> <code>strrev(' .dlrow olleH');</code> <code>// Reverse string</code>
+  <code>echo</code> <code>str_repeat('Hip ',</code> <code>2);</code>   <code>// Repeat string</code>
+  <code>echo</code> <code>strtoupper('hooray!');</code>   <code>// String to uppercase</code>
+<code>?&gt;</code></pre>
+							<div>
+							</div>
+						</div>
+					</div>
+					<p>This example uses three string functions to output the following 
+					text:</p>
+					<div>
+						<pre>
+<strong><code>Hello world. Hip Hip HOORAY!​</code></strong><code>
+</code></pre>
+						<div>
+						</div>
+					</div>
+					<p>As you can see, the <code>strrev</code> function reversed 
+					the order of characters in the string, <code>str_repeat</code> 
+					repeated the string <code>"Hip "</code> twice (as required by 
+					the second argument), and <code>strtoupper</code> converted
+					<code>"hooray!"</code> to uppercase.</p>
+					<section>
+						<div id="defining_a_function">
+							<h2>Defining a Function</h2>
+							<p>The general syntax for a function is as follows:</p>
+							<div>
+								<pre>
+<code>function </code><em><code>function_name</code></em><code>(</code><em><code>parameter, parameter 2...</code></em><code>)
+{
+  // </code><em><code>Statements</code></em><code>
+}</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>The first line of the syntax indicates the following:</p>
+							<ul>
+								<li>
+								<p>A definition starts with the word <code>function</code>.</p>
+								</li>
+								<li>
+								<p>A name follows, which must start with a letter 
+								or underscore, followed by any number of letters, 
+								numbers, or underscores, the same requirements are 
+								used for variable naming.</p>
+								</li>
+								<li>
+								<p>The parentheses are required.</p>
+								</li>
+								<li>
+								<p>One or more parameters, separated by commas, 
+								are optional.</p>
+								</li>
+							</ul>
+							<p>Function names are case-insensitive, so all of the 
+							following strings can refer to the <code>print</code> 
+							function: <code>PRINT</code>, <code>Print</code>, and
+							<code>PrInT</code>, but whichever style you or your 
+							supervisor sets up should be adhered to for consistency.</p>
+							<p>The opening curly brace starts the statements that 
+							will execute when you call the function; a matching 
+							curly brace must close it. These statements may include 
+							one or more <code>return</code> statements, which force 
+							the function to cease execution and return to the calling 
+							code. If a value is attached to the <code>return</code> 
+							statement, the calling code can retrieve it, as we’ll 
+							see next.</p>
+						</div>
+					</section>
+					<section>
+						<div id="returning_a_value">
+							<h2>Returning a Value</h2>
+							<p>Let’s take a look at a simple function to convert 
+							a person’s full name to lowercase and then capitalize 
+							the first letter of each part of the name.</p>
+							<p>We’ve already seen an example of PHP’s built-in
+							<code>strtoupper</code> function in
+							<a href="#three_string_functions">Example&nbsp;5-1</a>. 
+							For our current function, we’ll use its counterpart,
+							<code>strtolower</code>:</p>
+							<div>
+								<pre>
+<code>$lowered</code> <code>=</code> <code>strtolower('aNY # of Letters and Punctuation you WANT');</code></pre>
+								<div>
+								</div>
+							</div>
+							<div>
+								<pre>
+<code>echo</code> <code>$lowered;</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>The output of this experiment is as follows:</p>
+							<div>
+								<pre>
+<strong>any # of letters and punctuation you want​</strong>
+</pre>
+								<div>
+								</div>
+							</div>
+							<p>We don’t want names all lowercase, though; we want 
+							the first letter of each part of the sentence capitalized. 
+							(We’re not going to deal with subtle cases such as Mary-Ann 
+							or Jo-En-Lai for this example.) Luckily, PHP also provides 
+							a <code>ucfirst</code> function that sets the first 
+							character of a string to uppercase:</p>
+							<div>
+								<pre>
+<code>$ucfixed</code> <code>=</code> <code>ucfirst('any # of letters and punctuation you want');</code></pre>
+								<div>
+								</div>
+							</div>
+							<div>
+								<pre>
+<code>echo</code> <code>$ucfixed;</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>The output is as follows:</p>
+							<div>
+								<pre>
+<strong>Any # of letters and punctuation you want​</strong>
+</pre>
+								<div>
+								</div>
+							</div>
+							<p>Now we can do our first bit of program design: to 
+							get a word with its initial letter capitalized, we call
+							<code>strtolower</code> on the string first and then
+							<code>ucfirst</code>. The way to do this is to nest 
+							a call to <code>strtolower</code> within <code>ucfirst</code>. 
+							Let’s see why, because it’s important to understand 
+							the order in which code is evaluated.</p>
+							<p>Say you make a simple call to the <code>print</code> 
+							function:</p>
+							<div>
+								<pre>
+<code>print(5-8);</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>The expression <code>5-8</code> is evaluated first, 
+							and the output is <code>–3</code>. (As you saw in the 
+							previous chapter, PHP converts the result to a string 
+							in order to display it.) If the expression contains 
+							a function, that function is evaluated as well:</p>
+							<div>
+								<pre>
+<code>print(abs(5-8));</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>PHP is doing several things in executing that short 
+							statement:</p>
+							<ol>
+								<li>
+								<p>Evaluate <code>5-8</code> to produce <code>–3</code>.</p>
+								</li>
+								<li>
+								<p>Use the <code>abs</code> function to turn
+								<code>–3</code> into <code>3</code>.</p>
+								</li>
+								<li>
+								<p>Convert the result to a string and output it 
+								using the <code>print</code> function.</p>
+								</li>
+							</ol>
+							<p>It all works because PHP evaluates each element from 
+							the inside out. The same procedure is in operation when 
+							we call the following:</p>
+							<div>
+								<pre>
+<code>ucfirst(strtolower('aNY # of Letters and Punctuation you WANT'))</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>PHP passes our string to <code>strtolower</code> 
+							and then to <code>ucfirst</code>, producing (as we’ve 
+							already seen when we played with the functions separately):</p>
+							<div>
+								<pre>
+<strong>Any # of letters and punctuation you want​</strong>
+</pre>
+								<div>
+								</div>
+							</div>
+							<p>Now let’s define a function (shown in
+							<a href="#cleaning_up_a_full_name">Example&nbsp;5-2</a>) 
+							that takes three names and makes each one lowercase, 
+							with an initial capital letter.</p>
+							<div id="cleaning_up_a_full_name">
+								<h5>Example 5-2. Cleaning up a full name</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>function</code> <code>fix_names($n1,</code> <code>$n2,</code> <code>$n3)</code>
+  <code>{</code>
+    <code>$n1</code> <code>=</code> <code>ucfirst(strtolower($n1));</code>
+    <code>$n2</code> <code>=</code> <code>ucfirst(strtolower($n2));</code>
+    <code>$n3</code> <code>=</code> <code>ucfirst(strtolower($n3));</code>
+
+    <code>return</code> <code>$n1</code> <code>.</code> <code>' '</code> <code>.</code> <code>$n2</code> <code>.</code> <code>' '</code> <code>.</code> <code>$n3;</code>
+  <code>}</code>
+
+&nbsp;&nbsp;<code>echo</code> <code>fix_names('WILLIAM',</code> <code>'henry',</code> <code>'gatES');</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>You may well find yourself writing this type of code, 
+							because users often leave their Caps Lock key on, accidentally 
+							insert capital letters in the wrong places, and even 
+							forget capitals altogether. The output from this example 
+							is shown here:</p>
+							<div>
+								<pre>
+<strong>William Henry Gates</strong>
+</pre>
+								<div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="returning_an_array">
+							<h2>Returning an Array</h2>
+							<p>We just saw a function returning a single value. 
+							There are also ways of getting multiple values from 
+							a function.</p>
+							<p>The first method is to return them within an array. 
+							As you saw in
+							<a href="ch03.html#introduction_to_php">Chapter&nbsp;3</a>, 
+							an array is like a bunch of variables stuck together 
+							in a row.
+							<a href="#returning_multiple_values_in_an_array">Example&nbsp;5-3</a> 
+							shows how you can use an array to return function values.</p>
+							<div id="returning_multiple_values_in_an_array">
+								<h5>Example 5-3. Returning multiple values in an 
+								array</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$names</code> <code>=</code> <code>fix_names('WILLIAM',</code> <code>'henry',</code> <code>'gatES');</code>
+  <code>echo</code> <code>$names[0]</code> <code>.</code> <code>' '</code> <code>.</code> <code>$names[1]</code> <code>.</code> <code>' '</code> <code>.</code> <code>$names[2];</code>
+
+  <code>function</code> <code>fix_names($n1,</code> <code>$n2,</code> <code>$n3)</code>
+  <code>{</code>
+    <code>$n1</code> <code>=</code> <code>ucfirst(strtolower($n1));</code>
+    <code>$n2</code> <code>=</code> <code>ucfirst(strtolower($n2));</code>
+    <code>$n3</code> <code>=</code> <code>ucfirst(strtolower($n3));</code>
+
+    <code>return</code> <code>array($n1,</code> <code>$n2,</code> <code>$n3);</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>This method has the benefit of keeping all three 
+							names separate, rather than concatenating them into 
+							a single string, so you can refer to any user simply 
+							by first or last name without having to extract either 
+							name from the returned string.</p>
+						</div>
+					</section>
+					<section>
+						<div id="returning_global_variables">
+							<h2>Returning Global Variables</h2>
+							<p>Another way, however generally not recommended,&nbsp;to 
+							give a function access to an externally created variable 
+							that is not passed as an argument is by declaring it 
+							to have global access from within the function. The
+							<code>global</code> keyword followed by the variable 
+							name gives every part of your code full access to it 
+							(see <a href="#returning_values_in_global_variables">
+							Example&nbsp;5-4</a>).</p>
+							<div id="returning_values_in_global_variables">
+								<h5>Example 5-4. Returning values in global variables</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$a1</code> <code>=</code> <code>'WILLIAM';</code>
+  <code>$a2</code> <code>=</code> <code>'henry';</code>
+  <code>$a3</code> <code>=</code> <code>'gatES';</code>
+
+&nbsp;&nbsp;<code>function</code> <code>fix_names()</code>
+&nbsp;&nbsp;<code>{</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>global</code> <code>$a1;</code> <code>$a1</code> <code>=</code> <code>ucfirst(strtolower($a1));</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>global</code> <code>$a2;</code> <code>$a2</code> <code>=</code> <code>ucfirst(strtolower($a2));</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>global</code> <code>$a3;</code> <code>$a3</code> <code>=</code> <code>ucfirst(strtolower($a3));</code>
+&nbsp;&nbsp;<code>}</code>
+
+  <code>echo</code> <code>$a1</code> <code>.</code> <code>' '</code> <code>.</code> <code>$a2</code> <code>.</code> <code>' '</code> <code>.</code> <code>$a3</code> <code>.</code> <code>'&lt;br&gt;';</code>
+  <code>fix_names();</code>
+  <code>echo</code> <code>$a1</code> <code>.</code> <code>' '</code> <code>.</code> <code>$a2</code> <code>.</code> <code>' '</code> <code>.</code> <code>$a3;</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Now you don’t have to pass parameters to the function, 
+							and it doesn’t have to accept them. Once declared, these 
+							variables retain global access and are available to 
+							the rest of your program, including its functions. You 
+							may spot this approach in a legacy code but is strongly 
+							not recommended for any new development as it introduces 
+							a hidden side effect to the <code>fix_names</code> function 
+							which is not clear. It also makes testing the function 
+							much harder and safe renaming variables almost impossible.</p>
+						</div>
+					</section>
+					<section>
+						<div id="recap_of_variable_scope">
+							<h2>Recap of Variable Scope</h2>
+							<p>A quick reminder of what you know from
+							<a href="ch03.html#introduction_to_php">Chapter&nbsp;3</a>:</p>
+							<ul>
+								<li>
+								<p><em>Local variables</em> are accessible just 
+								from the part of your code where you define them. 
+								If a variable is inside a function, only that function 
+								can access the variable, and its value is lost when 
+								the function returns.</p>
+								</li>
+								<li>
+								<p><em>Global variables</em> are accessible from 
+								all parts of your code, whether within or outside 
+								of functions.</p>
+								</li>
+								<li>
+								<p><em>Static variables</em> are accessible only 
+								within the function that declared them but retain 
+								their value over multiple calls.</p>
+								</li>
+							</ul>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="including_and_requiring_files">
+					<h1>Including and Requiring Files</h1>
+					<p>As you progress in your use of PHP programming, you are likely 
+					to start building a library of functions that you think you 
+					will need again. You’ll also probably start using libraries 
+					created by other programmers.</p>
+					<p>There’s no need to copy and paste these functions into your 
+					code. You can save them in separate files and use commands to 
+					pull them in. There are two commands to perform this action:
+					<code>include</code> and <code>require</code>.</p>
+					<section>
+						<div id="include_statement">
+							<h2>The include Statement</h2>
+							<p>Using <code>include</code>, you can tell PHP to fetch 
+							a particular file and load all its contents. It’s as 
+							if you pasted the included file into the current file 
+							at the insertion point.
+							<a href="#including_a_php_file">Example&nbsp;5-5</a> 
+							shows how you would include a file called <em>library.php</em>.</p>
+							<div id="including_a_php_file">
+								<h5>Example 5-5. Including a PHP file</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>include</code> <code>"library.php";</code>
+
+  <code>// Your code goes here</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="using_include_once">
+							<h2>Using include_once</h2>
+							<p>Each time you issue the <code>include</code> directive, 
+							it includes the requested file again, even if you’ve 
+							already inserted it. For instance, suppose that <em>
+							library.php</em> contains a lot of useful functions, 
+							so you include it in your file, but you also include 
+							another library that includes <em>library.php</em>. 
+							Through nesting, you’ve inadvertently included <em>library.php</em> 
+							twice. This will produce error messages, because you’re 
+							trying to define the same constant or function multiple 
+							times. So, you should use <code>include_once</code> 
+							instead (see
+							<a href="#including_a_php_file_only_once">Example&nbsp;5-6</a>).</p>
+							<div id="including_a_php_file_only_once">
+								<h5>Example 5-6. Including a PHP file only once</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>include_once</code> <code>"library.php";</code>
+
+  <code>// Your code goes here</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Then, any further attempts to include the same file 
+							(with <code>include</code> or <code>include_once</code>) 
+							will be ignored. To determine whether the requested 
+							file has already been executed, the absolute filepath 
+							is matched after all relative paths are resolved (to 
+							their absolute paths) and the file is found in your
+							<code>include</code> path.</p>
+							<div class="note">
+								<h4>Note </h4>
+								<p>In general, it’s probably best to stick with
+								<code>include_once</code> and ignore the basic
+								<code>include</code> statement. That way, you will 
+								never have the problem of files being included multiple 
+								times.</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="using_require_and_require_once">
+							<h2>Using require and require_once</h2>
+							<p>A potential problem with <code>include</code> and
+							<code>include_once</code> is that PHP will only <em>
+							attempt</em> to include the requested file. Program 
+							execution continues even if the file is not found.</p>
+							<p>When it is absolutely essential to include a file,
+							<code>require</code> it. For the same reasons I gave 
+							for using <code>include_once</code>, I recommend that 
+							you generally stick with <code>require_once</code> whenever 
+							you need to <code>require</code> a file (see
+							<a href="#requiring_a_php_file_only_once">Example&nbsp;5-7</a>).</p>
+							<div id="requiring_a_php_file_only_once">
+								<h5>Example 5-7. Requiring a PHP file only once</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>require_once</code> <code>"library.php";</code>
+
+  <code>// Your code goes here</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="php_version_compatibility">
+					<h1>PHP Version Compatibility</h1>
+					<p>PHP is in an ongoing process of development, and there are 
+					multiple versions. If you need to check whether a particular 
+					function is available to your code, you can use the <code>function_exists</code> 
+					function, which checks all predefined and user-created functions.</p>
+					<p><a href="#checking_for_a_functionapostrophes_exist">Example&nbsp;5-8</a> 
+					checks for <code>array_combine</code>, a function specific to 
+					only some versions of PHP.</p>
+					<div id="checking_for_a_functionapostrophes_exist">
+						<h5>Example 5-8. Checking for a function’s existence</h5>
+						<div>
+							<pre>
+<code>&lt;?php</code>
+  <code>if</code> <code>(function_exists("array_combine"))</code>
+  <code>{</code>
+    <code>echo</code> <code>"Function exists";</code>
+  <code>}</code>
+  <code>else</code>
+  <code>{</code>
+    <code>echo</code> <code>"Function does not exist - better write our own";</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+							<div>
+							</div>
+						</div>
+					</div>
+					<p>Using code such as this, you can take advantage of features 
+					in newer versions of PHP and yet still have your code run on 
+					earlier versions where the newer features are unavailable, as 
+					long as you replicate any features that are missing (called 
+					polyfills). Your functions may be slower than the built-in ones, 
+					but at least your code will be much more portable.</p>
+				</div>
+			</section>
+			<section>
+				<div id="php_objects">
+					<h1>PHP Objects</h1>
+					<p>In much the same way that functions represent a huge increase 
+					in programming power over the early days of computing, <em>object-oriented 
+					programming</em> (OOP) takes the use of functions in a different 
+					direction.</p>
+					<p>Once you get the hang of condensing reusable bits of code 
+					into functions, it’s not that great a leap to consider bundling 
+					the functions and their data into objects.</p>
+					<p>Let’s take a social networking site that has many parts. 
+					One handles all user functions—that is, code to enable new users 
+					to sign up and existing users to modify their details. In standard 
+					PHP, you might create a few functions to handle this and embed 
+					some calls to the MySQL database to keep track of all the users.</p>
+					<p>To create an object to represent the current user, you could 
+					create a class, perhaps called <code>User</code>, that would 
+					contain all the code required for handling users and all the 
+					variables needed for manipulating the data within the class. 
+					Then, whenever you need to manipulate a user’s data, you could 
+					simply create a new object with the <code>User</code> class.</p>
+					<p>You could treat this new object as if it were the actual 
+					user. For example, you could pass the object a name, password, 
+					and email address; ask it whether such a user already exists; 
+					and, if not, have it create a new user with those attributes. 
+					You could even have an instant messaging object, or one for 
+					managing whether two users are friends.</p>
+					<section>
+						<div id="terminology">
+							<h2>Terminology</h2>
+							<p>When creating an object-oriented program, you need 
+							to design a composite of data and code called a <em>
+							class</em>. Each new object based on this class is called 
+							an <em>instance</em> (or <em>occurrence</em>) of that 
+							class.</p>
+							<p>The data associated with an object is called its
+							<em>properties</em>; the functions it uses are called
+							<em>methods</em>. In defining a class, you supply the 
+							names of its properties and the code for its methods. 
+							See
+							<a href="#jukebox_a_great_example_of_a_self-cont">Figure&nbsp;5-2</a> 
+							for a jukebox metaphor for an object. Think of the CDs 
+							that it holds in the carousel as its properties; the 
+							method of playing them is to press buttons on the front 
+							panel. There is also a slot for inserting coins (the 
+							method used to activate the object) and a laser disc 
+							reader (the method used to retrieve the music, or properties, 
+							from the CDs), or software to download and play an online 
+							file.</p>
+							<figure>
+								<div id="jukebox_a_great_example_of_a_self-cont">
+									<img alt="" height="476" src="images/lpm7_0502.png" width="600" />
+									<h4>Figure 5-2. A jukebox: a great example of 
+									a self-contained object </h4>
+								</div>
+							</figure>
+							<p>When you’re creating objects, it is best to use
+							<em>encapsulation</em>, or writing a class in such a 
+							way that only its methods can be used to manipulate 
+							its properties. In other words, you deny outside code 
+							direct access to its data. The methods you supply are 
+							known as the object’s <em>interface</em>.</p>
+							<p>This approach makes debugging easy: you have to fix 
+							faulty code only within a class. Additionally, when 
+							you want to upgrade a program, if you have used proper 
+							encapsulation and maintained the same interface, you 
+							can simply develop new replacement classes, debug them 
+							fully, and then swap them in for the old ones. If they 
+							don’t work, you can swap the old ones back in to immediately 
+							fix the problem before further debugging the new classes.</p>
+							<p>Once you have created a class, you may find that 
+							you need another class that is similar to it but not 
+							quite the same. The quick and easy thing to do is to 
+							define a new class using <em>inheritance</em>. When 
+							you do this, your new class has all the properties of 
+							the one it has inherited from. The original class is 
+							now called the <em>parent</em> (or occasionally the&nbsp;<em>superclass</em>), 
+							and the new one is the <em>subclass</em> (or <em>derived</em> 
+							class).</p>
+							<p>In our jukebox example, if you invent a new jukebox 
+							that can play a video along with the music, you can 
+							inherit all the properties and methods from the original 
+							jukebox superclass and add some new properties (videos) 
+							and new methods (a movie player).</p>
+							<p>An excellent benefit of this system is that if you 
+							improve the speed or any other aspect of the superclass, 
+							its subclasses will receive the same benefit.&nbsp;On 
+							the other hand, any change made to the parent/superclass 
+							could break the subclass.</p>
+						</div>
+					</section>
+					<section>
+						<div id="declaring_a_class">
+							<h2>Declaring a Class</h2>
+							<p>Before you can use an object, you must define a class 
+							with the <code>class</code> keyword. Class definitions 
+							contain the class name (which is case-insensitive), 
+							its properties, and its methods.
+							<a href="#declaring_a_class_and_examining_an_objec">
+							Example&nbsp;5-9</a> defines the class <code>User</code> 
+							with two properties, which are <code>$name</code> and
+							<code>$password</code> (indicated by the <code>public</code> 
+							keyword—see
+							<a href="#property_and_method_scope_in_php_5">“Property 
+							and Method Scope”</a>). It also creates a new instance 
+							(called <code>$object</code>) of this class.</p>
+							<div id="declaring_a_class_and_examining_an_objec">
+								<h5>Example 5-9. Declaring a class and examining 
+								an object</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>class</code> <code>User</code>
+  <code>{</code>
+    <code>public</code> <code>$name,</code> <code>$password;</code>
+
+    <code>function</code> <code>save_user()</code>
+    <code>{</code>
+      <code>echo</code> <code>"Save User code goes here";</code>
+    <code>}</code>
+  <code>}</code>
+
+&nbsp;&nbsp;<code>$object</code> <code>=</code> <code>new</code> <code>User;</code>
+&nbsp;&nbsp;<code>print_r($object);</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Here I have also used an invaluable function called
+							<code>print_r</code>. It asks PHP to display information 
+							about a variable in human-readable form. (The <code>
+							_r</code> stands for <em>human-readable</em>.) In the 
+							case of the new object <code>$object</code>, it displays 
+							the following:</p>
+							<div>
+								<pre>
+<strong><code>User Object
+(
+&nbsp; [name]&nbsp; &nbsp; &nbsp;=&gt;
+&nbsp; [password] =&gt;
+)</code></strong><code>
+</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>However, a browser compresses all the whitespace, 
+							so the output in a browser is slightly harder to read 
+							(although you can always display output within <code>&lt;pre&gt;</code>&nbsp;and
+							<code>&lt;/pre&gt;</code>&nbsp;tags to display all the 
+							whitespace)&nbsp;:</p>
+							<div>
+								<pre>
+<strong>User Object ( [name] =&gt; [password] =&gt; )</strong>
+</pre>
+								<div>
+								</div>
+							</div>
+							<p>In any case, the output says that <code>$object</code> 
+							is a user-defined object that has the properties
+							<code>name</code> and <code>password</code>.</p>
+						</div>
+					</section>
+					<section>
+						<div id="creating_an_object">
+							<h2>Creating an Object</h2>
+							<p>To create an object with a specified class, use the
+							<code>new</code> keyword, like this: <code>$object = 
+							new Class</code>. Here are a couple of ways in which 
+							we could do this:</p>
+							<div>
+								<pre>
+<code>$object</code> <code>=</code> <code>new</code> <code>User;</code>
+<code>$temp</code>   <code>=</code> <code>new</code> <code>User('name',</code> <code>'password');</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>On the first line, we create an instance of the
+							<code>User</code> class and assign it to a variable 
+							called <code>$object</code>.&nbsp; In the second line, 
+							we provide arguments to the class <em>constructor</em>, 
+							a special method explained later in the chapter,&nbsp;when 
+							we create the instance of the <code>User</code> class, 
+							and assign the instance to the variable <code>$temp</code>.</p>
+							<p>A class may require or prohibit arguments in its 
+							constructor; it may also allow arguments without explicitly 
+							requiring them.</p>
+						</div>
+					</section>
+					<section>
+						<div id="accessing_objects">
+							<h2>Accessing Objects</h2>
+							<p>Let’s add a few lines to
+							<a href="#declaring_a_class_and_examining_an_objec">
+							Example&nbsp;5-9</a> and check the results.
+							<a href="#creating_and_interacting_with_an_object">Example&nbsp;5-10</a> 
+							extends the previous code by setting object properties 
+							and calling a method.</p>
+							<div id="creating_and_interacting_with_an_object">
+								<h5>Example 5-10. Creating and interacting with 
+								an object</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$object</code> <code>=</code> <code>new</code> <code>User;</code>
+  <code>print_r($object);</code> <code>echo</code> <code>"&lt;br&gt;";</code>
+
+  <code>$object-&gt;name</code>     <code>=</code> <code>"Joe";</code>
+  <code>$object-&gt;password</code> <code>=</code> <code>"mypass";</code>
+  <code>print_r($object);</code> <code>echo</code> <code>"&lt;br&gt;";</code>
+
+  <code>$object-&gt;save_user();</code>
+
+  <code>class</code> <code>User</code>
+  <code>{</code>
+    <code>public</code> <code>$name,</code> <code>$password;</code>
+
+    <code>function</code> <code>save_user()</code>
+    <code>{</code>
+      <code>echo</code> <code>"Save User code goes here";</code>
+    <code>}</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>As you can see, the syntax for accessing an object’s 
+							property is <em><code>$object-&gt;property</code></em>. 
+							Likewise, you call a method like this: <em><code>$object-&gt;method()</code></em>.</p>
+							<p>You should note that the example <code>property</code> 
+							and <code>method</code> do not have <code>$</code> signs 
+							in front of them. If you were to preface them with
+							<code>$</code> signs, the code would not work, as it 
+							would try to reference the value inside a variable. 
+							For example, the expression <code>$object-&gt;$property</code> 
+							would attempt to look up the value assigned to a variable 
+							named <code>$property</code> (let’s say that value is 
+							the string <code>brown</code>) and then attempt to reference 
+							the property <code>$object-&gt;brown</code>. If
+							<code>$property</code> is undefined, an attempt to reference
+							<code>$object-&gt;NULL</code> would occur and cause 
+							an error.</p>
+							<p>When looked at using a browser’s View Source facility, 
+							the output from
+							<a href="#creating_and_interacting_with_an_object">Example&nbsp;5-10</a> 
+							is as follows:</p>
+							<div>
+								<pre>
+<strong><code>User Object
+(
+&nbsp; [name]&nbsp; &nbsp; &nbsp;=&gt;
+&nbsp; [password] =&gt;
+)
+User Object
+(
+&nbsp; [name]&nbsp; &nbsp; &nbsp;=&gt; Joe
+&nbsp; [password] =&gt; mypass
+)
+Save User code goes here</code></strong><code>
+</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>Again, <code>print_r</code> shows its utility by 
+							providing the contents of <code>$object</code> before 
+							and after property assignment. From now on, I’ll omit
+							<code>print_r</code> statements, but if you are working 
+							along with this book on your development server, you 
+							can put some in to see exactly what is happening.</p>
+							<p>You can also see that the code in the method
+							<code>save_user</code> was executed via the call to 
+							that method. It printed the string reminding us to create 
+							some code.</p>
+							<div class="note">
+								<h4>Note </h4>
+								<p>You can place functions and class definitions 
+								anywhere in your code, before or after statements 
+								that use them. Generally, though, it is considered 
+								good practice to place them in their own files, 
+								or in shorter pieces of code where extra files are 
+								not required, towards the end of a file.</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="cloning_objects">
+							<h2>Cloning Objects</h2>
+							<p>Once you have created an object, it is passed by 
+							reference when you pass it as a parameter. In the matchbox 
+							metaphor, this is like keeping several threads attached 
+							to an object stored in a matchbox so that you can follow 
+							any attached thread to access it.</p>
+							<p>In other words, making object assignments does not 
+							copy objects in their entirety, only a new reference 
+							to an existing object is created. You’ll see how this 
+							works in <a href="#copying_an_objectquestion_mark">Example&nbsp;5-11</a>, 
+							where we define a very simple <code>User</code> class 
+							with no methods and only the property <code>name</code>.</p>
+							<div id="copying_an_objectquestion_mark">
+								<h5>Example 5-11. Copying an object</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$object1</code>       <code>=</code> <code>new</code> <code>User();</code>
+  <code>$object1-&gt;name</code> <code>=</code> <code>"Alice";</code>
+  <code>$object2</code>       <code>=</code> <code>$object1;</code>
+  <code>$object2-&gt;name</code> <code>=</code> <code>"Amy";</code>
+
+  <code>echo</code> <code>"object1 name = "</code> <code>.</code> <code>$object1-&gt;name</code> <code>.</code> <code>"&lt;br&gt;";</code>
+  <code>echo</code> <code>"object2 name = "</code> <code>.</code> <code>$object2-&gt;name;</code>
+
+  <code>class</code> <code>User</code>
+  <code>{</code>
+    <code>public</code> <code>$name;</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Here, we first create the object <code>$object1</code> 
+							and assign the value <code>Alice</code> to the <code>
+							name</code> property. Then we create <code>$object2</code>, 
+							assigning it the value of <code>$object1</code>, and 
+							assign the value <code>Amy</code> just to the <code>
+							name</code> property of <code>$object2</code>—or so 
+							we might think. But this code outputs the following:</p>
+							<div>
+								<pre>
+<strong>object1 name = Amy</strong>
+<strong>object2 name = Amy</strong>
+</pre>
+								<div>
+								</div>
+							</div>
+							<p>What has happened? Both <code>$object1</code> and
+							<code>$object2</code> refer to the <em>same</em> object, 
+							so changing the <code>name</code> property of <code>
+							$object2</code> to <code>Amy</code> also sets that property 
+							for <code>$object1</code>.</p>
+							<p>To avoid this confusion, you can use the <code>clone</code> 
+							operator, which creates a new instance of the class 
+							and copies the property values from the original instance 
+							to the new instance. <a href="#cloning_an_object">Example&nbsp;5-12</a> 
+							illustrates this usage.</p>
+							<div id="cloning_an_object">
+								<h5>Example 5-12. Cloning an object</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+&nbsp;&nbsp;<code>class</code> <code>User</code>
+&nbsp;&nbsp;<code>{</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>public</code> <code>$name;</code>
+&nbsp;&nbsp;<code>}</code>
+
+  <code>$object1</code>       <code>=</code> <code>new</code> <code>User();</code>
+  <code>$object1-&gt;name</code> <code>=</code> <code>"Alice";</code>
+  <code>$object2</code>       <code>=</code> <code>clone</code> <code>$object1;</code>
+  <code>$object2-&gt;name</code> <code>=</code> <code>"Amy";</code>
+
+  <code>echo</code> <code>"object1 name = "</code> <code>.</code> <code>$object1-&gt;name</code> <code>.</code> <code>"&lt;br&gt;";</code>
+  <code>echo</code> <code>"object2 name = "</code> <code>.</code> <code>$object2-&gt;name;</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Voilà! The output from this code is what we initially 
+							wanted:</p>
+							<div>
+								<pre>
+<strong>object1 name = Alice</strong>
+<strong>object2 name = Amy</strong>
+</pre>
+								<div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="constructors">
+							<h2>Constructors</h2>
+							<p>When creating a new object, you can pass a list of 
+							arguments to a special method within the class, called 
+							the <em>constructor</em>, which initializes various 
+							object properties.</p>
+							<p>To do this you use the function name <code>__construct</code> 
+							(that is, <code>construct</code> preceded by two underscore 
+							characters), as in
+							<a href="#creating_a_constructor_method">Example&nbsp;5-13</a>. 
+							The constructor in the example takes two arguments
+							<code>$name</code> and <code>$password</code>, and initializes 
+							two properties <code>name</code> and <code>password</code>. 
+							A special variable&nbsp;<code>$this</code>&nbsp;is used 
+							to set the current object’s properties: the name property 
+							declared as&nbsp;<code>public $name</code> is accessed 
+							as <code>$this-&gt;name</code> in the class methods 
+							including the constructor.</p>
+							<div id="creating_a_constructor_method">
+								<h5>Example 5-13. Creating a constructor method</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+&nbsp; <code>class</code> <code>User</code>
+&nbsp; <code>{</code>
+&nbsp; &nbsp; <code>public</code> <code>$name,</code> <code>$password;</code>
+
+&nbsp; &nbsp; <code>function</code> <code>__construct($name,</code> <code>$password)</code>
+&nbsp; &nbsp; <code>{</code>
+&nbsp; &nbsp; &nbsp; &nbsp; <code>$this-&gt;name</code> <code>=</code> <code>$name;</code>
+&nbsp; &nbsp; &nbsp; &nbsp; <code>$this-&gt;password</code> <code>=</code> <code>$password;</code>
+&nbsp; &nbsp; <code>}</code>
+&nbsp; <code>}</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="php_5_destructors">
+							<h2>Destructors</h2>
+							<p>You also have the ability to create <em>destructor</em> 
+							methods. This ability is useful when code has made the 
+							last reference to an object or when a script reaches 
+							the end. <a href="#creating_a_destructor_method">Example&nbsp;5-14</a> 
+							shows how to create a destructor method. The destructor 
+							can do clean-up such as releasing a connection to a 
+							database or some other resource that you reserved within 
+							the object. Because you reserved the resource within 
+							the object, you have to release it here, or it will 
+							stick around indefinitely. Many system-wide problems 
+							are caused by programs reserving resources and forgetting 
+							to release them.</p>
+							<div id="creating_a_destructor_method">
+								<h5>Example 5-14. Creating a destructor method</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>class</code> <code>User</code>
+  <code>{</code>
+    <code>function</code> <code>__destruct()</code>
+    <code>{</code>
+      <code>// Destructor code goes here</code>
+    <code>}</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="writing_methods">
+							<h2>Writing Methods</h2>
+							<p>As&nbsp;you have seen, declaring a method is similar 
+							to declaring a function, but there are a few differences. 
+							For example, method names beginning with a double underscore 
+							(<code>__</code>) are reserved (for example, <code>__construct</code> 
+							and <code>__destruct</code>).</p>
+							<p>You also have access to a special variable called
+							<code>$this</code>, which can be used to access the 
+							current object’s properties. To see how it works, take 
+							a look at
+							<a href="#using_the_variable_dollarthis_in_a_metho">
+							Example&nbsp;5-15</a>, which contains a different method 
+							from the <code>User</code> class definition called
+							<code>get_password</code>.</p>
+							<div id="using_the_variable_dollarthis_in_a_metho">
+								<h5>Example 5-15. Using the variable <code>$this</code> 
+								in a method</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>class</code> <code>User</code>
+  <code>{</code>
+    <code>public</code> <code>$name,</code> <code>$password;</code>
+
+    <code>function</code> <code>get_password()</code>
+    <code>{</code>
+      <code>return</code> <code>$this-&gt;password;</code>
+    <code>}</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p><code>get_password</code> uses the <code>$this</code> 
+							variable to access the current object and then return 
+							the value of that object’s <code>password</code> property. 
+							Note how the preceding <code>$</code> of the property
+							<code>$password</code> is omitted when we use the
+							<code>-&gt;</code> operator. Leaving the <code>$</code> 
+							in place is a typical error you may run into, particularly 
+							when you first use this feature.</p>
+							<p>Here’s how you would use the class defined in
+							<a href="#using_the_variable_dollarthis_in_a_metho">
+							Example&nbsp;5-15</a>:</p>
+							<div>
+								<pre>
+<code>$object</code>           <code>=</code> <code>new</code> <code>User;</code>
+<code>$object-&gt;password</code> <code>=</code> <code>"secret";</code>
+
+<code>echo</code> <code>$object-&gt;get_password();</code></pre>
+								<div>
+								</div>
+							</div>
+							<p>This code prints the password <code>secret</code>.</p>
+						</div>
+					</section>
+					<section>
+						<div id="declaring_properties">
+							<h2>Declaring Properties</h2>
+							<p>It is not necessary to explicitly declare properties 
+							within classes, as they can be implicitly defined when 
+							first used,&nbsp;but this technique has been deprecated 
+							since PHP 8.2. To illustrate this, in
+							<a href="#defining_a_property_implicitly">Example&nbsp;5-16</a> 
+							the class <code>User</code> has no properties and no 
+							methods but is legal code.</p>
+							<div id="defining_a_property_implicitly">
+								<h5>Example 5-16. Defining a property implicitly</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$object1</code>       <code>=</code> <code>new</code> <code>User();</code>
+  <code>$object1-&gt;name</code> <code>=</code> <code>"Alice";</code>
+
+  <code>echo</code> <code>$object1-&gt;name;</code>
+
+  <code>class</code> <code>User</code> <code>{}</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>This code correctly outputs the string <code>Alice</code> 
+							without a problem, because PHP implicitly declares the 
+							property <code>$object1-&gt;name</code> for you. But 
+							this kind of programming can lead to bugs that are infuriatingly 
+							difficult to discover, because <code>name</code> was 
+							declared from outside the class.</p>
+							<p>To help yourself and anyone else who will maintain 
+							your code, I advise that you get into the habit of always 
+							declaring your properties explicitly within classes. 
+							You’ll be glad you did.</p>
+						</div>
+					</section>
+					<section>
+						<div id="static_properties_and_methods">
+							<h2>Static Methods</h2>
+							<p>You can define a method as <code>static</code>, which 
+							means that it is called on a class, not on an object. 
+							A static method has no access to any object properties 
+							and is created and accessed as in
+							<a href="#creating_and_accessing_a_static_method">Example&nbsp;5-17</a>.</p>
+							<div id="creating_and_accessing_a_static_method">
+								<h5>Example 5-17. Creating and accessing a static 
+								method</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>User::pwd_string();</code>
+
+  <code>class</code> <code>User</code>
+  <code>{</code>
+    <code>static</code> <code>function</code> <code>pwd_string()</code>
+    <code>{</code>
+      <code>echo</code> <code>"Please enter your password";</code>
+    <code>}</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>Note how we call the class itself, along with the 
+							static method, using a double colon (also known as the
+							<em>scope resolution</em> operator), not <code>-&gt;</code>. 
+							Static functions are useful for performing actions relating 
+							to the class itself but not to specific instances of 
+							the class. You can see another example of a static method 
+							in <a href="#defining_constants_within_a_class">Example&nbsp;5-18</a>.</p>
+							<div class="note">
+								<h4>Note </h4>
+								<p>If you try to access <code>$this-&gt;property</code>, 
+								or other object properties from within a static 
+								function, you will receive an error message.</p>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="declaring_constants">
+							<h2>Declaring Constants</h2>
+							<p>In the same way that you can create a global constant 
+							with the <code>define</code> function, you can define 
+							constants inside classes. The generally accepted practice 
+							is to use uppercase letters to make them stand out, 
+							as in <a href="#defining_constants_within_a_class">Example&nbsp;5-18</a>.</p>
+							<div id="defining_constants_within_a_class">
+								<h5>Example 5-18. Defining constants within a class</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>Translate::lookup();</code>
+
+  <code>class</code> <code>Translate</code>
+  <code>{</code>
+    <code>const</code> <code>ENGLISH</code> <code>=</code> <code>0;</code>
+    <code>const</code> <code>SPANISH</code> <code>=</code> <code>1;</code>
+    <code>const</code> <code>FRENCH</code>  <code>=</code> <code>2;</code>
+    <code>const</code> <code>GERMAN</code>  <code>=</code> <code>3;</code>
+    <code>// ...</code>
+
+    <code>static</code> <code>function</code> <code>lookup()</code>
+    <code>{</code>
+      <code>echo</code> <code>self::SPANISH;</code>
+    <code>}</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>You can reference constants directly, using the
+							<code>self</code> keyword and double colon operator. 
+							Note that this code calls the class directly, using 
+							the double colon operator at line 1, without creating 
+							an instance of it first. As you would expect, the value 
+							printed when you run this code is <code>1</code>.</p>
+							<p>Outside of the class, you can access the constant 
+							directly by the class name:</p>
+							<div>
+								<pre>
+<code>print_r(Translate::GERMAN);</code>
+</pre>
+								<div>
+								</div>
+							</div>
+							<p>Remember that once you define a constant, you can’t 
+							change it.</p>
+						</div>
+					</section>
+					<section>
+						<div id="property_and_method_scope_in_php_5">
+							<h2>Property and Method Scope</h2>
+							<p>PHP provides three keywords for controlling the scope 
+							of properties and methods (<em>members</em>):</p>
+							<dl>
+								<dt><dfn><code>public</code></dfn></dt>
+								<dd>
+								<p>Public members can be referenced anywhere, including 
+								by other classes and instances of the object. This 
+								is the default when variables are declared with 
+								the <code>var</code> or <code>public</code> keywords, 
+								or when a variable is implicitly declared the first 
+								time it is used. The keywords <code>var</code> and
+								<code>public</code> are interchangeable because, 
+								although deprecated, <code>var</code> is retained 
+								for compatibility with previous versions of PHP. 
+								Methods are assumed to be <code>public</code> by 
+								default.</p>
+								</dd>
+								<dt><dfn><code>protected</code></dfn></dt>
+								<dd>
+								<p>These members can be referenced only by the object’s 
+								class methods and those of any subclasses.</p>
+								</dd>
+								<dt><dfn><code>private</code></dfn></dt>
+								<dd>
+								<p>These members can be referenced only by methods 
+								within the same class—not by subclasses.</p>
+								</dd>
+							</dl>
+							<p>Here’s how to decide which you need to use:</p>
+							<ul>
+								<li>
+								<p>Use <code>public</code> when outside code <em>
+								should</em> access this member and extending classes
+								<em>should</em> also inherit it.</p>
+								</li>
+								<li>
+								<p>Use <code>protected</code> when outside code
+								<em>should not</em> access this member but extending 
+								classes <em>should</em> inherit it.</p>
+								</li>
+								<li>
+								<p>Use <code>private</code> when outside code
+								<em>should not</em> access this member and extending 
+								classes also <em>should not</em> inherit it.</p>
+								</li>
+							</ul>
+							<p><a href="#changing_property_and_method_scope">Example&nbsp;5-19</a> 
+							illustrates the use of these keywords.</p>
+							<div id="changing_property_and_method_scope">
+								<h5>Example 5-19. Changing property and method scope</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>class</code> <code>Example</code>
+  <code>{</code>
+    <code>var</code> <code>$name</code>   <code>=</code> <code>"Michael";</code> <code>// Same as public but deprecated</code>
+    <code>public</code> <code>$age</code> <code>=</code> <code>23;</code>        <code>// Public property</code>
+    <code>protected</code> <code>$usercount;</code>    <code>// Protected property</code>
+
+    <code>private</code> <code>function</code> <code>admin()</code> <code>// Private method</code>
+    <code>{</code>
+      <code>// Admin code goes here</code>
+    <code>}</code>
+  <code>}</code>
+<code>?&gt;</code>
+</pre>
+									<div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div id="id283">
+							<h2>Static Properties</h2>
+							<p>Most data and methods apply to instances of a class. 
+							For example, in a <code>User</code> class, you will 
+							want to do such things as set a particular user’s password 
+							or check when the user has been registered. These facts 
+							and operations apply separately to each user and therefore 
+							use instance-specific properties and methods.</p>
+							<p>But occasionally you’ll want to maintain data about 
+							a whole class. For instance, to report how many users 
+							are registered, you will store a variable that applies 
+							to the whole <code>User</code> class. PHP provides static 
+							properties and methods for such data.</p>
+							<p>As shown briefly in
+							<a href="#creating_and_accessing_a_static_method">Example&nbsp;5-17</a>, 
+							declaring members of a class <code>static</code> makes 
+							them accessible without an instantiation of the class. 
+							A property declared <code>static</code> cannot be directly 
+							accessed within an instance of a class, but a static 
+							method can.</p>
+							<p>
+							<a href="#defining_a_class_with_a_static_property">Example&nbsp;5-20</a> 
+							defines a class called <code>Test</code> with a static 
+							property and a public method.</p>
+							<div id="defining_a_class_with_a_static_property">
+								<h5>Example 5-20. Defining a class with a static 
+								property</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$temp</code> <code>=</code> <code>new</code> <code>Test();</code>
+
+  <code>echo</code> <code>"Test A: "</code> <code>.</code> <code>Test::$static_property</code> <code>.</code> <code>"&lt;br&gt;";</code>
+  <code>echo</code> <code>"Test B: "</code> <code>.</code> <code>$temp-&gt;get_sp()</code>        <code>.</code> <code>"&lt;br&gt;";</code>
+  <code>echo</code> <code>"Test C: "</code> <code>.</code> <code>$temp-&gt;static_property</code> <code>.</code> <code>"&lt;br&gt;";</code>
+
+  <code>class</code> <code>Test</code>
+  <code>{</code>
+    <code>static</code> <code>$static_property</code> <code>=</code> <code>"I'm static";</code>
+
+    <code>function</code> <code>get_sp()</code>
+    <code>{</code>
+       <code>return</code> <code>self::$static_property;</code>
+    <code>}</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>When you run this code, it returns the following 
+							output:</p>
+							<div>
+								<pre>
+<strong>Test A: I'm static
+Test B: I'm static
+Notice: Undefined property: Test::$static_property
+Test C:</strong>
+</pre>
+								<div>
+								</div>
+							</div>
+							<p>This example shows that the property <code>$static_property</code> 
+							could be directly referenced from the class itself via 
+							the double colon operator in Test A. Also, Test B could 
+							obtain its value by calling the <code>get_sp</code> 
+							method of the object <code>$temp</code>, created from 
+							class <code>Test</code>. But Test C failed, because 
+							the static property <code>$static_property</code> was 
+							not accessible to the object <code>$temp</code>.</p>
+							<p>Note how the method <code>get_sp</code> accesses
+							<code>$static_property</code> using the keyword
+							<code>self</code>. This is how a static property or 
+							constant can be directly accessed within a class.</p>
+						</div>
+					</section>
+					<section>
+						<div id="inheritance">
+							<h2>Inheritance</h2>
+							<p>Once you have written a class, you can derive subclasses 
+							from it. This can save lots of painstaking code rewriting: 
+							you can take a class similar to the one you need to 
+							write, extend it to a subclass, and just modify the 
+							parts that are different. You achieve this using the
+							<code>extends</code> keyword.</p>
+							<div>
+								<h1>Use with caution</h1>
+								<p>Inheritance should be approached with caution 
+								and used sparingly. If overused, it can make testing, 
+								refactoring and reasoning more difficult. A common 
+								error is to create a class&nbsp;(for example a
+								<code>Mailer</code> class) that extends the
+								<code>Database</code> class because it needs it. 
+								A better approach is called <i>class composition</i>, 
+								where the <code>Mailer</code> class uses, but does 
+								not extend, multiple other classes, like the
+								<code>Database</code> class, the&nbsp;<code>Email</code> 
+								class and the&nbsp;<code>User</code> class. Objects 
+								created from the other classes can be passed to 
+								the <code>Mailer</code>&nbsp;object either as constructor 
+								arguments, or can be created in the constructor. 
+								Consider inheritance a more advanced design pattern 
+								with some downsides to factor in when deciding whether 
+								or not to use it.</p>
+							</div>
+							<p>In <a href="#inheriting_and_extending_a_class">Example&nbsp;5-21</a>, 
+							the class <code>Subscriber</code> is declared a subclass 
+							of <code>User</code> by means of the <code>extends</code> 
+							keyword.</p>
+							<div id="inheriting_and_extending_a_class">
+								<h5>Example 5-21. Inheriting and extending a class</h5>
+								<div>
+									<pre>
+<code>&lt;?php</code>
+  <code>$object</code>           <code>=</code> <code>new</code> <code>Subscriber;</code>
+  <code>$object-&gt;name</code>     <code>=</code> <code>"Fred";</code>
+  <code>$object-&gt;password</code> <code>=</code> <code>"pword";</code>
+  <code>$object-&gt;phone</code>    <code>=</code> <code>"012 345 6789";</code>
+  <code>$object-&gt;email</code>    <code>=</code> <code>"fred@bloggs.com";</code>
+  <code>$object-&gt;display();</code>
+
+  <code>class</code> <code>User</code>
+  <code>{</code>
+    <code>public</code> <code>$name,</code> <code>$password;</code>
+
+    <code>function</code> <code>save_user()</code>
+    <code>{</code>
+      <code>echo</code> <code>"Save User code goes here";</code>
+    <code>}</code>
+  <code>}</code>
+
+  <code>class</code> <code>Subscriber</code> <code>extends</code> <code>User</code>
+  <code>{</code>
+    <code>public</code> <code>$phone,</code> <code>$email;</code>
+
+    <code>function</code> <code>display()</code>
+    <code>{</code>
+      <code>echo</code> <code>"Name:  "</code> <code>.</code> <code>$this-&gt;name</code>     <code>.</code> <code>"&lt;br&gt;";</code>
+      <code>echo</code> <code>"Pass:  "</code> <code>.</code> <code>$this-&gt;password</code> <code>.</code> <code>"&lt;br&gt;";</code>
+      <code>echo</code> <code>"Phone: "</code> <code>.</code> <code>$this-&gt;phone</code>    <code>.</code> <code>"&lt;br&gt;";</code>
+      <code>echo</code> <code>"Email: "</code> <code>.</code> <code>$this-&gt;email;</code>
+    <code>}</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+									<div>
+									</div>
+								</div>
+							</div>
+							<p>The original <code>User</code> class has two properties,
+							<code>$name</code> and <code>$password</code>, and a 
+							method to save the current user to the database.
+							<code>Subscriber</code> extends this class by adding 
+							an additional two properties, <code>$phone</code> and
+							<code>$email</code>, and includes a method of displaying 
+							the properties of the current object using the variable
+							<code>$this</code>, which refers to the current values 
+							of the object being accessed. The output from this code 
+							is as follows:</p>
+							<div>
+								<pre>
+<strong>Name:  Fred
+Pass:  pword
+Phone: 012 345 6789
+Email: fred@bloggs.com</strong>
+</pre>
+								<div>
+								</div>
+							</div>
+							<section>
+								<div id="parent_operator">
+									<h3>The parent keyword</h3>
+									<p>If you write a method in a subclass with 
+									the same name as one in its parent class, its 
+									statements will override those of the parent 
+									class. Sometimes this is not the behavior you 
+									want, and you need to access the parent’s method. 
+									To do this, you can use the <code>parent</code> 
+									operator, as in
+									<a href="#overriding_a_method_and_using_the_parent">
+									Example&nbsp;5-22</a>.</p>
+									<div id="overriding_a_method_and_using_the_parent">
+										<h5>Example 5-22. Overriding a method and 
+										using the <code>parent</code> operator</h5>
+										<div>
+											<pre>
+<code>&lt;?php</code>
+  <code>$object</code> <code>=</code> <code>new</code> <code>Son;</code>
+  <code>$object-&gt;test();</code>
+  <code>$object-&gt;test2();</code>
+
+  <code>class</code> <code>Dad</code>
+  <code>{</code>
+    <code>function</code> <code>test()</code>
+    <code>{</code>
+      <code>echo</code> <code>"[Class Dad] I am your Father&lt;br&gt;";</code>
+    <code>}</code>
+  <code>}</code>
+
+  <code>class</code> <code>Son</code> <code>extends</code> <code>Dad</code>
+  <code>{</code>
+    <code>function</code> <code>test()</code>
+    <code>{</code>
+      <code>echo</code> <code>"[Class Son] I am Luke&lt;br&gt;";</code>
+    <code>}</code>
+
+    <code>function</code> <code>test2()</code>
+    <code>{</code>
+      <code>parent::test();</code>
+    <code>}</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>This code creates a class called <code>Dad</code> 
+									and a subclass called <code>Son</code> that 
+									inherits its properties and methods and then 
+									overrides the method <code>test</code>. Therefore, 
+									when line 2 calls the method <code>test</code>, 
+									the new method is executed. The only way to 
+									execute the overridden <code>test</code> method 
+									in the <code>Dad</code> class is to use the
+									<code>parent</code> operator, as shown in function
+									<code>test2</code> of class <code>Son</code>. 
+									The code outputs the following:</p>
+									<div>
+										<pre>
+<strong><code>[Class Son] I am Luke
+[Class Dad] I am your Father</code></strong></pre>
+										<div>
+										</div>
+									</div>
+									<p>If you wish to ensure that your code calls 
+									a method from the current class, you can use 
+									the <code>self</code> keyword, like this:</p>
+									<div>
+										<pre>
+<code>self::method();</code></pre>
+										<div>
+										</div>
+									</div>
+									<p>Using <code>self</code> to call static methods 
+									is very common, but it is rarely used to call 
+									the object ones. The difference between using
+									<code>self</code> and <code>$this</code>&nbsp;to 
+									call an object method is that if the method 
+									would be overridden in a subclass and you’d 
+									call it using the <code>self</code> keyword 
+									in the parent class, then the method from the 
+									parent class would be called, not the overridden 
+									one, unlike when you’d use <code>$this</code> 
+									to call it.</p>
+								</div>
+							</section>
+							<section>
+								<div id="subclass_constructors">
+									<h3>Subclass constructors</h3>
+									<p>When you extend a class and declare your 
+									own constructor, you should be aware that PHP 
+									will not automatically call the constructor 
+									method of the parent class. If you want to be 
+									certain that all initialization code is executed, 
+									subclasses should always call the parent constructors, 
+									as in
+									<a href="#calling_the_parent_class_constructor">
+									Example&nbsp;5-23</a>.</p>
+									<div id="calling_the_parent_class_constructor">
+										<h5>Example 5-23. Calling the parent class 
+										constructor</h5>
+										<div>
+											<pre>
+<code>&lt;?php</code>
+  <code>$object</code> <code>=</code> <code>new</code> <code>Tiger();</code>
+
+  <code>echo</code> <code>"Tigers have...&lt;br&gt;";</code>
+  <code>echo</code> <code>"Fur: "</code> <code>.</code> <code>$object-&gt;fur</code> <code>.</code> <code>"&lt;br&gt;";</code>
+  <code>echo</code> <code>"Stripes: "</code> <code>.</code> <code>$object-&gt;stripes;</code>
+
+  <code>class</code> <code>Wildcat</code>
+  <code>{</code>
+    <code>public</code> <code>$fur;</code> <code>// Wildcats have fur</code>
+
+    <code>function</code> <code>__construct()</code>
+    <code>{</code>
+      <code>$this-&gt;fur</code> <code>=</code> <code>"TRUE";</code>
+    <code>}</code>
+  <code>}</code>
+
+  <code>class</code> <code>Tiger</code> <code>extends</code> <code>Wildcat</code>
+  <code>{</code>
+    <code>public</code> <code>$stripes;</code> <code>// Tigers have stripes</code>
+
+    <code>function</code> <code>__construct()</code>
+    <code>{</code>
+      <code>parent::__construct();</code> <code>// Call parent constructor first</code>
+      <code>$this-&gt;stripes</code> <code>=</code> <code>"TRUE";</code>
+    <code>}</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>This example takes advantage of inheritance 
+									in the typical manner. The <code>Wildcat</code> 
+									class has created the property <code>$fur</code>, 
+									which we’d like to reuse, so we create the
+									<code>Tiger</code> class to inherit <code>$fur</code> 
+									and additionally create another property,
+									<code>$stripes</code>. To verify that both constructors 
+									have been called, the program outputs the following:</p>
+									<div>
+										<pre>
+<strong><code>Tigers have...
+Fur: TRUE
+Stripes: TRUE</code></strong></pre>
+										<div>
+										</div>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div id="final_methods">
+									<h3>Final methods</h3>
+									<p>When you wish to prevent a subclass from 
+									overriding a superclass method, you can use 
+									the <code>final</code> keyword.
+									<a href="#creating_a_final_method">Example&nbsp;5-24</a> 
+									shows how.</p>
+									<div id="creating_a_final_method">
+										<h5>Example 5-24. Creating a <code>final</code> 
+										method</h5>
+										<div>
+											<pre>
+<code>&lt;?php</code>
+  <code>class</code> <code>User</code>
+  <code>{</code>
+    <code>final</code> <code>function</code> <code>copyright()</code>
+    <code>{</code>
+      <code>echo</code> <code>"This class was written by Joe Smith";</code>
+    <code>}</code>
+  <code>}</code>
+<code>?&gt;</code></pre>
+											<div>
+											</div>
+										</div>
+									</div>
+									<p>If you’d try to override the <code>copyright</code> 
+									method in a subclass of the <code>User</code> 
+									class, you’d get an error message saying you 
+									cannot override the final method.</p>
+									<p>Private methods, except for the constructor,&nbsp;cannot 
+									use the&nbsp;<code>final</code> keyword. It 
+									would make little sense as they are never overridden 
+									by other classes.</p>
+									<p>Once you have digested the contents of this 
+									chapter, you should have a strong feel for what 
+									PHP can do for you. You should be able to use 
+									functions with ease and, if you wish, write 
+									object-oriented code. In
+									<a href="ch06.html#php_arrays">Chapter&nbsp;6</a>, 
+									we’ll finish off our initial exploration of 
+									PHP by looking at the workings of PHP arrays, 
+									but first test your understanding of this chapter 
+									with the questions below.</p>
+								</div>
+							</section>
+						</div>
+					</section>
+				</div>
+			</section>
+			<section>
+				<div id="questions-id00015">
+					<h1>Questions</h1>
+					<ol>
+						<li>
+						<p>What is the main benefit of using a function?</p>
+						</li>
+						<li>
+						<p>How many values can a function return?</p>
+						</li>
+						<li>
+						<p>What is the difference between accessing a variable by 
+						name and by reference?</p>
+						</li>
+						<li>
+						<p>What is the meaning of <em>scope</em> in PHP?</p>
+						</li>
+						<li>
+						<p>How can you incorporate one PHP file within another?</p>
+						</li>
+						<li>
+						<p>How is an object different from a function?</p>
+						</li>
+						<li>
+						<p>How do you create a new object in PHP?</p>
+						</li>
+						<li>
+						<p>What syntax would you use to create a subclass from an 
+						existing one?</p>
+						</li>
+						<li>
+						<p>How can you cause an object to be initialized when you 
+						create it?</p>
+						</li>
+						<li>
+						<p>Why is it a good idea to explicitly declare properties 
+						within a class?</p>
+						</li>
+					</ol>
+					<p>See <a href="app01.html#chapter_5_answers">“Chapter 5 Answers”</a> 
+					in the
+					<a href="app01.html#solutions_to_the_chapter_questions">Appendix&nbsp;A</a> 
+					for the answers to these questions.</p>
+				</div>
+			</section>
+		</div>
+	</section>
+</div>
+
+</body>
+
+</html>
